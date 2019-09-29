@@ -4,8 +4,6 @@ const Mat2 = @import("mat2.zig").Mat2;
 const f_eq = @import("utils.zig").f_eq;
 
 pub const Vec2 = struct {
-    const Self = @This();
-
     data: [2]f32,
 
     pub fn create(x: f32, y: f32) Vec2 {
@@ -17,7 +15,7 @@ pub const Vec2 = struct {
     }
 
     test "create" {
-        var vecA = Vec2.create(1.0, 2.0);
+        const vecA = Vec2.create(1.0, 2.0);
         testing.expect(f_eq(vecA.data[0], 1.0));
         testing.expect(f_eq(vecA.data[1], 2.0));
     }
@@ -33,10 +31,10 @@ pub const Vec2 = struct {
     }
 
     test "add" {
-        var vecA = Vec2.create(1.0, 2.0);
-        var vecB = Vec2.create(3.0, 4.0);
-        var out = vecA.add(vecB);
-        var expected = Vec2.create(4.0, 6.0);
+        const vecA = Vec2.create(1.0, 2.0);
+        const vecB = Vec2.create(3.0, 4.0);
+        const out = vecA.add(vecB);
+        const expected = Vec2.create(4.0, 6.0);
 
         testing.expect(Vec2.equalsExact(out, expected));
     }
@@ -52,10 +50,10 @@ pub const Vec2 = struct {
     }
 
     test "substract" {
-        var a = Vec2.create(1.0, 2.0);
-        var b = Vec2.create(3.0, 4.0);
-        var out = a.sub(b);
-        var expected = Vec2.create(-2.0, -2.0);
+        const a = Vec2.create(1.0, 2.0);
+        const b = Vec2.create(3.0, 4.0);
+        const out = a.sub(b);
+        const expected = Vec2.create(-2.0, -2.0);
 
         testing.expect(Vec2.equals(out, expected));
     }
@@ -71,10 +69,10 @@ pub const Vec2 = struct {
     }
 
     test "multiply" {
-        var a = Vec2.create(1.0, 2.0);
-        var b = Vec2.create(3.0, 4.0);
-        var out = a.mul(b);
-        var expected = Vec2.create(3.0, 8.0);
+        const a = Vec2.create(1.0, 2.0);
+        const b = Vec2.create(3.0, 4.0);
+        const out = a.mul(b);
+        const expected = Vec2.create(3.0, 8.0);
 
         testing.expect(Vec2.equals(out, expected));
     }
@@ -90,10 +88,10 @@ pub const Vec2 = struct {
     }
 
     test "divide" {
-        var a = Vec2.create(1.0, 2.0);
-        var b = Vec2.create(3.0, 4.0);
-        var out = a.div(b);
-        var expected = Vec2.create(0.3333333, 0.5);
+        const a = Vec2.create(1.0, 2.0);
+        const b = Vec2.create(3.0, 4.0);
+        const out = a.div(b);
+        const expected = Vec2.create(0.3333333, 0.5);
 
         testing.expect(Vec2.equals(out, expected));
     }
@@ -109,9 +107,9 @@ pub const Vec2 = struct {
     }
 
     test "ceil" {
-        var a = Vec2.create(math.e, math.pi);
-        var out = a.ceil();
-        var expected = Vec2.create(3.0, 4.0);
+        const a = Vec2.create(math.e, math.pi);
+        const out = a.ceil();
+        const expected = Vec2.create(3.0, 4.0);
 
         testing.expect(Vec2.equals(out, expected));
     }
@@ -127,9 +125,9 @@ pub const Vec2 = struct {
     }
 
     test "floor" {
-        var a = Vec2.create(math.e, math.pi);
-        var out = a.floor();
-        var expected = Vec2.create(2.0, 3.0);
+        const a = Vec2.create(math.e, math.pi);
+        const out = a.floor();
+        const expected = Vec2.create(2.0, 3.0);
 
         testing.expect(Vec2.equals(out, expected));
     }
@@ -145,10 +143,10 @@ pub const Vec2 = struct {
     }
 
     test "min" {
-        var a = Vec2.create(1.0, 4.0);
-        var b = Vec2.create(3.0, 2.0);
-        var out = a.min(b);
-        var expected = Vec2.create(1.0, 2.0);
+        const a = Vec2.create(1.0, 4.0);
+        const b = Vec2.create(3.0, 2.0);
+        const out = a.min(b);
+        const expected = Vec2.create(1.0, 2.0);
 
         testing.expect(Vec2.equals(out, expected));
     }
@@ -164,10 +162,10 @@ pub const Vec2 = struct {
     }
 
     test "max" {
-        var a = Vec2.create(1.0, 4.0);
-        var b = Vec2.create(3.0, 2.0);
-        var out = a.max(b);
-        var expected = Vec2.create(3.0, 4.0);
+        const a = Vec2.create(1.0, 4.0);
+        const b = Vec2.create(3.0, 2.0);
+        const out = a.max(b);
+        const expected = Vec2.create(3.0, 4.0);
 
         testing.expect(Vec2.equals(out, expected));
     }
@@ -183,9 +181,9 @@ pub const Vec2 = struct {
     }
 
     test "round" {
-        var a = Vec2.create(math.e, math.pi);
-        var out = a.round();
-        var expected = Vec2.create(3.0, 3.0);
+        const a = Vec2.create(math.e, math.pi);
+        const out = a.round();
+        const expected = Vec2.create(3.0, 3.0);
 
         testing.expect(Vec2.equals(out, expected));
     }
@@ -201,9 +199,9 @@ pub const Vec2 = struct {
     }
 
     test "scale" {
-        var a = Vec2.create(1.0, 2.0);
-        var out = a.scale(2.0);
-        var expected = Vec2.create(2.0, 4.0);
+        const a = Vec2.create(1.0, 2.0);
+        const out = a.scale(2.0);
+        const expected = Vec2.create(2.0, 4.0);
 
         testing.expect(Vec2.equals(out, expected));
     }
@@ -219,10 +217,10 @@ pub const Vec2 = struct {
     }
 
     test "scaleAndAdd" {
-        var a = Vec2.create(1.0, 2.0);
-        var b = Vec2.create(3.0, 4.0);
-        var out = Vec2.scaleAndAdd(a, b, 0.5);
-        var expected = Vec2.create(2.5, 4.0);
+        const a = Vec2.create(1.0, 2.0);
+        const b = Vec2.create(3.0, 4.0);
+        const out = Vec2.scaleAndAdd(a, b, 0.5);
+        const expected = Vec2.create(2.5, 4.0);
 
         testing.expect(Vec2.equals(out, expected));
     }
@@ -233,23 +231,23 @@ pub const Vec2 = struct {
     }
 
     test "distance" {
-        var a = Vec2.create(1.0, 2.0);
-        var b = Vec2.create(3.0, 4.0);
-        var out = a.distance(b);
+        const a = Vec2.create(1.0, 2.0);
+        const b = Vec2.create(3.0, 4.0);
+        const out = a.distance(b);
         testing.expectEqual(out, 2.828427);
     }
 
     /// Calculates the squared euclidian distance between two vec2's
     pub fn squaredDistance(a: Vec2, b: Vec2) f32 {
-        var x = b.data[0] - a.data[0];
-        var y = b.data[1] - a.data[1];
+        const x = b.data[0] - a.data[0];
+        const y = b.data[1] - a.data[1];
         return x * x + y * y;
     }
 
     test "squaredDistance" {
-        var a = Vec2.create(1.0, 2.0);
-        var b = Vec2.create(3.0, 4.0);
-        var out = a.squaredDistance(b);
+        const a = Vec2.create(1.0, 2.0);
+        const b = Vec2.create(3.0, 4.0);
+        const out = a.squaredDistance(b);
         testing.expectEqual(out, 8.0);
     }
 
@@ -259,28 +257,28 @@ pub const Vec2 = struct {
     }
 
     test "length" {
-        var a = Vec2.create(1.0, 2.0);
-        var out = a.len();
+        const a = Vec2.create(1.0, 2.0);
+        const out = a.len();
         testing.expectEqual(out, 2.23606801);
     }
 
     /// Calculates the squared length of a vec2
     pub fn squaredLength(a: Vec2) f32 {
-        var x = a.data[0];
-        var y = a.data[1];
+        const x = a.data[0];
+        const y = a.data[1];
         return x * x + y * y;
     }
 
     test "squaredLength" {
-        var a = Vec2.create(1.0, 2.0);
-        var out = a.squaredLength();
+        const a = Vec2.create(1.0, 2.0);
+        const out = a.squaredLength();
         testing.expectEqual(out, 5.0);
     }
 
     /// Negates the components of a vec2
     pub fn negate(a: Vec2) Vec2 {
-        var x = -a.data[0];
-        var y = -a.data[1];
+        const x = -a.data[0];
+        const y = -a.data[1];
         return Vec2{
             .data = [_]f32{
                 x,
@@ -290,17 +288,17 @@ pub const Vec2 = struct {
     }
 
     test "negate" {
-        var a = Vec2.create(1.0, 2.0);
-        var out = a.negate();
-        var expected = Vec2.create(-1.0, -2.0);
+        const a = Vec2.create(1.0, 2.0);
+        const out = a.negate();
+        const expected = Vec2.create(-1.0, -2.0);
 
         testing.expect(out.equals(expected));
     }
 
     /// Inverse the components of a vec2
     pub fn inverse(a: Vec2) Vec2 {
-        var x = 1.0 / a.data[0];
-        var y = 1.0 / a.data[1];
+        const x = 1.0 / a.data[0];
+        const y = 1.0 / a.data[1];
         return Vec2{
             .data = [_]f32{
                 x,
@@ -311,8 +309,8 @@ pub const Vec2 = struct {
 
     ///Normalize a Vec2
     pub fn normalize(v: Vec2) Vec2 {
-        var x = v.data[0];
-        var y = v.data[1];
+        const x = v.data[0];
+        const y = v.data[1];
         var l = x * x + y * y;
         if (l > 0) {
             l = 1 / math.sqrt(l);
@@ -327,9 +325,9 @@ pub const Vec2 = struct {
     }
 
     test "normalize" {
-        var a = Vec2.create(5.0, 0.0);
-        var out = a.normalize();
-        var expected = Vec2.create(1.0, 0.0);
+        const a = Vec2.create(5.0, 0.0);
+        const out = a.normalize();
+        const expected = Vec2.create(1.0, 0.0);
 
         testing.expect(out.equals(expected));
     }
@@ -341,9 +339,9 @@ pub const Vec2 = struct {
     }
 
     test "dot" {
-        var a = Vec2.create(1.0, 2.0);
-        var b = Vec2.create(3.0, 4.0);
-        var out = Vec2.dot(a, b);
+        const a = Vec2.create(1.0, 2.0);
+        const b = Vec2.create(3.0, 4.0);
+        const out = Vec2.dot(a, b);
 
         testing.expectEqual(out, 11.0);
     }
@@ -354,20 +352,20 @@ pub const Vec2 = struct {
     }
 
     test "cross" {
-        var a = Vec2.create(1.0, 2.0);
-        var b = Vec2.create(3.0, 4.0);
-        var out = Vec2.cross(a, b);
+        const a = Vec2.create(1.0, 2.0);
+        const b = Vec2.create(3.0, 4.0);
+        const out = Vec2.cross(a, b);
 
         testing.expectEqual(out, -2);
     }
 
     /// Performs a liniear interpolation between two Vec2
     pub fn lerp(a: Vec2, b: Vec2, t: f32) Vec2 {
-        var ax = a.data[0];
-        var ay = a.data[1];
+        const ax = a.data[0];
+        const ay = a.data[1];
 
-        var bx = b.data[0];
-        var by = b.data[1];
+        const bx = b.data[0];
+        const by = b.data[1];
 
         return Vec2{
             .data = [_]f32{
@@ -378,18 +376,18 @@ pub const Vec2 = struct {
     }
 
     test "lerp" {
-        var a = Vec2.create(1.0, 2.0);
-        var b = Vec2.create(3.0, 4.0);
-        var out = Vec2.lerp(a, b, 0.5);
-        var expected = Vec2.create(2.0, 3.0);
+        const a = Vec2.create(1.0, 2.0);
+        const b = Vec2.create(3.0, 4.0);
+        const out = Vec2.lerp(a, b, 0.5);
+        const expected = Vec2.create(2.0, 3.0);
 
         testing.expect(out.equals(expected));
     }
 
     /// Transforms the vec2 with a mat2
     pub fn transformMat2(a: Vec2, m: Mat2) Vec2 {
-        var x = a.data[0];
-        var y = a.data[1];
+        const x = a.data[0];
+        const y = a.data[1];
 
         return Vec2{
             .data = [_]f32{
@@ -400,21 +398,21 @@ pub const Vec2 = struct {
     }
 
     test "transformMat2" {
-        var matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
-        var a = Vec2.create(1.0, 2.0);
-        var out = a.transformMat2(matA);
+        const matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
+        const a = Vec2.create(1.0, 2.0);
+        const out = a.transformMat2(matA);
 
-        var expected = Vec2.create(7.0, 10.0);
+        const expected = Vec2.create(7.0, 10.0);
 
         testing.expect(out.equals(expected));
     }
 
     /// Rotate a 2D vector
     pub fn rotate(a: Vec2, origin: Vec2, rad: f32) Vec2 {
-        var p0 = a.data[0] - origin.data[0];
-        var p1 = a.data[1] - origin.data[1];
-        var sin = math.sin(rad);
-        var cos = math.cos(rad);
+        const p0 = a.data[0] - origin.data[0];
+        const p1 = a.data[1] - origin.data[1];
+        const sin = math.sin(rad);
+        const cos = math.cos(rad);
 
         return Vec2{
             .data = [_]f32{
@@ -425,31 +423,31 @@ pub const Vec2 = struct {
     }
 
     test "rotate around world origin [0, 0, 0]" {
-        var a = Vec2.create(0.0, 1.0);
-        var b = Vec2.create(0.0, 0.0);
-        var out = Vec2.rotate(a, b, math.pi);
+        const a = Vec2.create(0.0, 1.0);
+        const b = Vec2.create(0.0, 0.0);
+        const out = Vec2.rotate(a, b, math.pi);
 
-        var expected = Vec2.create(0.0, -1.0);
+        const expected = Vec2.create(0.0, -1.0);
 
         testing.expect(out.equals(expected));
     }
 
     test "rotate around arbitrary origin" {
-        var a = Vec2.create(6.0, -5.0);
-        var b = Vec2.create(0.0, -5.0);
-        var out = Vec2.rotate(a, b, math.pi);
+        const a = Vec2.create(6.0, -5.0);
+        const b = Vec2.create(0.0, -5.0);
+        const out = Vec2.rotate(a, b, math.pi);
 
-        var expected = Vec2.create(-6.0, -5.0);
+        const expected = Vec2.create(-6.0, -5.0);
 
         testing.expect(out.equals(expected));
     }
 
     /// Get the angle (rad) between two Vec2
     pub fn angle(a: Vec2, b: Vec2) f32 {
-        var x1 = a.data[0];
-        var y1 = a.data[1];
-        var x2 = b.data[0];
-        var y2 = b.data[1];
+        const x1 = a.data[0];
+        const y1 = a.data[1];
+        const x2 = b.data[0];
+        const y2 = b.data[1];
 
         var len1 = x1 * x1 + y1 * y1;
         if (len1 > 0)
@@ -459,7 +457,7 @@ pub const Vec2 = struct {
         if (len2 > 0)
             len2 = 1 / math.sqrt(len2);
 
-        var cos = (x1 * x2 + y1 * y2) * len1 * len2;
+        const cos = (x1 * x2 + y1 * y2) * len1 * len2;
         if (cos > 1.0) {
             return 0;
         } else if (cos < -1.0) {
@@ -470,9 +468,9 @@ pub const Vec2 = struct {
     }
 
     test "angle" {
-        var a = Vec2.create(1.0, 0.0);
-        var b = Vec2.create(1.0, 2.0);
-        var out = Vec2.angle(a, b);
+        const a = Vec2.create(1.0, 0.0);
+        const b = Vec2.create(1.0, 2.0);
+        const out = Vec2.angle(a, b);
 
         testing.expect(f_eq(out, 1.10714));
     }

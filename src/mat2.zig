@@ -1,7 +1,7 @@
 const testing = @import("std").testing;
 const math = @import("std").math;
 const Vec2 = @import("vec2.zig").Vec2;
-var f_eq = @import("utils.zig").f_eq;
+const f_eq = @import("utils.zig").f_eq;
 
 /// A Mat2 identity matrix
 pub const mat2_identity = Mat2{
@@ -89,8 +89,8 @@ pub const Mat2 = struct {
 
     /// Rotates the matrix by a given angle
     pub fn rotate(m: Mat2, rad: f32) Mat2 {
-        var s = math.sin(rad);
-        var c = math.cos(rad);
+        const s = math.sin(rad);
+        const c = math.cos(rad);
 
         return Mat2{
             .data = [_][2]f32{
@@ -142,8 +142,8 @@ pub const Mat2 = struct {
 
     ///Creates a matrix from a given angle
     pub fn from_rotation(rad: f32) Mat2 {
-        var s = math.sin(rad);
-        var c = math.cos(rad);
+        const s = math.sin(rad);
+        const c = math.cos(rad);
 
         return Mat2{
             .data = [_][2]f32{
@@ -171,8 +171,8 @@ pub const Mat2 = struct {
     }
 
     test "identity" {
-        var out = Mat2.identity();
-        var expected = Mat2{
+        const out = Mat2.identity();
+        const expected = Mat2{
             .data = [_][2]f32{
                 [_]f32{ 1.0, 0.0 },
                 [_]f32{ 0.0, 1.0 },
@@ -183,83 +183,83 @@ pub const Mat2 = struct {
     }
 
     test "transpose" {
-        var matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
-        var out = matA.transpose();
-        var expected = Mat2.create(1.0, 3.0, 2.0, 4.0);
+        const matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
+        const out = matA.transpose();
+        const expected = Mat2.create(1.0, 3.0, 2.0, 4.0);
         testing.expect(Mat2.equals(out, expected));
     }
 
     test "invert" {
-        var matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
-        var out = matA.invert() orelse @panic("could not invert mat2");
-        var expected = Mat2.create(-2, 1.0, 1.5, -0.5);
+        const matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
+        const out = matA.invert() orelse @panic("could not invert mat2");
+        const expected = Mat2.create(-2, 1.0, 1.5, -0.5);
         testing.expect(Mat2.equals(out, expected));
     }
 
     test "adjoint" {
-        var matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
-        var out = matA.adjoint();
-        var expected = Mat2.create(4, -2, -3, 1);
+        const matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
+        const out = matA.adjoint();
+        const expected = Mat2.create(4, -2, -3, 1);
         testing.expect(Mat2.equals(out, expected));
     }
 
     test "determinant" {
-        var matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
-        var out = matA.determinant();
+        const matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
+        const out = matA.determinant();
         testing.expectEqual(out, -2);
     }
 
     test "multiply" {
-        var matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
-        var matB = Mat2.create(5.0, 6.0, 7.0, 8.0);
-        var out = matA.mul(matB);
-        var expected = Mat2.create(23.0, 34.0, 31.0, 46.0);
+        const matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
+        const matB = Mat2.create(5.0, 6.0, 7.0, 8.0);
+        const out = matA.mul(matB);
+        const expected = Mat2.create(23.0, 34.0, 31.0, 46.0);
 
         testing.expect(Mat2.equals(out, expected));
     }
 
     test "rotate" {
-        var matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
-        var out = matA.rotate(math.pi * 0.5);
-        var expected = Mat2.create(3, 4.0, -1.0, -2.0);
+        const matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
+        const out = matA.rotate(math.pi * 0.5);
+        const expected = Mat2.create(3, 4.0, -1.0, -2.0);
 
         testing.expect(Mat2.equals(out, expected));
     }
 
     test "scale" {
-        var matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
-        var out = matA.scale(Vec2.create(2, 3));
-        var expected = Mat2.create(2.0, 4.0, 9.0, 12.0);
+        const matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
+        const out = matA.scale(Vec2.create(2, 3));
+        const expected = Mat2.create(2.0, 4.0, 9.0, 12.0);
 
         testing.expect(Mat2.equals(out, expected));
     }
 
     test "add" {
-        var matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
-        var matB = Mat2.create(5.0, 6.0, 7.0, 8.0);
+        const matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
+        const matB = Mat2.create(5.0, 6.0, 7.0, 8.0);
 
-        var out = matA.add(matB);
-        var expected = Mat2.create(6.0, 8.0, 10.0, 12.0);
+        const out = matA.add(matB);
+        const expected = Mat2.create(6.0, 8.0, 10.0, 12.0);
 
         testing.expect(Mat2.equals(out, expected));
     }
 
     test "substract" {
-        var matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
-        var matB = Mat2.create(5.0, 6.0, 7.0, 8.0);
+        const matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
+        const matB = Mat2.create(5.0, 6.0, 7.0, 8.0);
 
-        var out = matA.sub(matB);
-        var expected = Mat2.create(-4, -4, -4, -4);
+        const out = matA.sub(matB);
+        const expected = Mat2.create(-4, -4, -4, -4);
 
         testing.expect(Mat2.equals(out, expected));
     }
 
     test "equals" {
-        var out = mat2_identity;
-        var expected = Mat2.create(1.0, 0.0, 0.0, 1.0);
+        const out = mat2_identity;
+        const expected = Mat2.create(1.0, 0.0, 0.0, 1.0);
         testing.expect(Mat2.equals(out, expected));
 
-        var notExpected = Mat2.create(5.0, 6.0, 7.0, 8.0);
+        const notExpected = Mat2.create(5.0, 6.0, 7.0, 8.0);
 
         testing.expect(!Mat2.equals(out, notExpected));
     }
