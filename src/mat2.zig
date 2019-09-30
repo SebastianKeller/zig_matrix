@@ -89,8 +89,8 @@ pub const Mat2 = struct {
 
     /// Rotates the matrix by a given angle
     pub fn rotate(m: Mat2, rad: f32) Mat2 {
-        const s = math.sin(rad);
-        const c = math.cos(rad);
+        const s = @sin(f32, rad);
+        const c = @cos(f32, rad);
 
         return Mat2{
             .data = [_][2]f32{
@@ -142,8 +142,8 @@ pub const Mat2 = struct {
 
     ///Creates a matrix from a given angle
     pub fn from_rotation(rad: f32) Mat2 {
-        const s = math.sin(rad);
-        const c = math.cos(rad);
+        const s = @sin(f32, rad);
+        const c = @cos(f32, rad);
 
         return Mat2{
             .data = [_][2]f32{

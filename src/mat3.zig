@@ -373,8 +373,8 @@ pub const Mat3 = struct {
     }
 
     pub fn rotate(a: Mat3, rad: f32) Mat3 {
-        const s = math.sin(rad);
-        const c = math.cos(rad);
+        const s = @sin(f32, rad);
+        const c = @cos(f32, rad);
 
         return Mat3{
             .data = [_][3]f32{
@@ -465,8 +465,8 @@ pub const Mat3 = struct {
     }
 
     pub fn fromRotation(rad: f32) Mat3 {
-        const sin = math.sin(rad);
-        const cos = math.cos(rad);
+        const sin = @sin(f32, rad);
+        const cos = @cos(f32, rad);
 
         return Mat3{
             .data = [_][3]f32{

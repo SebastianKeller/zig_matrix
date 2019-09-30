@@ -96,15 +96,15 @@ pub const Vec3 = struct {
     pub fn ceil(a: Vec3) Vec3 {
         return Vec3{
             .data = [_]f32{
-                math.ceil(a.data[0]),
-                math.ceil(a.data[1]),
-                math.ceil(a.data[2]),
+                @ceil(f32, a.data[0]),
+                @ceil(f32, a.data[1]),
+                @ceil(f32, a.data[2]),
             },
         };
     }
 
     test "ceil" {
-        const vecA = Vec3.create(math.e, math.pi, math.sqrt(2.0));
+        const vecA = Vec3.create(math.e, math.pi, @sqrt(f32, 2.0));
         const out = vecA.ceil();
         const expected = Vec3.create(3.0, 4.0, 2.0);
 
@@ -114,15 +114,15 @@ pub const Vec3 = struct {
     pub fn floor(a: Vec3) Vec3 {
         return Vec3{
             .data = [_]f32{
-                math.floor(a.data[0]),
-                math.floor(a.data[1]),
-                math.floor(a.data[2]),
+                @floor(f32, a.data[0]),
+                @floor(f32, a.data[1]),
+                @floor(f32, a.data[2]),
             },
         };
     }
 
     test "floor" {
-        const vecA = Vec3.create(math.e, math.pi, math.sqrt(2.0));
+        const vecA = Vec3.create(math.e, math.pi, @sqrt(f32, 2.0));
         const out = vecA.floor();
         const expected = Vec3.create(2.0, 3.0, 1.0);
 
@@ -170,15 +170,15 @@ pub const Vec3 = struct {
     pub fn round(a: Vec3) Vec3 {
         return Vec3{
             .data = [_]f32{
-                math.round(a.data[0]),
-                math.round(a.data[1]),
-                math.round(a.data[2]),
+                @round(f32, a.data[0]),
+                @round(f32, a.data[1]),
+                @round(f32, a.data[2]),
             },
         };
     }
 
     test "round" {
-        const vecA = Vec3.create(math.e, math.pi, math.sqrt(2.0));
+        const vecA = Vec3.create(math.e, math.pi, @sqrt(f32, 2.0));
         const out = vecA.round();
         const expected = Vec3.create(3.0, 3.0, 1.0);
 
@@ -224,7 +224,7 @@ pub const Vec3 = struct {
 
     pub fn distance(a: Vec3, b: Vec3) f32 {
         // TODO: use std.math.hypot
-        return math.sqrt(Vec3.squaredDistance(a, b));
+        return @sqrt(f32, Vec3.squaredDistance(a, b));
 
         //const x = a.data[0] - b.data[0];
         //const y = a.data[1] - b.data[1];
@@ -260,7 +260,7 @@ pub const Vec3 = struct {
 
     pub fn length(a: Vec3) f32 {
         // TODO: use std.math.hypot
-        return math.sqrt(a.squaredLength());
+        return @sqrt(f32, a.squaredLength());
 
         //const x = a.data[0];
         //const y = a.data[1];
@@ -332,7 +332,7 @@ pub const Vec3 = struct {
 
         var l = x * x + y * y + z * z;
         if (l > 0)
-            l = 1 / math.sqrt(l);
+            l = 1 / @sqrt(f32, l);
 
         return Vec3{
             .data = [_]f32{
@@ -510,8 +510,8 @@ pub const Vec3 = struct {
         const py = a.data[1] - origin.data[1];
         const pz = a.data[2] - origin.data[2];
 
-        const cos = math.cos(rad);
-        const sin = math.sin(rad);
+        const cos = @cos(f32, rad);
+        const sin = @sin(f32, rad);
 
         //perform rotation
         const rx = px;
@@ -550,8 +550,8 @@ pub const Vec3 = struct {
         const py = a.data[1] - origin.data[1];
         const pz = a.data[2] - origin.data[2];
 
-        const cos = math.cos(rad);
-        const sin = math.sin(rad);
+        const cos = @cos(f32, rad);
+        const sin = @sin(f32, rad);
 
         const rx = pz * sin + px * cos;
         const ry = py;
@@ -588,8 +588,8 @@ pub const Vec3 = struct {
         const py = a.data[1] - origin.data[1];
         const pz = a.data[2] - origin.data[2];
 
-        const cos = math.cos(rad);
-        const sin = math.sin(rad);
+        const cos = @cos(f32, rad);
+        const sin = @sin(f32, rad);
 
         //perform rotation
         const rx = px * cos - py * sin;
@@ -664,6 +664,7 @@ pub const Vec3 = struct {
     ) Errors!void {
         return std.fmt.format(context, Errors, output, "Vec3({d:.3}, {d:.3}, {d:.3})", self.data[0], self.data[1], self.data[2]);
     }
+
     pub const sub = substract;
     pub const mul = multiply;
     pub const div = divide;
