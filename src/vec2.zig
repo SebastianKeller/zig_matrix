@@ -15,9 +15,9 @@ pub const Vec2 = struct {
     }
 
     test "create" {
-        const vecA = Vec2.create(1.0, 2.0);
-        testing.expect(f_eq(vecA.data[0], 1.0));
-        testing.expect(f_eq(vecA.data[1], 2.0));
+        const vecA = Vec2.create(1, 2);
+        testing.expect(f_eq(vecA.data[0], 1));
+        testing.expect(f_eq(vecA.data[1], 2));
     }
 
     /// Adds two vec2
@@ -31,10 +31,10 @@ pub const Vec2 = struct {
     }
 
     test "add" {
-        const vecA = Vec2.create(1.0, 2.0);
-        const vecB = Vec2.create(3.0, 4.0);
+        const vecA = Vec2.create(1, 2);
+        const vecB = Vec2.create(3, 4);
         const out = vecA.add(vecB);
-        const expected = Vec2.create(4.0, 6.0);
+        const expected = Vec2.create(4, 6);
 
         testing.expect(Vec2.equalsExact(out, expected));
     }
@@ -50,10 +50,10 @@ pub const Vec2 = struct {
     }
 
     test "substract" {
-        const a = Vec2.create(1.0, 2.0);
-        const b = Vec2.create(3.0, 4.0);
+        const a = Vec2.create(1, 2);
+        const b = Vec2.create(3, 4);
         const out = a.sub(b);
-        const expected = Vec2.create(-2.0, -2.0);
+        const expected = Vec2.create(-2, -2);
 
         testing.expect(Vec2.equals(out, expected));
     }
@@ -69,10 +69,10 @@ pub const Vec2 = struct {
     }
 
     test "multiply" {
-        const a = Vec2.create(1.0, 2.0);
-        const b = Vec2.create(3.0, 4.0);
+        const a = Vec2.create(1, 2);
+        const b = Vec2.create(3, 4);
         const out = a.mul(b);
-        const expected = Vec2.create(3.0, 8.0);
+        const expected = Vec2.create(3, 8);
 
         testing.expect(Vec2.equals(out, expected));
     }
@@ -88,8 +88,8 @@ pub const Vec2 = struct {
     }
 
     test "divide" {
-        const a = Vec2.create(1.0, 2.0);
-        const b = Vec2.create(3.0, 4.0);
+        const a = Vec2.create(1, 2);
+        const b = Vec2.create(3, 4);
         const out = a.div(b);
         const expected = Vec2.create(0.3333333, 0.5);
 
@@ -109,7 +109,7 @@ pub const Vec2 = struct {
     test "ceil" {
         const a = Vec2.create(math.e, math.pi);
         const out = a.ceil();
-        const expected = Vec2.create(3.0, 4.0);
+        const expected = Vec2.create(3, 4);
 
         testing.expect(Vec2.equals(out, expected));
     }
@@ -127,7 +127,7 @@ pub const Vec2 = struct {
     test "floor" {
         const a = Vec2.create(math.e, math.pi);
         const out = a.floor();
-        const expected = Vec2.create(2.0, 3.0);
+        const expected = Vec2.create(2, 3);
 
         testing.expect(Vec2.equals(out, expected));
     }
@@ -143,10 +143,10 @@ pub const Vec2 = struct {
     }
 
     test "min" {
-        const a = Vec2.create(1.0, 4.0);
-        const b = Vec2.create(3.0, 2.0);
+        const a = Vec2.create(1, 4);
+        const b = Vec2.create(3, 2);
         const out = a.min(b);
-        const expected = Vec2.create(1.0, 2.0);
+        const expected = Vec2.create(1, 2);
 
         testing.expect(Vec2.equals(out, expected));
     }
@@ -162,10 +162,10 @@ pub const Vec2 = struct {
     }
 
     test "max" {
-        const a = Vec2.create(1.0, 4.0);
-        const b = Vec2.create(3.0, 2.0);
+        const a = Vec2.create(1, 4);
+        const b = Vec2.create(3, 2);
         const out = a.max(b);
-        const expected = Vec2.create(3.0, 4.0);
+        const expected = Vec2.create(3, 4);
 
         testing.expect(Vec2.equals(out, expected));
     }
@@ -183,7 +183,7 @@ pub const Vec2 = struct {
     test "round" {
         const a = Vec2.create(math.e, math.pi);
         const out = a.round();
-        const expected = Vec2.create(3.0, 3.0);
+        const expected = Vec2.create(3, 3);
 
         testing.expect(Vec2.equals(out, expected));
     }
@@ -199,9 +199,9 @@ pub const Vec2 = struct {
     }
 
     test "scale" {
-        const a = Vec2.create(1.0, 2.0);
-        const out = a.scale(2.0);
-        const expected = Vec2.create(2.0, 4.0);
+        const a = Vec2.create(1, 2);
+        const out = a.scale(2);
+        const expected = Vec2.create(2, 4);
 
         testing.expect(Vec2.equals(out, expected));
     }
@@ -217,10 +217,10 @@ pub const Vec2 = struct {
     }
 
     test "scaleAndAdd" {
-        const a = Vec2.create(1.0, 2.0);
-        const b = Vec2.create(3.0, 4.0);
+        const a = Vec2.create(1, 2);
+        const b = Vec2.create(3, 4);
         const out = Vec2.scaleAndAdd(a, b, 0.5);
-        const expected = Vec2.create(2.5, 4.0);
+        const expected = Vec2.create(2.5, 4);
 
         testing.expect(Vec2.equals(out, expected));
     }
@@ -231,8 +231,8 @@ pub const Vec2 = struct {
     }
 
     test "distance" {
-        const a = Vec2.create(1.0, 2.0);
-        const b = Vec2.create(3.0, 4.0);
+        const a = Vec2.create(1, 2);
+        const b = Vec2.create(3, 4);
         const out = a.distance(b);
         testing.expectEqual(out, 2.828427);
     }
@@ -245,10 +245,10 @@ pub const Vec2 = struct {
     }
 
     test "squaredDistance" {
-        const a = Vec2.create(1.0, 2.0);
-        const b = Vec2.create(3.0, 4.0);
+        const a = Vec2.create(1, 2);
+        const b = Vec2.create(3, 4);
         const out = a.squaredDistance(b);
-        testing.expectEqual(out, 8.0);
+        testing.expectEqual(out, 8);
     }
 
     /// Calculates the length of a vec2
@@ -257,7 +257,7 @@ pub const Vec2 = struct {
     }
 
     test "length" {
-        const a = Vec2.create(1.0, 2.0);
+        const a = Vec2.create(1, 2);
         const out = a.len();
         testing.expectEqual(out, 2.23606801);
     }
@@ -270,9 +270,9 @@ pub const Vec2 = struct {
     }
 
     test "squaredLength" {
-        const a = Vec2.create(1.0, 2.0);
+        const a = Vec2.create(1, 2);
         const out = a.squaredLength();
-        testing.expectEqual(out, 5.0);
+        testing.expectEqual(out, 5);
     }
 
     /// Negates the components of a vec2
@@ -288,17 +288,17 @@ pub const Vec2 = struct {
     }
 
     test "negate" {
-        const a = Vec2.create(1.0, 2.0);
+        const a = Vec2.create(1, 2);
         const out = a.negate();
-        const expected = Vec2.create(-1.0, -2.0);
+        const expected = Vec2.create(-1, -2);
 
         testing.expect(out.equals(expected));
     }
 
     /// Inverse the components of a vec2
     pub fn inverse(a: Vec2) Vec2 {
-        const x = 1.0 / a.data[0];
-        const y = 1.0 / a.data[1];
+        const x = 1 / a.data[0];
+        const y = 1 / a.data[1];
         return Vec2{
             .data = [_]f32{
                 x,
@@ -325,9 +325,9 @@ pub const Vec2 = struct {
     }
 
     test "normalize" {
-        const a = Vec2.create(5.0, 0.0);
+        const a = Vec2.create(5, 0);
         const out = a.normalize();
-        const expected = Vec2.create(1.0, 0.0);
+        const expected = Vec2.create(1, 0);
 
         testing.expect(out.equals(expected));
     }
@@ -339,11 +339,11 @@ pub const Vec2 = struct {
     }
 
     test "dot" {
-        const a = Vec2.create(1.0, 2.0);
-        const b = Vec2.create(3.0, 4.0);
+        const a = Vec2.create(1, 2);
+        const b = Vec2.create(3, 4);
         const out = Vec2.dot(a, b);
 
-        testing.expectEqual(out, 11.0);
+        testing.expectEqual(out, 11);
     }
 
     /// Returns the cross product
@@ -352,8 +352,8 @@ pub const Vec2 = struct {
     }
 
     test "cross" {
-        const a = Vec2.create(1.0, 2.0);
-        const b = Vec2.create(3.0, 4.0);
+        const a = Vec2.create(1, 2);
+        const b = Vec2.create(3, 4);
         const out = Vec2.cross(a, b);
 
         testing.expectEqual(out, -2);
@@ -376,10 +376,10 @@ pub const Vec2 = struct {
     }
 
     test "lerp" {
-        const a = Vec2.create(1.0, 2.0);
-        const b = Vec2.create(3.0, 4.0);
+        const a = Vec2.create(1, 2);
+        const b = Vec2.create(3, 4);
         const out = Vec2.lerp(a, b, 0.5);
-        const expected = Vec2.create(2.0, 3.0);
+        const expected = Vec2.create(2, 3);
 
         testing.expect(out.equals(expected));
     }
@@ -398,11 +398,11 @@ pub const Vec2 = struct {
     }
 
     test "transformMat2" {
-        const matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
-        const a = Vec2.create(1.0, 2.0);
+        const matA = Mat2.create(1, 2, 3, 4);
+        const a = Vec2.create(1, 2);
         const out = a.transformMat2(matA);
 
-        const expected = Vec2.create(7.0, 10.0);
+        const expected = Vec2.create(7, 10);
 
         testing.expect(out.equals(expected));
     }
@@ -423,21 +423,21 @@ pub const Vec2 = struct {
     }
 
     test "rotate around world origin [0, 0, 0]" {
-        const a = Vec2.create(0.0, 1.0);
-        const b = Vec2.create(0.0, 0.0);
+        const a = Vec2.create(0, 1);
+        const b = Vec2.create(0, 0);
         const out = Vec2.rotate(a, b, math.pi);
 
-        const expected = Vec2.create(0.0, -1.0);
+        const expected = Vec2.create(0, -1);
 
         testing.expect(out.equals(expected));
     }
 
     test "rotate around arbitrary origin" {
-        const a = Vec2.create(6.0, -5.0);
-        const b = Vec2.create(0.0, -5.0);
+        const a = Vec2.create(6, -5);
+        const b = Vec2.create(0, -5);
         const out = Vec2.rotate(a, b, math.pi);
 
-        const expected = Vec2.create(-6.0, -5.0);
+        const expected = Vec2.create(-6, -5);
 
         testing.expect(out.equals(expected));
     }
@@ -458,9 +458,9 @@ pub const Vec2 = struct {
             len2 = 1 / math.sqrt(len2);
 
         const cos = (x1 * x2 + y1 * y2) * len1 * len2;
-        if (cos > 1.0) {
+        if (cos > 1) {
             return 0;
-        } else if (cos < -1.0) {
+        } else if (cos < -1) {
             return math.pi;
         } else {
             return math.acos(cos);
@@ -468,8 +468,8 @@ pub const Vec2 = struct {
     }
 
     test "angle" {
-        const a = Vec2.create(1.0, 0.0);
-        const b = Vec2.create(1.0, 2.0);
+        const a = Vec2.create(1, 0);
+        const b = Vec2.create(1, 2);
         const out = Vec2.angle(a, b);
 
         testing.expect(f_eq(out, 1.10714));
@@ -490,4 +490,15 @@ pub const Vec2 = struct {
     pub const dist = distance;
     pub const sqrDist = squaredDistance;
     pub const sqrLen = squaredLength;
+
+    pub fn format(
+        self: @This(),
+        comptime fmt: []const u8,
+        options: std.fmt.FormatOptions,
+        context: var,
+        comptime Errors: type,
+        output: fn (@typeOf(context), []const u8) Errors!void,
+    ) Errors!void {
+        return std.fmt.format(context, Errors, output, "Vec2({d:.3},{d:.3})", self.data[0], self.data[1]);
+    }
 };

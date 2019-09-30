@@ -170,6 +170,17 @@ pub const Mat2 = struct {
             and f_eq(a.data[1][1], b.data[1][1]);
     }
 
+    pub fn format(
+        self: @This(),
+        comptime fmt: []const u8,
+        options: std.fmt.FormatOptions,
+        context: var,
+        comptime Errors: type,
+        output: fn (@typeOf(context), []const u8) Errors!void,
+    ) Errors!void {
+        return std.fmt.format(context, Errors, output, "Mat2({d:.3}, {d:.3}, {d:.3}, {d:.3})", self.data[0][0], self.data[0][1], self.data[1][0], self.data[1][1]);
+    }
+
     test "identity" {
         const out = Mat2.identity();
         const expected = Mat2{
