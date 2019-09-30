@@ -1,4 +1,4 @@
-const testing = @import("std").testing;
+const std = @import("std");
 const math = @import("std").math;
 const Mat2 = @import("mat2.zig").Mat2;
 const f_eq = @import("utils.zig").f_eq;
@@ -16,8 +16,8 @@ pub const Vec2 = struct {
 
     test "create" {
         const vecA = Vec2.create(1, 2);
-        testing.expect(f_eq(vecA.data[0], 1));
-        testing.expect(f_eq(vecA.data[1], 2));
+        std.testing.expect(f_eq(vecA.data[0], 1));
+        std.testing.expect(f_eq(vecA.data[1], 2));
     }
 
     /// Adds two vec2
@@ -36,7 +36,7 @@ pub const Vec2 = struct {
         const out = vecA.add(vecB);
         const expected = Vec2.create(4, 6);
 
-        testing.expect(Vec2.equalsExact(out, expected));
+        Vec2.expectEqual(out, expected);
     }
 
     /// substracts vec2 b from vec2 a
@@ -55,7 +55,7 @@ pub const Vec2 = struct {
         const out = a.sub(b);
         const expected = Vec2.create(-2, -2);
 
-        testing.expect(Vec2.equals(out, expected));
+        Vec2.expectEqual(out, expected);
     }
 
     /// Multiplies two vec2
@@ -74,7 +74,7 @@ pub const Vec2 = struct {
         const out = a.mul(b);
         const expected = Vec2.create(3, 8);
 
-        testing.expect(Vec2.equals(out, expected));
+        Vec2.expectEqual(out, expected);
     }
 
     /// Divides two vec2
@@ -93,7 +93,7 @@ pub const Vec2 = struct {
         const out = a.div(b);
         const expected = Vec2.create(0.3333333, 0.5);
 
-        testing.expect(Vec2.equals(out, expected));
+        Vec2.expectEqual(out, expected);
     }
 
     /// std.math.ceil the components
@@ -111,7 +111,7 @@ pub const Vec2 = struct {
         const out = a.ceil();
         const expected = Vec2.create(3, 4);
 
-        testing.expect(Vec2.equals(out, expected));
+        Vec2.expectEqual(out, expected);
     }
 
     /// std.math.floor the components
@@ -129,7 +129,7 @@ pub const Vec2 = struct {
         const out = a.floor();
         const expected = Vec2.create(2, 3);
 
-        testing.expect(Vec2.equals(out, expected));
+        Vec2.expectEqual(out, expected);
     }
 
     /// Returns the minimum of two vec2
@@ -148,7 +148,7 @@ pub const Vec2 = struct {
         const out = a.min(b);
         const expected = Vec2.create(1, 2);
 
-        testing.expect(Vec2.equals(out, expected));
+        Vec2.expectEqual(out, expected);
     }
 
     /// Returns the maximum of two vec2
@@ -167,7 +167,7 @@ pub const Vec2 = struct {
         const out = a.max(b);
         const expected = Vec2.create(3, 4);
 
-        testing.expect(Vec2.equals(out, expected));
+        Vec2.expectEqual(out, expected);
     }
 
     /// std.math.round  the components of a vec
@@ -185,7 +185,7 @@ pub const Vec2 = struct {
         const out = a.round();
         const expected = Vec2.create(3, 3);
 
-        testing.expect(Vec2.equals(out, expected));
+        Vec2.expectEqual(out, expected);
     }
 
     /// Scales a Vec2 by a scalar number
@@ -203,7 +203,7 @@ pub const Vec2 = struct {
         const out = a.scale(2);
         const expected = Vec2.create(2, 4);
 
-        testing.expect(Vec2.equals(out, expected));
+        Vec2.expectEqual(out, expected);
     }
 
     /// Adds two vec2's after scaling the second operand by a scalar value
@@ -222,7 +222,7 @@ pub const Vec2 = struct {
         const out = Vec2.scaleAndAdd(a, b, 0.5);
         const expected = Vec2.create(2.5, 4);
 
-        testing.expect(Vec2.equals(out, expected));
+        Vec2.expectEqual(out, expected);
     }
 
     /// Calculates the euclidian distance between two vec2
@@ -234,7 +234,7 @@ pub const Vec2 = struct {
         const a = Vec2.create(1, 2);
         const b = Vec2.create(3, 4);
         const out = a.distance(b);
-        testing.expectEqual(out, 2.828427);
+        std.testing.expectEqual(out, 2.828427);
     }
 
     /// Calculates the squared euclidian distance between two vec2's
@@ -248,7 +248,7 @@ pub const Vec2 = struct {
         const a = Vec2.create(1, 2);
         const b = Vec2.create(3, 4);
         const out = a.squaredDistance(b);
-        testing.expectEqual(out, 8);
+        std.testing.expectEqual(out, 8);
     }
 
     /// Calculates the length of a vec2
@@ -259,7 +259,7 @@ pub const Vec2 = struct {
     test "length" {
         const a = Vec2.create(1, 2);
         const out = a.len();
-        testing.expectEqual(out, 2.23606801);
+        std.testing.expectEqual(out, 2.23606801);
     }
 
     /// Calculates the squared length of a vec2
@@ -272,7 +272,7 @@ pub const Vec2 = struct {
     test "squaredLength" {
         const a = Vec2.create(1, 2);
         const out = a.squaredLength();
-        testing.expectEqual(out, 5);
+        std.testing.expectEqual(out, 5);
     }
 
     /// Negates the components of a vec2
@@ -292,7 +292,7 @@ pub const Vec2 = struct {
         const out = a.negate();
         const expected = Vec2.create(-1, -2);
 
-        testing.expect(out.equals(expected));
+        Vec2.expectEqual(out, expected);
     }
 
     /// Inverse the components of a vec2
@@ -329,7 +329,7 @@ pub const Vec2 = struct {
         const out = a.normalize();
         const expected = Vec2.create(1, 0);
 
-        testing.expect(out.equals(expected));
+        Vec2.expectEqual(out, expected);
     }
 
     ///Calculates the dot product of two Vec2
@@ -343,7 +343,7 @@ pub const Vec2 = struct {
         const b = Vec2.create(3, 4);
         const out = Vec2.dot(a, b);
 
-        testing.expectEqual(out, 11);
+        std.testing.expectEqual(out, 11);
     }
 
     /// Returns the cross product
@@ -356,7 +356,7 @@ pub const Vec2 = struct {
         const b = Vec2.create(3, 4);
         const out = Vec2.cross(a, b);
 
-        testing.expectEqual(out, -2);
+        std.testing.expectEqual(out, -2);
     }
 
     /// Performs a liniear interpolation between two Vec2
@@ -381,7 +381,7 @@ pub const Vec2 = struct {
         const out = Vec2.lerp(a, b, 0.5);
         const expected = Vec2.create(2, 3);
 
-        testing.expect(out.equals(expected));
+        Vec2.expectEqual(out, expected);
     }
 
     /// Transforms the vec2 with a mat2
@@ -404,7 +404,7 @@ pub const Vec2 = struct {
 
         const expected = Vec2.create(7, 10);
 
-        testing.expect(out.equals(expected));
+        Vec2.expectEqual(out, expected);
     }
 
     /// Rotate a 2D vector
@@ -429,7 +429,7 @@ pub const Vec2 = struct {
 
         const expected = Vec2.create(0, -1);
 
-        testing.expect(out.equals(expected));
+        Vec2.expectEqual(out, expected);
     }
 
     test "rotate around arbitrary origin" {
@@ -439,7 +439,7 @@ pub const Vec2 = struct {
 
         const expected = Vec2.create(-6, -5);
 
-        testing.expect(out.equals(expected));
+        Vec2.expectEqual(out, expected);
     }
 
     /// Get the angle (rad) between two Vec2
@@ -472,7 +472,7 @@ pub const Vec2 = struct {
         const b = Vec2.create(1, 2);
         const out = Vec2.angle(a, b);
 
-        testing.expect(f_eq(out, 1.10714));
+        std.testing.expect(f_eq(out, 1.10714));
     }
 
     pub fn equals(a: Vec2, b: Vec2) bool {
@@ -499,6 +499,13 @@ pub const Vec2 = struct {
         comptime Errors: type,
         output: fn (@typeOf(context), []const u8) Errors!void,
     ) Errors!void {
-        return std.fmt.format(context, Errors, output, "Vec2({d:.3},{d:.3})", self.data[0], self.data[1]);
+        return std.fmt.format(context, Errors, output, "Vec2({d:.3}, {d:.3})", self.data[0], self.data[1]);
+    }
+
+    fn expectEqual(expected: Vec2, actual: Vec2) void {
+        if (!expected.equals(actual)) {
+            std.debug.warn("Expected: {}, found {}", expected, actual);
+            @panic("test failed");
+        }
     }
 };

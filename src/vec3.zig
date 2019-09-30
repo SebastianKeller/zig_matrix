@@ -348,7 +348,7 @@ pub const Vec3 = struct {
         const out = vecA.normalize();
         const expected = Vec3.create(1.0, 0.0, 0.0);
 
-        Vec3.expectEqual(out, expected);
+        Vec3.expectEqual(expected, out);
     }
 
     pub fn dot(a: Vec3, b: Vec3) f32 {
@@ -390,7 +390,7 @@ pub const Vec3 = struct {
         const out = Vec3.cross(vecA, vecB);
         const expected = Vec3.create(-3.0, 6.0, -3.0);
 
-        Vec3.expectEqual(out, expected);
+        Vec3.expectEqual(expected, out);
     }
 
     pub fn lerp(a: Vec3, b: Vec3, t: f32) Vec3 {
@@ -417,7 +417,7 @@ pub const Vec3 = struct {
         const out = Vec3.lerp(vecA, vecB, 0.5);
         const expected = Vec3.create(2.5, 3.5, 4.5);
 
-        Vec3.expectEqual(out, expected);
+        Vec3.expectEqual(expected, out);
     }
 
     pub fn hermite(a: Vec3, b: Vec3, c: Vec3, d: Vec3, t: f32) Vec3 {
@@ -579,7 +579,7 @@ pub const Vec3 = struct {
         const vecB = Vec3.create(-4.0, 3.0, 10.0);
         const out = vecA.rotateY(vecB, math.pi);
         const expected = Vec3.create(-6.0, 3.0, 10.0);
-        Vec3.expectEqual(out, expected);
+        Vec3.expectEqual(expected, out);
     }
 
     pub fn rotateZ(a: Vec3, origin: Vec3, rad: f32) Vec3 {
@@ -620,7 +620,7 @@ pub const Vec3 = struct {
         const vecB = Vec3.create(0.0, 0.0, -5.0);
         const out = vecA.rotateZ(vecB, math.pi);
         const expected = Vec3.create(0.0, -6.0, -5.0);
-        Vec3.expectEqual(out, expected);
+        Vec3.expectEqual(expected, out);
     }
 
     pub fn angle(a: Vec3, b: Vec3) f32 {
@@ -662,7 +662,7 @@ pub const Vec3 = struct {
         comptime Errors: type,
         output: fn (@typeOf(context), []const u8) Errors!void,
     ) Errors!void {
-        return std.fmt.format(context, Errors, output, "Vec3({d:.3},{d:.3},{d:.3})", self.data[0], self.data[1], self.data[2]);
+        return std.fmt.format(context, Errors, output, "Vec3({d:.3}, {d:.3}, {d:.3})", self.data[0], self.data[1], self.data[2]);
     }
     pub const sub = substract;
     pub const mul = multiply;
@@ -672,9 +672,9 @@ pub const Vec3 = struct {
     pub const len = length;
     pub const sqrLen = squaredLength;
 
-    fn expectEqual(a: Vec3, b: Vec3) void {
-        if (!a.equals(b)) {
-            std.debug.warn("Expected: {}, found {}", a, b);
+    fn expectEqual(expected: Vec3, actual: Vec3) void {
+        if (!equals(expected, actual)) {
+            std.debug.warn("Expected: {}, found {}", expected, actual);
             @panic("test failed");
         }
     }
