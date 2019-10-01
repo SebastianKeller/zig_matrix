@@ -320,20 +320,20 @@ pub const Mat3 = struct {
         return Mat3{
             .data = [_][3]f32{
                 [_]f32{
-                    a.data[0][0] + (b.data[0][0] * s),
-                    a.data[0][1] + (b.data[0][1] * s),
-                    a.data[0][2] + (b.data[0][2] * s),
+                    @mulAdd(f32, b.data[0][0], s, a.data[0][0]),
+                    @mulAdd(f32, b.data[0][1], s, a.data[0][1]),
+                    @mulAdd(f32, b.data[0][2], s, a.data[0][2]),
                 },
 
                 [_]f32{
-                    a.data[1][0] + (b.data[1][0] * s),
-                    a.data[1][1] + (b.data[1][1] * s),
-                    a.data[1][2] + (b.data[1][2] * s),
+                    @mulAdd(f32, b.data[1][0], s, a.data[1][0]),
+                    @mulAdd(f32, b.data[1][1], s, a.data[1][1]),
+                    @mulAdd(f32, b.data[1][2], s, a.data[1][2]),
                 },
                 [_]f32{
-                    a.data[2][0] + (b.data[2][0] * s),
-                    a.data[2][1] + (b.data[2][1] * s),
-                    a.data[2][2] + (b.data[2][2] * s),
+                    @mulAdd(f32, b.data[2][0], s, a.data[2][0]),
+                    @mulAdd(f32, b.data[2][1], s, a.data[2][1]),
+                    @mulAdd(f32, b.data[2][2], s, a.data[2][2]),
                 },
             },
         };

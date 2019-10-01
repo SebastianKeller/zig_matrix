@@ -96,12 +96,12 @@ pub const Vec2 = struct {
         Vec2.expectEqual(out, expected);
     }
 
-    /// std.math.ceil the components
+    /// ceil the components
     pub fn ceil(a: Vec2) Vec2 {
         return Vec2{
             .data = [_]f32{
-                math.ceil(a.data[0]),
-                math.ceil(a.data[1]),
+                @ceil(f32, a.data[0]),
+                @ceil(f32, a.data[1]),
             },
         };
     }
@@ -114,12 +114,12 @@ pub const Vec2 = struct {
         Vec2.expectEqual(out, expected);
     }
 
-    /// std.math.floor the components
+    /// floor the components
     pub fn floor(a: Vec2) Vec2 {
         return Vec2{
             .data = [_]f32{
-                math.floor(a.data[0]),
-                math.floor(a.data[1]),
+                @floor(f32, a.data[0]),
+                @floor(f32, a.data[1]),
             },
         };
     }
@@ -170,12 +170,12 @@ pub const Vec2 = struct {
         Vec2.expectEqual(out, expected);
     }
 
-    /// std.math.round  the components of a vec
+    /// round  the components of a vec
     pub fn round(a: Vec2) Vec2 {
         return Vec2{
             .data = [_]f32{
-                math.round(a.data[0]),
-                math.round(a.data[1]),
+                @round(f32, a.data[0]),
+                @round(f32, a.data[1]),
             },
         };
     }
@@ -313,7 +313,7 @@ pub const Vec2 = struct {
         const y = v.data[1];
         var l = x * x + y * y;
         if (l > 0) {
-            l = 1 / math.sqrt(l);
+            l = 1 / @sqrt(f32, l);
         }
 
         return Vec2{
@@ -411,8 +411,8 @@ pub const Vec2 = struct {
     pub fn rotate(a: Vec2, origin: Vec2, rad: f32) Vec2 {
         const p0 = a.data[0] - origin.data[0];
         const p1 = a.data[1] - origin.data[1];
-        const sin = math.sin(rad);
-        const cos = math.cos(rad);
+        const sin = @sin(f32, rad);
+        const cos = @cos(f32, rad);
 
         return Vec2{
             .data = [_]f32{
@@ -451,11 +451,11 @@ pub const Vec2 = struct {
 
         var len1 = x1 * x1 + y1 * y1;
         if (len1 > 0)
-            len1 = 1 / math.sqrt(len1);
+            len1 = 1 / @sqrt(f32, len1);
 
         var len2 = x2 * x2 + y2 * y2;
         if (len2 > 0)
-            len2 = 1 / math.sqrt(len2);
+            len2 = 1 / @sqrt(f32, len2);
 
         const cos = (x1 * x2 + y1 * y2) * len1 * len2;
         if (cos > 1) {
