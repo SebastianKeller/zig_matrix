@@ -3,6 +3,7 @@ const testing = std.testing;
 const math = @import("std").math;
 const Mat2 = @import("mat2.zig").Mat2;
 const Mat3 = @import("mat3.zig").Mat3;
+const Mat4 = @import("mat4.zig").Mat4;
 const f_eq = @import("utils.zig").f_eq;
 const debug = @import("std").debug;
 
@@ -468,6 +469,23 @@ pub const Vec3 = struct {
         };
     }
 
+    pub fn transformMat4(a: Vec3, m: Mat4) Vec3 {
+        const x = a.data[0];
+        const y = a.data[1];
+        const z = a.data[2];
+
+        var w = m.data[0][3] * x + m.data[1][3] * y + m.data[2][3] * z + m.data[3][3];
+        if (w == 0.0) w = 1.0;
+
+        return Vec3{
+            .data = [_]f32{
+                (m.data[0][0] * x + m.data[1][0] * y + m.data[2][0] * z + m.data[3][0]) / w,
+                (m.data[0][1] * x + m.data[1][1] * y + m.data[2][1] * z + m.data[3][1]) / w,
+                (m.data[0][2] * x + m.data[1][2] * y + m.data[2][2] * z + m.data[3][2]) / w,
+            },
+        };
+    }
+
     test "transformMat3 identity" {
         const vecA = Vec3.create(1.0, 2.0, 3.0);
         const m = Mat3.identity();
@@ -673,7 +691,7 @@ pub const Vec3 = struct {
     pub const len = length;
     pub const sqrLen = squaredLength;
 
-    fn expectEqual(expected: Vec3, actual: Vec3) void {
+    pub fn expectEqual(expected: Vec3, actual: Vec3) void {
         if (!equals(expected, actual)) {
             std.debug.warn("Expected: {}, found {}", expected, actual);
             @panic("test failed");

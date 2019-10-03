@@ -1,7 +1,7 @@
 const std = @import("std");
 const testing = std.testing;
 const math = std.math;
-const f_eq = @import("utils.zig").f_eq;
+const utils = @import("utils.zig");
 const Vec2 = @import("vec2.zig").Vec2;
 
 /// A Mat3 identity matrix
@@ -575,7 +575,7 @@ pub const Mat3 = struct {
     //}
 
     pub fn equals(a: Mat3, b: Mat3) bool {
-        const epsilon = 000001;
+        const epsilon = utils.epsilon;
         const a0 = a.data[0][0];
         const a1 = a.data[0][1];
         const a2 = a.data[0][2];
