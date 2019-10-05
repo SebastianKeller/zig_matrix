@@ -3,6 +3,7 @@ const testing = std.testing;
 const math = std.math;
 const utils = @import("utils.zig");
 const Vec2 = @import("vec2.zig").Vec2;
+const Mat4 = @import("mat4.zig").Mat4;
 
 /// A Mat3 identity matrix
 pub const mat3_identity = Mat3{
@@ -16,9 +17,7 @@ pub const mat3_identity = Mat3{
 pub const Mat3 = struct {
     data: [3][3]f32,
 
-    pub fn identity() Mat3 {
-        return mat3_identity;
-    }
+    pub const identity = mat3_identity;
 
     pub fn create(m00: f32, m01: f32, m02: f32, m10: f32, m11: f32, m12: f32, m20: f32, m21: f32, m22: f32) Mat3 {
         return Mat3{
@@ -26,6 +25,16 @@ pub const Mat3 = struct {
                 [_]f32{ m00, m01, m02 },
                 [_]f32{ m10, m11, m12 },
                 [_]f32{ m20, m21, m22 },
+            },
+        };
+    }
+
+    pub fn fromMat4(m: Mat4) Mat3 {
+        return Mat3{
+            .data = [_][3]f32{
+                [_]f32{ m.data[0][0], m.data[0][1], m.data[0][2] },
+                [_]f32{ m.data[1][0], m.data[1][1], m.data[1][2] },
+                [_]f32{ m.data[2][0], m.data[2][1], m.data[2][2] },
             },
         };
     }

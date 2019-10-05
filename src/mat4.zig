@@ -17,9 +17,7 @@ pub const mat4_identity = Mat4{
 pub const Mat4 = struct {
     data: [4][4]f32,
 
-    pub fn identity() Mat4 {
-        return mat4_identity;
-    }
+    pub const identity = mat4_identity;
 
     pub fn create(
         m00: f32,
@@ -910,7 +908,7 @@ pub const Mat4 = struct {
 
     /// Generates a look-at matrix with the given eye position, focal point, and up axis.
     /// If you want a matrix that actually makes an object look at another object, you should use targetTo instead.
-    pub fn lookAt(eye: Vec3, center: Vec3, up: Vec3) Mat4 {
+    pub fn lookat(eye: Vec3, center: Vec3, up: Vec3) Mat4 {
         const eyex = eye.data[0];
         const eyey = eye.data[1];
         const eyez = eye.data[2];
@@ -989,14 +987,14 @@ pub const Mat4 = struct {
         };
     }
 
-    test "lookAt (down)" {
+    test "lookat (down)" {
         const eye = Vec3.create(0, 0, 1);
         const center = Vec3.create(0, 0, -1);
         const view = Vec3.create(0, -1, 0);
         const up = Vec3.create(0, 0, -1);
         const right = Vec3.create(1, 0, 0);
 
-        const out = Mat4.lookAt(Vec3.create(0, 0, 0), view, up);
+        const out = Mat4.lookat(Vec3.create(0, 0, 0), view, up);
 
         var result = Vec3.transformMat4(view, out);
         Vec3.expectEqual(result, Vec3.create(0, 0, -1));

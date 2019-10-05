@@ -4,11 +4,14 @@ const math = @import("std").math;
 const Mat2 = @import("mat2.zig").Mat2;
 const Mat3 = @import("mat3.zig").Mat3;
 const Mat4 = @import("mat4.zig").Mat4;
+const Quat = @import("quat.zig").Quat;
 const f_eq = @import("utils.zig").f_eq;
 const debug = @import("std").debug;
 
 pub const Vec3 = struct {
     data: [3]f32,
+
+    pub const zero = Vec3.create(0, 0, 0);
 
     pub fn create(x: f32, y: f32, z: f32) Vec3 {
         return Vec3{
@@ -469,6 +472,46 @@ pub const Vec3 = struct {
         };
     }
 
+    pub fn transformQuat(a: Vec3, q: Quat) Vec3 {
+        const qx = q.data[0];
+        const qy = q.data[1];
+        const qz = q.data[2];
+        const qw = q.data[3];
+        const x = a.data[0];
+        const y = a.data[1];
+        const z = a.data[2];
+
+        // var uv = vec3.cross([], qvec, a);
+        var uvx = qy * z - qz * y;
+        var uvy = qz * x - qx * z;
+        var uvz = qx * y - qy * x;
+
+        // var uuv = vec3.cross([], qvec, uv);
+        var uuvx = qy * uvz - qz * uvy;
+        var uuvy = qz * uvx - qx * uvz;
+        var uuvz = qx * uvy - qy * uvx;
+
+        // vec3.scale(uv, uv, 2 * w);
+        const w2 = qw * 2;
+        uvx *= w2;
+        uvy *= w2;
+        uvz *= w2;
+
+        // vec3.scale(uuv, uuv, 2);
+        uuvx *= 2;
+        uuvy *= 2;
+        uuvz *= 2;
+
+        // return vec3.add(out, a, vec3.add(out, uv, uuv));
+        return Vec3{
+            .data = [_]f32{
+                x + uvx + uuvx,
+                y + uvy + uuvy,
+                z + uvz + uuvz,
+            },
+        };
+    }
+
     pub fn transformMat4(a: Vec3, m: Mat4) Vec3 {
         const x = a.data[0];
         const y = a.data[1];
@@ -488,7 +531,7 @@ pub const Vec3 = struct {
 
     test "transformMat3 identity" {
         const vecA = Vec3.create(1.0, 2.0, 3.0);
-        const m = Mat3.identity();
+        const m = Mat3.identity;
         const out = vecA.transformMat3(m);
         const expected = Vec3.create(1.0, 2.0, 3.0);
 
