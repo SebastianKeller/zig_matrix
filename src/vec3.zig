@@ -100,15 +100,15 @@ pub const Vec3 = struct {
     pub fn ceil(a: Vec3) Vec3 {
         return Vec3{
             .data = [_]f32{
-                @ceil(f32, a.data[0]),
-                @ceil(f32, a.data[1]),
-                @ceil(f32, a.data[2]),
+                @ceil(a.data[0]),
+                @ceil(a.data[1]),
+                @ceil(a.data[2]),
             },
         };
     }
 
     test "ceil" {
-        const vecA = Vec3.create(math.e, math.pi, @sqrt(f32, 2.0));
+        const vecA = Vec3.create(math.e, math.pi, @sqrt(2.0));
         const out = vecA.ceil();
         const expected = Vec3.create(3.0, 4.0, 2.0);
 
@@ -118,15 +118,15 @@ pub const Vec3 = struct {
     pub fn floor(a: Vec3) Vec3 {
         return Vec3{
             .data = [_]f32{
-                @floor(f32, a.data[0]),
-                @floor(f32, a.data[1]),
-                @floor(f32, a.data[2]),
+                @floor(a.data[0]),
+                @floor(a.data[1]),
+                @floor(a.data[2]),
             },
         };
     }
 
     test "floor" {
-        const vecA = Vec3.create(math.e, math.pi, @sqrt(f32, 2.0));
+        const vecA = Vec3.create(math.e, math.pi, @sqrt(2.0));
         const out = vecA.floor();
         const expected = Vec3.create(2.0, 3.0, 1.0);
 
@@ -174,15 +174,15 @@ pub const Vec3 = struct {
     pub fn round(a: Vec3) Vec3 {
         return Vec3{
             .data = [_]f32{
-                @round(f32, a.data[0]),
-                @round(f32, a.data[1]),
-                @round(f32, a.data[2]),
+                @round(a.data[0]),
+                @round(a.data[1]),
+                @round(a.data[2]),
             },
         };
     }
 
     test "round" {
-        const vecA = Vec3.create(math.e, math.pi, @sqrt(f32, 2.0));
+        const vecA = Vec3.create(math.e, math.pi, @sqrt(2.0));
         const out = vecA.round();
         const expected = Vec3.create(3.0, 3.0, 1.0);
 
@@ -228,7 +228,7 @@ pub const Vec3 = struct {
 
     pub fn distance(a: Vec3, b: Vec3) f32 {
         // TODO: use std.math.hypot
-        return @sqrt(f32, Vec3.squaredDistance(a, b));
+        return @sqrt(Vec3.squaredDistance(a, b));
 
         //const x = a.data[0] - b.data[0];
         //const y = a.data[1] - b.data[1];
@@ -264,7 +264,7 @@ pub const Vec3 = struct {
 
     pub fn length(a: Vec3) f32 {
         // TODO: use std.math.hypot
-        return @sqrt(f32, a.squaredLength());
+        return @sqrt(a.squaredLength());
 
         //const x = a.data[0];
         //const y = a.data[1];
@@ -336,7 +336,7 @@ pub const Vec3 = struct {
 
         var l = x * x + y * y + z * z;
         if (l > 0)
-            l = 1 / @sqrt(f32, l);
+            l = 1 / @sqrt(l);
 
         return Vec3{
             .data = [_]f32{
@@ -571,8 +571,8 @@ pub const Vec3 = struct {
         const py = a.data[1] - origin.data[1];
         const pz = a.data[2] - origin.data[2];
 
-        const cos = @cos(f32, rad);
-        const sin = @sin(f32, rad);
+        const cos = @cos(rad);
+        const sin = @sin(rad);
 
         //perform rotation
         const rx = px;
@@ -611,8 +611,8 @@ pub const Vec3 = struct {
         const py = a.data[1] - origin.data[1];
         const pz = a.data[2] - origin.data[2];
 
-        const cos = @cos(f32, rad);
-        const sin = @sin(f32, rad);
+        const cos = @cos(rad);
+        const sin = @sin(rad);
 
         const rx = pz * sin + px * cos;
         const ry = py;
@@ -649,8 +649,8 @@ pub const Vec3 = struct {
         const py = a.data[1] - origin.data[1];
         const pz = a.data[2] - origin.data[2];
 
-        const cos = @cos(f32, rad);
-        const sin = @sin(f32, rad);
+        const cos = @cos(rad);
+        const sin = @sin(rad);
 
         //perform rotation
         const rx = px * cos - py * sin;
@@ -716,14 +716,16 @@ pub const Vec3 = struct {
     }
 
     pub fn format(
-        self: @This(),
+        value: @This(),
         comptime fmt: []const u8,
         options: std.fmt.FormatOptions,
-        context: var,
-        comptime Errors: type,
-        output: fn (@typeOf(context), []const u8) Errors!void,
-    ) Errors!void {
-        return std.fmt.format(context, Errors, output, "Vec3({d:.3}, {d:.3}, {d:.3})", self.data[0], self.data[1], self.data[2]);
+        writer: anytype,
+    ) !void {
+        return std.fmt.format(
+            writer,
+            "Vec3({d:.3}, {d:.3}, {d:.3})",
+            .{ value.data[0], value.data[1], value.data[2] },
+        );
     }
 
     pub const sub = substract;
@@ -736,7 +738,7 @@ pub const Vec3 = struct {
 
     pub fn expectEqual(expected: Vec3, actual: Vec3) void {
         if (!equals(expected, actual)) {
-            std.debug.warn("Expected: {}, found {}", expected, actual);
+            std.debug.warn("Expected: {}, found {}", .{ expected, actual });
             @panic("test failed");
         }
     }

@@ -50,9 +50,9 @@ pub const Quat = struct {
     pub fn getAxisAngle(q: Quat, out_axis: ?*Vec3) f32 {
         const rad = math.acos(q.data[3]) * 2.0;
         if (out_axis) |v| {
-            const s = @sin(f32, rad / 2.0);
+            const s = @sin(rad / 2.0);
             if (s > utils.epsilon) {
-                v = Vec3{
+                v.* = Vec3{
                     .data = [_]f32{
                         q.data[0] / s,
                         q.data[1] / s,
@@ -60,7 +60,7 @@ pub const Quat = struct {
                     },
                 };
             } else {
-                v = Vec3{
+                v.* = Vec3{
                     .data = [_]f32{
                         1,
                         0,
@@ -130,8 +130,8 @@ pub const Quat = struct {
     /// then returns it.
     pub fn fromAxisAngle(axis: Vec3, rad: f32) Quat {
         const radHalf = rad * 0.5;
-        const s = @sin(f32, radHalf);
-        const c = @cos(f32, radHalf);
+        const s = @sin(radHalf);
+        const c = @cos(radHalf);
         return Quat{
             .data = [_]f32{
                 s * axis.data[0],
@@ -285,7 +285,7 @@ pub const Quat = struct {
 
     pub fn length(a: Quat) f32 {
         // TODO: use std.math.hypot
-        return @sqrt(f32, a.squaredLength());
+        return @sqrt(a.squaredLength());
     }
 
     test "length" {
@@ -316,7 +316,7 @@ pub const Quat = struct {
 
         var l = x * x + y * y + z * z + w * w;
         if (l > 0)
-            l = 1 / @sqrt(f32, l);
+            l = 1 / @sqrt(l);
 
         return Quat{
             .data = [_]f32{
@@ -343,8 +343,8 @@ pub const Quat = struct {
         const aw = a.data[3];
 
         var radHalf = rad * 0.5;
-        const bx = @sin(f32, radHalf);
-        const bw = @cos(f32, radHalf);
+        const bx = @sin(radHalf);
+        const bw = @cos(radHalf);
 
         return Quat{
             .data = [_]f32{
@@ -373,8 +373,8 @@ pub const Quat = struct {
 
         var radHalf = rad * 0.5;
 
-        const by = @sin(f32, radHalf);
-        const bw = @cos(f32, radHalf);
+        const by = @sin(radHalf);
+        const bw = @cos(radHalf);
 
         return Quat{
             .data = [_]f32{
@@ -403,8 +403,8 @@ pub const Quat = struct {
 
         const radHalf = rad * 0.5;
 
-        const bz = @sin(f32, radHalf);
-        const bw = @cos(f32, radHalf);
+        const bz = @sin(radHalf);
+        const bw = @cos(radHalf);
 
         return Quat{
             .data = [_]f32{
@@ -437,7 +437,7 @@ pub const Quat = struct {
                 x,
                 y,
                 z,
-                @sqrt(f32, @fabs(f32, 1.0 - x * x - y * y - z * z)),
+                @sqrt(@fabs(1.0 - x * x - y * y - z * z)),
             },
         };
     }
@@ -449,16 +449,16 @@ pub const Quat = struct {
         const z = a.data[2];
         const w = a.data[3];
 
-        var r = @sqrt(f32, x * x + y * y + z * z);
-        var et = @exp(f32, w);
-        var s = if (r > 0) (et * @sin(f32, r) / r) else 0.0;
+        var r = @sqrt(x * x + y * y + z * z);
+        var et = @exp(w);
+        var s = if (r > 0) (et * @sin(r) / r) else 0.0;
 
         return Quat{
             .data = [_]f32{
                 x * s,
                 y * s,
                 z * s,
-                et * @cos(f32, r),
+                et * @cos(r),
             },
         };
     }
@@ -470,7 +470,7 @@ pub const Quat = struct {
         const z = a.data[2];
         const w = a.data[3];
 
-        var r = @sqrt(f32, x * x + y * y + z * z);
+        var r = @sqrt(x * x + y * y + z * z);
         var t: f32 = 0.0;
         if (r > 0)
             t = math.atan2(f32, r, w) / r;
@@ -480,7 +480,7 @@ pub const Quat = struct {
                 x * t,
                 y * t,
                 z * t,
-                0.5 * @log10(f32, x * x + y * y + z * z + w * w),
+                0.5 * @log10(x * x + y * y + z * z + w * w),
             },
         };
     }
@@ -544,9 +544,9 @@ pub const Quat = struct {
         if ((1.0 - cosom) > utils.epsilon) {
             // standard case (slerp)
             const omega = math.acos(cosom);
-            const sinom = @sin(f32, omega);
-            scale0 = @sin(f32, (1.0 - t) * omega) / sinom;
-            scale1 = @sin(f32, t * omega) / sinom;
+            const sinom = @sin(omega);
+            scale0 = @sin((1.0 - t) * omega) / sinom;
+            scale1 = @sin(t * omega) / sinom;
         } else {
             // "from" and "to" quaternions are very close
             //  ... so we can do a linear interpolation
@@ -664,7 +664,7 @@ pub const Quat = struct {
 
         if (fTrace > 0.0) {
             // |w| > 1/2, may as well choose w > 1/2
-            const fRoot = @sqrt(f32, fTrace + 1.0); // 2w
+            const fRoot = @sqrt(fTrace + 1.0); // 2w
             const fRoot4 = 0.5 / fRoot;
 
             return Quat{
@@ -689,7 +689,7 @@ pub const Quat = struct {
             var j = (i + 1) % 3;
             var k = (i + 2) % 3;
 
-            const fRoot = @sqrt(f32, m.data[i][i] - m.data[j][j] - m.data[k][k] + 1.0);
+            const fRoot = @sqrt(m.data[i][i] - m.data[j][j] - m.data[k][k] + 1.0);
             const fRoot2 = 0.5 / fRoot;
 
             var out: [4]f32 = undefined;
@@ -744,12 +744,12 @@ pub const Quat = struct {
         const yH = y * halfToRad;
         const zH = z * halfToRad;
 
-        const sx = @sin(f32, xH);
-        const cx = @cos(f32, xH);
-        const sy = @sin(f32, yH);
-        const cy = @cos(f32, yH);
-        const sz = @sin(f32, zH);
-        const cz = @cos(f32, zH);
+        const sx = @sin(xH);
+        const cx = @cos(xH);
+        const sy = @sin(yH);
+        const cy = @cos(yH);
+        const sz = @sin(zH);
+        const cz = @cos(zH);
 
         return Quat{
             .data = [_]f32{
@@ -853,24 +853,22 @@ pub const Quat = struct {
     }
 
     pub fn format(
-        self: @This(),
+        value: @This(),
         comptime fmt: []const u8,
         options: std.fmt.FormatOptions,
-        context: var,
-        comptime Errors: type,
-        output: fn (@typeOf(context), []const u8) Errors!void,
-    ) Errors!void {
-        const x = self.data[0];
-        const y = self.data[1];
-        const z = self.data[2];
-        const w = self.data[3];
+        writer: anytype,
+    ) !void {
+        const x = value.data[0];
+        const y = value.data[1];
+        const z = value.data[2];
+        const w = value.data[3];
         const str = "Quat({d:.3}, {d:.3}, {d:.3}, {d:.3})";
-        return std.fmt.format(context, Errors, output, str, x, y, z, w);
+        return std.fmt.format(writer, str, .{ x, y, z, w });
     }
 
     fn expectEqual(expected: Quat, actual: Quat) void {
         if (!expected.equals(actual)) {
-            std.debug.warn("Expected: {}, found {}", expected, actual);
+            std.debug.warn("Expected: {}, found {}", .{ expected, actual });
             @panic("test failed");
         }
     }

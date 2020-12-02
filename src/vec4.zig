@@ -94,16 +94,16 @@ pub const Vec4 = struct {
     pub fn ceil(a: Vec4) Vec4 {
         return Vec4{
             .data = [_]f32{
-                @ceil(f32, a.data[0]),
-                @ceil(f32, a.data[1]),
-                @ceil(f32, a.data[2]),
-                @ceil(f32, a.data[3]),
+                @ceil(a.data[0]),
+                @ceil(a.data[1]),
+                @ceil(a.data[2]),
+                @ceil(a.data[3]),
             },
         };
     }
 
     test "ceil" {
-        const a = Vec4.create(math.e, math.pi, @sqrt(f32, 2.0), 1.0 / @sqrt(f32, 2.0));
+        const a = Vec4.create(math.e, math.pi, @sqrt(2.0), 1.0 / @sqrt(2.0));
         const out = Vec4.ceil(a);
         const expected = Vec4.create(3, 4, 2, 1);
         expectEqual(expected, out);
@@ -112,16 +112,16 @@ pub const Vec4 = struct {
     pub fn floor(a: Vec4) Vec4 {
         return Vec4{
             .data = [_]f32{
-                @floor(f32, a.data[0]),
-                @floor(f32, a.data[1]),
-                @floor(f32, a.data[2]),
-                @floor(f32, a.data[3]),
+                @floor(a.data[0]),
+                @floor(a.data[1]),
+                @floor(a.data[2]),
+                @floor(a.data[3]),
             },
         };
     }
 
     test "floor" {
-        const a = Vec4.create(math.e, math.pi, @sqrt(f32, 2.0), 1.0 / @sqrt(f32, 2.0));
+        const a = Vec4.create(math.e, math.pi, @sqrt(2.0), 1.0 / @sqrt(2.0));
         const out = Vec4.floor(a);
         const expected = Vec4.create(2, 3, 1, 0);
         expectEqual(expected, out);
@@ -168,16 +168,16 @@ pub const Vec4 = struct {
     pub fn round(a: Vec4) Vec4 {
         return Vec4{
             .data = [_]f32{
-                @round(f32, a.data[0]),
-                @round(f32, a.data[1]),
-                @round(f32, a.data[2]),
-                @round(f32, a.data[3]),
+                @round(a.data[0]),
+                @round(a.data[1]),
+                @round(a.data[2]),
+                @round(a.data[3]),
             },
         };
     }
 
     test "round" {
-        const a = Vec4.create(math.e, math.pi, @sqrt(f32, 2.0), 1.0 / @sqrt(f32, 2.0));
+        const a = Vec4.create(math.e, math.pi, @sqrt(2.0), 1.0 / @sqrt(2.0));
         const out = Vec4.round(a);
         const expected = Vec4.create(3, 3, 1, 1);
         expectEqual(expected, out);
@@ -222,7 +222,7 @@ pub const Vec4 = struct {
 
     pub fn distance(a: Vec4, b: Vec4) f32 {
         // TODO: use std.math.hypot
-        return @sqrt(f32, Vec4.squaredDistance(a, b));
+        return @sqrt(Vec4.squaredDistance(a, b));
     }
 
     test "distance" {
@@ -249,7 +249,7 @@ pub const Vec4 = struct {
 
     pub fn length(a: Vec4) f32 {
         // TODO: use std.math.hypot
-        return @sqrt(f32, a.squaredLength());
+        return @sqrt(a.squaredLength());
     }
 
     test "length" {
@@ -317,7 +317,7 @@ pub const Vec4 = struct {
 
         var l = x * x + y * y + z * z + w * w;
         if (l > 0)
-            l = 1 / @sqrt(f32, l);
+            l = 1 / @sqrt(l);
 
         return Vec4{
             .data = [_]f32{
@@ -421,14 +421,16 @@ pub const Vec4 = struct {
     }
 
     pub fn format(
-        self: @This(),
+        value: @This(),
         comptime fmt: []const u8,
         options: std.fmt.FormatOptions,
-        context: var,
-        comptime Errors: type,
-        output: fn (@typeOf(context), []const u8) Errors!void,
-    ) Errors!void {
-        return std.fmt.format(context, Errors, output, "Vec4({d:.3}, {d:.3}, {d:.3}, {d:.3})", self.data[0], self.data[1], self.data[2], self.data[3]);
+        writer: anytype,
+    ) !void {
+        return std.fmt.format(
+            writer,
+            "Vec4({d:.3}, {d:.3}, {d:.3}, {d:.3})",
+            .{ value.data[0], value.data[1], value.data[2], value.data[3] },
+        );
     }
 
     pub const sub = substract;
@@ -441,7 +443,7 @@ pub const Vec4 = struct {
 
     fn expectEqual(expected: Vec4, actual: Vec4) void {
         if (!equals(expected, actual)) {
-            std.debug.warn("Expected: {}, found {}", expected, actual);
+            std.debug.warn("Expected: {}, found {}", .{ expected, actual });
             @panic("test failed");
         }
     }

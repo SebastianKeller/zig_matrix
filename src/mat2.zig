@@ -89,8 +89,8 @@ pub const Mat2 = struct {
 
     /// Rotates the matrix by a given angle
     pub fn rotate(m: Mat2, rad: f32) Mat2 {
-        const s = @sin(f32, rad);
-        const c = @cos(f32, rad);
+        const s = @sin(rad);
+        const c = @cos(rad);
 
         return Mat2{
             .data = [_][2]f32{
@@ -142,8 +142,8 @@ pub const Mat2 = struct {
 
     ///Creates a matrix from a given angle
     pub fn from_rotation(rad: f32) Mat2 {
-        const s = @sin(f32, rad);
-        const c = @cos(f32, rad);
+        const s = @sin(rad);
+        const c = @cos(rad);
 
         return Mat2{
             .data = [_][2]f32{
@@ -171,14 +171,16 @@ pub const Mat2 = struct {
     }
 
     pub fn format(
-        self: @This(),
+        value: @This(),
         comptime fmt: []const u8,
         options: std.fmt.FormatOptions,
-        context: var,
-        comptime Errors: type,
-        output: fn (@typeOf(context), []const u8) Errors!void,
-    ) Errors!void {
-        return std.fmt.format(context, Errors, output, "Mat2({d:.3}, {d:.3}, {d:.3}, {d:.3})", self.data[0][0], self.data[0][1], self.data[1][0], self.data[1][1]);
+        writer: anytype,
+    ) !void {
+        return std.fmt.format(
+            writer,
+            "Mat2({d:.3}, {d:.3}, {d:.3}, {d:.3})",
+            .{ value.data[0][0], value.data[0][1], value.data[1][0], value.data[1][1] },
+        );
     }
 
     test "identity" {

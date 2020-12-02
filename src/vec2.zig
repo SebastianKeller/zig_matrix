@@ -100,8 +100,8 @@ pub const Vec2 = struct {
     pub fn ceil(a: Vec2) Vec2 {
         return Vec2{
             .data = [_]f32{
-                @ceil(f32, a.data[0]),
-                @ceil(f32, a.data[1]),
+                @ceil(a.data[0]),
+                @ceil(a.data[1]),
             },
         };
     }
@@ -118,8 +118,8 @@ pub const Vec2 = struct {
     pub fn floor(a: Vec2) Vec2 {
         return Vec2{
             .data = [_]f32{
-                @floor(f32, a.data[0]),
-                @floor(f32, a.data[1]),
+                @floor(a.data[0]),
+                @floor(a.data[1]),
             },
         };
     }
@@ -174,8 +174,8 @@ pub const Vec2 = struct {
     pub fn round(a: Vec2) Vec2 {
         return Vec2{
             .data = [_]f32{
-                @round(f32, a.data[0]),
-                @round(f32, a.data[1]),
+                @round(a.data[0]),
+                @round(a.data[1]),
             },
         };
     }
@@ -313,7 +313,7 @@ pub const Vec2 = struct {
         const y = v.data[1];
         var l = x * x + y * y;
         if (l > 0) {
-            l = 1 / @sqrt(f32, l);
+            l = 1 / @sqrt(l);
         }
 
         return Vec2{
@@ -411,8 +411,8 @@ pub const Vec2 = struct {
     pub fn rotate(a: Vec2, origin: Vec2, rad: f32) Vec2 {
         const p0 = a.data[0] - origin.data[0];
         const p1 = a.data[1] - origin.data[1];
-        const sin = @sin(f32, rad);
-        const cos = @cos(f32, rad);
+        const sin = @sin(rad);
+        const cos = @cos(rad);
 
         return Vec2{
             .data = [_]f32{
@@ -451,11 +451,11 @@ pub const Vec2 = struct {
 
         var len1 = x1 * x1 + y1 * y1;
         if (len1 > 0)
-            len1 = 1 / @sqrt(f32, len1);
+            len1 = 1 / @sqrt(len1);
 
         var len2 = x2 * x2 + y2 * y2;
         if (len2 > 0)
-            len2 = 1 / @sqrt(f32, len2);
+            len2 = 1 / @sqrt(len2);
 
         const cos = (x1 * x2 + y1 * y2) * len1 * len2;
         if (cos > 1) {
@@ -492,19 +492,17 @@ pub const Vec2 = struct {
     pub const sqrLen = squaredLength;
 
     pub fn format(
-        self: @This(),
+        value: @This(),
         comptime fmt: []const u8,
         options: std.fmt.FormatOptions,
-        context: var,
-        comptime Errors: type,
-        output: fn (@typeOf(context), []const u8) Errors!void,
-    ) Errors!void {
-        return std.fmt.format(context, Errors, output, "Vec2({d:.3}, {d:.3})", self.data[0], self.data[1]);
+        writer: anytype,
+    ) !void {
+        return std.fmt.format(writer, "Vec2({d:.3}, {d:.3})", .{ value.data[0], value.data[1] });
     }
 
     fn expectEqual(expected: Vec2, actual: Vec2) void {
         if (!expected.equals(actual)) {
-            std.debug.warn("Expected: {}, found {}", expected, actual);
+            std.debug.warn("Expected: {}, found {}", .{ expected, actual });
             @panic("test failed");
         }
     }

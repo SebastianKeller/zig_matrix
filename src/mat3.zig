@@ -382,8 +382,8 @@ pub const Mat3 = struct {
     }
 
     pub fn rotate(a: Mat3, rad: f32) Mat3 {
-        const s = @sin(f32, rad);
-        const c = @cos(f32, rad);
+        const s = @sin(rad);
+        const c = @cos(rad);
 
         return Mat3{
             .data = [_][3]f32{
@@ -474,8 +474,8 @@ pub const Mat3 = struct {
     }
 
     pub fn fromRotation(rad: f32) Mat3 {
-        const sin = @sin(f32, rad);
-        const cos = @cos(f32, rad);
+        const sin = @sin(rad);
+        const cos = @cos(rad);
 
         return Mat3{
             .data = [_][3]f32{
@@ -603,15 +603,15 @@ pub const Mat3 = struct {
         const b6 = b.data[2][0];
         const b7 = b.data[2][1];
         const b8 = b.data[2][2];
-        return (@fabs(f32, a0 - b0) <= epsilon * math.max(1, math.max(@fabs(f32, a0), @fabs(f32, b0))) and
-            @fabs(f32, a1 - b1) <= epsilon * math.max(1, math.max(@fabs(f32, a1), @fabs(f32, b1))) and
-            @fabs(f32, a2 - b2) <= epsilon * math.max(1, math.max(@fabs(f32, a2), @fabs(f32, b2))) and
-            @fabs(f32, a3 - b3) <= epsilon * math.max(1, math.max(@fabs(f32, a3), @fabs(f32, b3))) and
-            @fabs(f32, a4 - b4) <= epsilon * math.max(1, math.max(@fabs(f32, a4), @fabs(f32, b4))) and
-            @fabs(f32, a5 - b5) <= epsilon * math.max(1, math.max(@fabs(f32, a5), @fabs(f32, b5))) and
-            @fabs(f32, a6 - b6) <= epsilon * math.max(1, math.max(@fabs(f32, a6), @fabs(f32, b6))) and
-            @fabs(f32, a7 - b7) <= epsilon * math.max(1, math.max(@fabs(f32, a7), @fabs(f32, b7))) and
-            @fabs(f32, a8 - b8) <= epsilon * math.max(1, math.max(@fabs(f32, a8), @fabs(f32, b8))));
+        return (@fabs(a0 - b0) <= epsilon * math.max(1, math.max(@fabs(a0), @fabs(b0))) and
+            @fabs(a1 - b1) <= epsilon * math.max(1, math.max(@fabs(a1), @fabs(b1))) and
+            @fabs(a2 - b2) <= epsilon * math.max(1, math.max(@fabs(a2), @fabs(b2))) and
+            @fabs(a3 - b3) <= epsilon * math.max(1, math.max(@fabs(a3), @fabs(b3))) and
+            @fabs(a4 - b4) <= epsilon * math.max(1, math.max(@fabs(a4), @fabs(b4))) and
+            @fabs(a5 - b5) <= epsilon * math.max(1, math.max(@fabs(a5), @fabs(b5))) and
+            @fabs(a6 - b6) <= epsilon * math.max(1, math.max(@fabs(a6), @fabs(b6))) and
+            @fabs(a7 - b7) <= epsilon * math.max(1, math.max(@fabs(a7), @fabs(b7))) and
+            @fabs(a8 - b8) <= epsilon * math.max(1, math.max(@fabs(a8), @fabs(b8))));
     }
 
     pub fn exactEquals(a: Mat3, b: Mat3) bool {
@@ -627,23 +627,26 @@ pub const Mat3 = struct {
     }
 
     pub fn format(
-        self: @This(),
+        value: @This(),
         comptime fmt: []const u8,
         options: std.fmt.FormatOptions,
-        context: var,
-        comptime Errors: type,
-        output: fn (@typeOf(context), []const u8) Errors!void,
-    ) Errors!void {
+        writer: anytype,
+    ) !void {
         const str = "Mat3({d:.3}, {d:.3}, {d:.3}, {d:.3}, {d:.3}, {d:.3}, {d:.3}, {d:.3}, {d:.3})";
-        return std.fmt.format(context, Errors, output, str, //
-            self.data[0][0], self.data[0][1], self.data[0][2], //
-            self.data[1][0], self.data[1][1], self.data[1][2], //
-            self.data[2][0], self.data[2][1], self.data[2][2]);
+        return std.fmt.format(
+            writer,
+            str,
+            .{
+                value.data[0][0], value.data[0][1], value.data[0][2],
+                value.data[1][0], value.data[1][1], value.data[1][2],
+                value.data[2][0], value.data[2][1], value.data[2][2],
+            },
+        );
     }
 
     fn expectEqual(a: Mat3, b: Mat3) void {
         if (!a.equals(b)) {
-            std.debug.warn("Expected: {}, found {}\n", a, b);
+            std.debug.warn("Expected: {}, found {}\n", .{ a, b });
             @panic("test failed");
         }
     }

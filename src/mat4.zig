@@ -444,15 +444,15 @@ pub const Mat4 = struct {
         var y = axis.data[1];
         var z = axis.data[2];
 
-        var l = @sqrt(f32, x * x + y * y + z * z); //len
+        var l = @sqrt(x * x + y * y + z * z); //len
         if (l < utils.epsilon) return null;
         l = 1 / l;
         x *= l;
         y *= l;
         z *= l;
 
-        const s = @sin(f32, rad);
-        const c = @cos(f32, rad);
+        const s = @sin(rad);
+        const c = @cos(rad);
         const t = 1 - c;
 
         const b00 = x * x * t + c;
@@ -498,11 +498,11 @@ pub const Mat4 = struct {
     }
 
     test "rotate" {
-        const rad = math.pi * 0.5;
+        const rad: f32 = math.pi * 0.5;
         const axis = Vec3.create(1, 0, 0);
         const matA = Mat4.create(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 2, 3, 1);
         const out = Mat4.rotate(matA, rad, axis) orelse @panic("test failed");
-        const expected = Mat4.create(1, 0, 0, 0, 0, @cos(f32, rad), @sin(f32, rad), 0, 0, -@sin(f32, rad), @cos(f32, rad), 0, 1, 2, 3, 1);
+        const expected = Mat4.create(1, 0, 0, 0, 0, @cos(rad), @sin(rad), 0, 0, -@sin(rad), @cos(rad), 0, 1, 2, 3, 1);
         expectEqual(expected, out);
     }
 
@@ -580,7 +580,7 @@ pub const Mat4 = struct {
         var y = axis.data[1];
         var z = axis.data[2];
 
-        var l = @sqrt(f32, x * x + y * y + z * z);
+        var l = @sqrt(x * x + y * y + z * z);
         if (l < utils.epsilon) return null;
         l = 1 / l;
 
@@ -588,8 +588,8 @@ pub const Mat4 = struct {
         y *= l;
         z *= l;
 
-        const s = @sin(f32, rad);
-        const c = @cos(f32, rad);
+        const s = @sin(rad);
+        const c = @cos(rad);
         const t = 1 - c;
 
         return Mat4{
@@ -621,8 +621,8 @@ pub const Mat4 = struct {
     }
 
     pub fn fromXRotation(rad: f32) Mat4 {
-        const s = @sin(f32, rad);
-        const c = @cos(f32, rad);
+        const s = @sin(rad);
+        const c = @cos(rad);
 
         return Mat4{
             .data = [_][4]f32{
@@ -645,8 +645,8 @@ pub const Mat4 = struct {
 
     /// Creates a matrix from the given angle around the Y axis
     pub fn fromYRotation(rad: f32) Mat4 {
-        const s = @sin(f32, rad);
-        const c = @cos(f32, rad);
+        const s = @sin(rad);
+        const c = @cos(rad);
 
         return Mat4{
             .data = [_][4]f32{
@@ -669,8 +669,8 @@ pub const Mat4 = struct {
 
     /// Creates a matrix from the given angle around the Z axis
     pub fn fromZRotation(rad: f32) Mat4 {
-        const s = @sin(f32, rad);
-        const c = @cos(f32, rad);
+        const s = @sin(rad);
+        const c = @cos(rad);
 
         return Mat4{
             .data = [_][4]f32{
@@ -752,9 +752,9 @@ pub const Mat4 = struct {
         const m33 = m.data[2][2];
 
         return Vec3.create(
-            @sqrt(f32, m11 * m11 + m12 * m12 + m13 * m13),
-            @sqrt(f32, m21 * m21 + m22 * m22 + m23 * m23),
-            @sqrt(f32, m31 * m31 + m32 * m32 + m33 * m33),
+            @sqrt(m11 * m11 + m12 * m12 + m13 * m13),
+            @sqrt(m21 * m21 + m22 * m22 + m23 * m23),
+            @sqrt(m31 * m31 + m32 * m32 + m33 * m33),
         );
     }
 
@@ -921,16 +921,16 @@ pub const Mat4 = struct {
         const centery = center.data[1];
         const centerz = center.data[2];
 
-        if (@fabs(f32, eyex - centerx) < utils.epsilon and
-            @fabs(f32, eyey - centery) < utils.epsilon and
-            @fabs(f32, eyez - centerz) < utils.epsilon)
+        if (@fabs(eyex - centerx) < utils.epsilon and
+            @fabs(eyey - centery) < utils.epsilon and
+            @fabs(eyez - centerz) < utils.epsilon)
             return mat4_identity;
 
         var z0 = eyex - centerx;
         var z1 = eyey - centery;
         var z2 = eyez - centerz;
 
-        var l = 1 / @sqrt(f32, z0 * z0 + z1 * z1 + z2 * z2);
+        var l = 1 / @sqrt(z0 * z0 + z1 * z1 + z2 * z2);
         z0 *= l;
         z1 *= l;
         z2 *= l;
@@ -938,7 +938,7 @@ pub const Mat4 = struct {
         var x0 = upy * z2 - upz * z1;
         var x1 = upz * z0 - upx * z2;
         var x2 = upx * z1 - upy * z0;
-        l = @sqrt(f32, x0 * x0 + x1 * x1 + x2 * x2);
+        l = @sqrt(x0 * x0 + x1 * x1 + x2 * x2);
         if (l == 0) {
             x0 = 0;
             x1 = 0;
@@ -954,7 +954,7 @@ pub const Mat4 = struct {
         var y1 = z2 * x0 - z0 * x2;
         var y2 = z0 * x1 - z1 * x0;
 
-        l = @sqrt(f32, y0 * y0 + y1 * y1 + y2 * y2);
+        l = @sqrt(y0 * y0 + y1 * y1 + y2 * y2);
         if (l == 0) {
             y0 = 0;
             y1 = 0;
@@ -1021,7 +1021,7 @@ pub const Mat4 = struct {
 
         var l = z0 * z0 + z1 * z1 + z2 * z2;
         if (l > 0) {
-            l = 1 / @sqrt(f32, l);
+            l = 1 / @sqrt(l);
             z0 *= l;
             z1 *= l;
             z2 *= l;
@@ -1033,7 +1033,7 @@ pub const Mat4 = struct {
 
         l = x0 * x0 + x1 * x1 + x2 * x2;
         if (l > 0) {
-            l = 1 / @sqrt(f32, l);
+            l = 1 / @sqrt(l);
             x0 *= l;
             x1 *= l;
             x2 *= l;
@@ -1115,22 +1115,22 @@ pub const Mat4 = struct {
         const b14 = b.data[3][2];
         const b15 = b.data[3][3];
 
-        return (@fabs(f32, a0 - b0) <= epsilon * math.max(1, math.max(@fabs(f32, a0), @fabs(f32, b0))) and
-            @fabs(f32, a1 - b1) <= epsilon * math.max(1, math.max(@fabs(f32, a1), @fabs(f32, b1))) and
-            @fabs(f32, a2 - b2) <= epsilon * math.max(1, math.max(@fabs(f32, a2), @fabs(f32, b2))) and
-            @fabs(f32, a3 - b3) <= epsilon * math.max(1, math.max(@fabs(f32, a3), @fabs(f32, b3))) and
-            @fabs(f32, a4 - b4) <= epsilon * math.max(1, math.max(@fabs(f32, a4), @fabs(f32, b4))) and
-            @fabs(f32, a5 - b5) <= epsilon * math.max(1, math.max(@fabs(f32, a5), @fabs(f32, b5))) and
-            @fabs(f32, a6 - b6) <= epsilon * math.max(1, math.max(@fabs(f32, a6), @fabs(f32, b6))) and
-            @fabs(f32, a7 - b7) <= epsilon * math.max(1, math.max(@fabs(f32, a7), @fabs(f32, b7))) and
-            @fabs(f32, a8 - b8) <= epsilon * math.max(1, math.max(@fabs(f32, a8), @fabs(f32, b8))) and
-            @fabs(f32, a9 - b9) <= epsilon * math.max(1, math.max(@fabs(f32, a9), @fabs(f32, b9))) and
-            @fabs(f32, a10 - b10) <= epsilon * math.max(1, math.max(@fabs(f32, a10), @fabs(f32, b10))) and
-            @fabs(f32, a11 - b11) <= epsilon * math.max(1, math.max(@fabs(f32, a11), @fabs(f32, b11))) and
-            @fabs(f32, a12 - b12) <= epsilon * math.max(1, math.max(@fabs(f32, a12), @fabs(f32, b12))) and
-            @fabs(f32, a13 - b13) <= epsilon * math.max(1, math.max(@fabs(f32, a13), @fabs(f32, b13))) and
-            @fabs(f32, a14 - b14) <= epsilon * math.max(1, math.max(@fabs(f32, a14), @fabs(f32, b14))) and
-            @fabs(f32, a15 - b15) <= epsilon * math.max(1, math.max(@fabs(f32, a15), @fabs(f32, b15))));
+        return (@fabs(a0 - b0) <= epsilon * math.max(1, math.max(@fabs(a0), @fabs(b0))) and
+            @fabs(a1 - b1) <= epsilon * math.max(1, math.max(@fabs(a1), @fabs(b1))) and
+            @fabs(a2 - b2) <= epsilon * math.max(1, math.max(@fabs(a2), @fabs(b2))) and
+            @fabs(a3 - b3) <= epsilon * math.max(1, math.max(@fabs(a3), @fabs(b3))) and
+            @fabs(a4 - b4) <= epsilon * math.max(1, math.max(@fabs(a4), @fabs(b4))) and
+            @fabs(a5 - b5) <= epsilon * math.max(1, math.max(@fabs(a5), @fabs(b5))) and
+            @fabs(a6 - b6) <= epsilon * math.max(1, math.max(@fabs(a6), @fabs(b6))) and
+            @fabs(a7 - b7) <= epsilon * math.max(1, math.max(@fabs(a7), @fabs(b7))) and
+            @fabs(a8 - b8) <= epsilon * math.max(1, math.max(@fabs(a8), @fabs(b8))) and
+            @fabs(a9 - b9) <= epsilon * math.max(1, math.max(@fabs(a9), @fabs(b9))) and
+            @fabs(a10 - b10) <= epsilon * math.max(1, math.max(@fabs(a10), @fabs(b10))) and
+            @fabs(a11 - b11) <= epsilon * math.max(1, math.max(@fabs(a11), @fabs(b11))) and
+            @fabs(a12 - b12) <= epsilon * math.max(1, math.max(@fabs(a12), @fabs(b12))) and
+            @fabs(a13 - b13) <= epsilon * math.max(1, math.max(@fabs(a13), @fabs(b13))) and
+            @fabs(a14 - b14) <= epsilon * math.max(1, math.max(@fabs(a14), @fabs(b14))) and
+            @fabs(a15 - b15) <= epsilon * math.max(1, math.max(@fabs(a15), @fabs(b15))));
     }
 
     pub fn exactEquals(a: Mat4, b: Mat4) bool {
@@ -1153,41 +1153,39 @@ pub const Mat4 = struct {
     }
 
     pub fn format(
-        self: @This(),
+        value: @This(),
         comptime fmt: []const u8,
         options: std.fmt.FormatOptions,
-        context: var,
-        comptime Errors: type,
-        output: fn (@typeOf(context), []const u8) Errors!void,
-    ) Errors!void {
+        writer: anytype,
+    ) !void {
         const str = "Mat4({d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, )";
         return std.fmt.format(
-            context,
-            Errors,
-            output,
+            writer,
             str,
-            self.data[0][0],
-            self.data[0][1],
-            self.data[0][2],
-            self.data[0][3],
-            self.data[1][0],
-            self.data[1][1],
-            self.data[1][2],
-            self.data[1][3],
-            self.data[2][0],
-            self.data[2][1],
-            self.data[2][2],
-            self.data[2][3],
-            self.data[3][0],
-            self.data[3][1],
-            self.data[3][2],
-            self.data[3][3],
+            .{
+                value.data[0][0],
+                value.data[0][1],
+                value.data[0][2],
+                value.data[0][3],
+                value.data[1][0],
+                value.data[1][1],
+                value.data[1][2],
+                value.data[1][3],
+                value.data[2][0],
+                value.data[2][1],
+                value.data[2][2],
+                value.data[2][3],
+                value.data[3][0],
+                value.data[3][1],
+                value.data[3][2],
+                value.data[3][3],
+            },
         );
     }
 
     fn expectEqual(a: Mat4, b: Mat4) void {
         if (!a.equals(b)) {
-            std.debug.warn("Expected:\n{}, found\n{}\n", a, b);
+            std.debug.warn("Expected:\n{}, found\n{}\n", .{ a, b });
             @panic("test failed");
         }
     }
