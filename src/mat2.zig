@@ -5,23 +5,23 @@ const f_eq = @import("utils.zig").f_eq;
 
 /// A Mat2 identity matrix
 pub const mat2_identity = Mat2{
-    .data = [_][2]f32{
-        [_]f32{ 1.0, 0.0 },
-        [_]f32{ 0.0, 1.0 },
+    .data = .{
+        .{ 1.0, 0.0 },
+        .{ 0.0, 1.0 },
     },
 };
 
 /// Creates a new Mat2 with the given values
 pub fn mat2_values(m00: f32, m01: f32, m10: f32, m11: f32) Mat2 {
     return Mat2{
-        .data = [_][2]f32{
-            [_]f32{ m00, m01 },
-            [_]f32{ m10, m11 },
+        .data = .{
+            .{ m00, m01 },
+            .{ m10, m11 },
         },
     };
 }
 
-pub const Mat2 = struct {
+pub const Mat2 = packed struct {
     data: [2][2]f32,
 
     pub fn identity() Mat2 {
@@ -30,18 +30,18 @@ pub const Mat2 = struct {
 
     pub fn create(m00: f32, m01: f32, m10: f32, m11: f32) Mat2 {
         return Mat2{
-            .data = [_][2]f32{
-                [_]f32{ m00, m01 },
-                [_]f32{ m10, m11 },
+            .data = .{
+                .{ m00, m01 },
+                .{ m10, m11 },
             },
         };
     }
 
     pub fn transpose(m: Mat2) Mat2 {
         return Mat2{
-            .data = [_][2]f32{
-                [_]f32{ m.data[0][0], m.data[1][0] },
-                [_]f32{ m.data[0][1], m.data[1][1] },
+            .data = .{
+                .{ m.data[0][0], m.data[1][0] },
+                .{ m.data[0][1], m.data[1][1] },
             },
         };
     }
@@ -54,9 +54,9 @@ pub const Mat2 = struct {
 
         det = 1.0 / det;
         return Mat2{
-            .data = [_][2]f32{
-                [_]f32{ m.data[1][1] * det, -m.data[0][1] * det },
-                [_]f32{ -m.data[1][0] * det, m.data[0][0] * det },
+            .data = .{
+                .{ m.data[1][1] * det, -m.data[0][1] * det },
+                .{ -m.data[1][0] * det, m.data[0][0] * det },
             },
         };
     }
@@ -64,9 +64,9 @@ pub const Mat2 = struct {
     /// Calculates the adjugate
     pub fn adjoint(m: Mat2) Mat2 {
         return Mat2{
-            .data = [_][2]f32{
-                [_]f32{ m.data[1][1], -m.data[0][1] },
-                [_]f32{ -m.data[1][0], m.data[0][0] },
+            .data = .{
+                .{ m.data[1][1], -m.data[0][1] },
+                .{ -m.data[1][0], m.data[0][0] },
             },
         };
     }
@@ -79,9 +79,9 @@ pub const Mat2 = struct {
     ///Multiplies two Mat2
     pub fn multiply(m: Mat2, other: Mat2) Mat2 {
         return Mat2{
-            .data = [_][2]f32{
-                [_]f32{ m.data[0][0] * other.data[0][0] + m.data[1][0] * other.data[0][1], m.data[0][1] * other.data[0][0] + m.data[1][1] * other.data[0][1] },
-                [_]f32{ m.data[0][0] * other.data[1][0] + m.data[1][0] * other.data[1][1], m.data[0][1] * other.data[1][0] + m.data[1][1] * other.data[1][1] },
+            .data = .{
+                .{ m.data[0][0] * other.data[0][0] + m.data[1][0] * other.data[0][1], m.data[0][1] * other.data[0][0] + m.data[1][1] * other.data[0][1] },
+                .{ m.data[0][0] * other.data[1][0] + m.data[1][0] * other.data[1][1], m.data[0][1] * other.data[1][0] + m.data[1][1] * other.data[1][1] },
             },
         };
     }
@@ -93,9 +93,9 @@ pub const Mat2 = struct {
         const c = @cos(rad);
 
         return Mat2{
-            .data = [_][2]f32{
-                [_]f32{ m.data[0][0] * c + m.data[1][0] * s, m.data[0][1] * c + m.data[1][1] * s },
-                [_]f32{ m.data[0][0] * -s + m.data[1][0] * c, m.data[0][1] * -s + m.data[1][1] * c },
+            .data = .{
+                .{ m.data[0][0] * c + m.data[1][0] * s, m.data[0][1] * c + m.data[1][1] * s },
+                .{ m.data[0][0] * -s + m.data[1][0] * c, m.data[0][1] * -s + m.data[1][1] * c },
             },
         };
     }
@@ -103,27 +103,27 @@ pub const Mat2 = struct {
     ///Scales the matrix by the dimentions in the given vec2
     pub fn scale(m: Mat2, v: Vec2) Mat2 {
         return Mat2{
-            .data = [_][2]f32{
-                [_]f32{ m.data[0][0] * v.data[0], m.data[0][1] * v.data[0] },
-                [_]f32{ m.data[1][0] * v.data[1], m.data[1][1] * v.data[1] },
+            .data = .{
+                .{ m.data[0][0] * v.x, m.data[0][1] * v.x },
+                .{ m.data[1][0] * v.y, m.data[1][1] * v.y },
             },
         };
     }
 
     pub fn add(m: Mat2, other: Mat2) Mat2 {
         return Mat2{
-            .data = [_][2]f32{
-                [_]f32{ m.data[0][0] + other.data[0][0], m.data[0][1] + other.data[0][1] },
-                [_]f32{ m.data[1][0] + other.data[1][0], m.data[1][1] + other.data[1][1] },
+            .data = .{
+                .{ m.data[0][0] + other.data[0][0], m.data[0][1] + other.data[0][1] },
+                .{ m.data[1][0] + other.data[1][0], m.data[1][1] + other.data[1][1] },
             },
         };
     }
 
     pub fn substract(m: Mat2, other: Mat2) Mat2 {
         return Mat2{
-            .data = [_][2]f32{
-                [_]f32{ m.data[0][0] - other.data[0][0], m.data[0][1] - other.data[0][1] },
-                [_]f32{ m.data[1][0] - other.data[1][0], m.data[1][1] - other.data[1][1] },
+            .data = .{
+                .{ m.data[0][0] - other.data[0][0], m.data[0][1] - other.data[0][1] },
+                .{ m.data[1][0] - other.data[1][0], m.data[1][1] - other.data[1][1] },
             },
         };
     }
@@ -133,9 +133,9 @@ pub const Mat2 = struct {
     ///Multiply each element by a scalar
     pub fn multiplyScalar(m: Mat2, s: f32) Mat2 {
         return Mat2{
-            .data = [_][2]f32{
-                [_]f32{ m.data[0][0] * s, m.data[0][1] * s },
-                [_]f32{ m.data[1][0] * s, m.data[1][1] * s },
+            .data = .{
+                .{ m.data[0][0] * s, m.data[0][1] * s },
+                .{ m.data[1][0] * s, m.data[1][1] * s },
             },
         };
     }
@@ -146,9 +146,9 @@ pub const Mat2 = struct {
         const c = @cos(rad);
 
         return Mat2{
-            .data = [_][2]f32{
-                [_]f32{ c, s },
-                [_]f32{ -s, c },
+            .data = .{
+                .{ c, s },
+                .{ -s, c },
             },
         };
     }
@@ -156,9 +156,9 @@ pub const Mat2 = struct {
     ///Creates a matrix from a vector scaling
     pub fn from_scaling(v: Vec2) Mat2 {
         return Mat2{
-            .data = [_][2]f32{
-                [_]f32{ v.data[0], 0.0 },
-                [_]f32{ 0.0, v.data[1] },
+            .data = .{
+                .{ v.x, 0.0 },
+                .{ 0.0, v.y },
             },
         };
     }
@@ -186,9 +186,9 @@ pub const Mat2 = struct {
     test "identity" {
         const out = Mat2.identity();
         const expected = Mat2{
-            .data = [_][2]f32{
-                [_]f32{ 1.0, 0.0 },
-                [_]f32{ 0.0, 1.0 },
+            .data = .{
+                .{ 1.0, 0.0 },
+                .{ 0.0, 1.0 },
             },
         };
 

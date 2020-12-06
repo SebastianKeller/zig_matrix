@@ -8,27 +8,27 @@ const Quat = @import("quat.zig").Quat;
 const f_eq = @import("utils.zig").f_eq;
 const debug = @import("std").debug;
 
-pub const Vec3 = struct {
-    data: [3]f32,
+pub const Vec3 = packed struct {
+    x: f32,
+    y: f32,
+    z: f32,
 
     pub const zero = Vec3.create(0, 0, 0);
 
     pub fn create(x: f32, y: f32, z: f32) Vec3 {
         return Vec3{
-            .data = [_]f32{
-                x, y, z,
-            },
+            .x = x,
+            .y = y,
+            .z = z,
         };
     }
 
     pub fn add(a: Vec3, b: Vec3) Vec3 {
-        return Vec3{
-            .data = [_]f32{
-                a.data[0] + b.data[0],
-                a.data[1] + b.data[1],
-                a.data[2] + b.data[2],
-            },
-        };
+        return Vec3.create(
+            a.x + b.x,
+            a.y + b.y,
+            a.z + b.z,
+        );
     }
 
     test "add" {
@@ -41,13 +41,11 @@ pub const Vec3 = struct {
     }
 
     pub fn substract(a: Vec3, b: Vec3) Vec3 {
-        return Vec3{
-            .data = [_]f32{
-                a.data[0] - b.data[0],
-                a.data[1] - b.data[1],
-                a.data[2] - b.data[2],
-            },
-        };
+        return Vec3.create(
+            a.x - b.x,
+            a.y - b.y,
+            a.z - b.z,
+        );
     }
 
     test "substract" {
@@ -60,13 +58,11 @@ pub const Vec3 = struct {
     }
 
     pub fn multiply(a: Vec3, b: Vec3) Vec3 {
-        return Vec3{
-            .data = [_]f32{
-                a.data[0] * b.data[0],
-                a.data[1] * b.data[1],
-                a.data[2] * b.data[2],
-            },
-        };
+        return Vec3.create(
+            a.x * b.x,
+            a.y * b.y,
+            a.z * b.z,
+        );
     }
 
     test "multiply" {
@@ -79,13 +75,11 @@ pub const Vec3 = struct {
     }
 
     pub fn divide(a: Vec3, b: Vec3) Vec3 {
-        return Vec3{
-            .data = [_]f32{
-                a.data[0] / b.data[0],
-                a.data[1] / b.data[1],
-                a.data[2] / b.data[2],
-            },
-        };
+        return Vec3.create(
+            a.x / b.x,
+            a.y / b.y,
+            a.z / b.z,
+        );
     }
 
     test "divide" {
@@ -98,13 +92,11 @@ pub const Vec3 = struct {
     }
 
     pub fn ceil(a: Vec3) Vec3 {
-        return Vec3{
-            .data = [_]f32{
-                @ceil(a.data[0]),
-                @ceil(a.data[1]),
-                @ceil(a.data[2]),
-            },
-        };
+        return Vec3.create(
+            @ceil(a.x),
+            @ceil(a.y),
+            @ceil(a.z),
+        );
     }
 
     test "ceil" {
@@ -116,13 +108,11 @@ pub const Vec3 = struct {
     }
 
     pub fn floor(a: Vec3) Vec3 {
-        return Vec3{
-            .data = [_]f32{
-                @floor(a.data[0]),
-                @floor(a.data[1]),
-                @floor(a.data[2]),
-            },
-        };
+        return Vec3.create(
+            @floor(a.x),
+            @floor(a.y),
+            @floor(a.z),
+        );
     }
 
     test "floor" {
@@ -134,13 +124,11 @@ pub const Vec3 = struct {
     }
 
     pub fn min(a: Vec3, b: Vec3) Vec3 {
-        return Vec3{
-            .data = [_]f32{
-                math.min(a.data[0], b.data[0]),
-                math.min(a.data[1], b.data[1]),
-                math.min(a.data[2], b.data[2]),
-            },
-        };
+        return Vec3.create(
+            math.min(a.x, b.x),
+            math.min(a.y, b.y),
+            math.min(a.z, b.z),
+        );
     }
 
     test "min" {
@@ -153,13 +141,11 @@ pub const Vec3 = struct {
     }
 
     pub fn max(a: Vec3, b: Vec3) Vec3 {
-        return Vec3{
-            .data = [_]f32{
-                math.max(a.data[0], b.data[0]),
-                math.max(a.data[1], b.data[1]),
-                math.max(a.data[2], b.data[2]),
-            },
-        };
+        return Vec3.create(
+            math.max(a.x, b.x),
+            math.max(a.y, b.y),
+            math.max(a.z, b.z),
+        );
     }
 
     test "max" {
@@ -172,13 +158,11 @@ pub const Vec3 = struct {
     }
 
     pub fn round(a: Vec3) Vec3 {
-        return Vec3{
-            .data = [_]f32{
-                @round(a.data[0]),
-                @round(a.data[1]),
-                @round(a.data[2]),
-            },
-        };
+        return Vec3.create(
+            @round(a.x),
+            @round(a.y),
+            @round(a.z),
+        );
     }
 
     test "round" {
@@ -190,13 +174,11 @@ pub const Vec3 = struct {
     }
 
     pub fn scale(a: Vec3, s: f32) Vec3 {
-        return Vec3{
-            .data = [_]f32{
-                a.data[0] * s,
-                a.data[1] * s,
-                a.data[2] * s,
-            },
-        };
+        return Vec3.create(
+            a.x * s,
+            a.y * s,
+            a.z * s,
+        );
     }
 
     test "scale" {
@@ -208,13 +190,11 @@ pub const Vec3 = struct {
     }
 
     pub fn scaleAndAdd(a: Vec3, b: Vec3, s: f32) Vec3 {
-        return Vec3{
-            .data = [_]f32{
-                a.data[0] + (b.data[0] * s),
-                a.data[1] + (b.data[1] * s),
-                a.data[2] + (b.data[2] * s),
-            },
-        };
+        return Vec3.create(
+            a.x + (b.x * s),
+            a.y + (b.y * s),
+            a.z + (b.z * s),
+        );
     }
 
     test "scaleAndAdd" {
@@ -230,9 +210,9 @@ pub const Vec3 = struct {
         // TODO: use std.math.hypot
         return @sqrt(Vec3.squaredDistance(a, b));
 
-        //const x = a.data[0] - b.data[0];
-        //const y = a.data[1] - b.data[1];
-        //const z = a.data[2] - b.data[2];
+        //const x = a.x - b.x;
+        //const y = a.y - b.y;
+        //const z = a.z - b.z;
 
         //return math.hypot(f32, x, y, z);
     }
@@ -247,9 +227,9 @@ pub const Vec3 = struct {
     }
 
     pub fn squaredDistance(a: Vec3, b: Vec3) f32 {
-        const x = a.data[0] - b.data[0];
-        const y = a.data[1] - b.data[1];
-        const z = a.data[2] - b.data[2];
+        const x = a.x - b.x;
+        const y = a.y - b.y;
+        const z = a.z - b.z;
         return x * x + y * y + z * z;
     }
 
@@ -266,9 +246,9 @@ pub const Vec3 = struct {
         // TODO: use std.math.hypot
         return @sqrt(a.squaredLength());
 
-        //const x = a.data[0];
-        //const y = a.data[1];
-        //const z = a.data[2];
+        //const x = a.x;
+        //const y = a.y;
+        //const z = a.z;
         //return math.hypot(f32, x, y) + math.hypot(f32, y, z);
     }
 
@@ -281,9 +261,9 @@ pub const Vec3 = struct {
     }
 
     pub fn squaredLength(a: Vec3) f32 {
-        const x = a.data[0];
-        const y = a.data[1];
-        const z = a.data[2];
+        const x = a.x;
+        const y = a.y;
+        const z = a.z;
         return x * x + y * y + z * z;
     }
 
@@ -296,16 +276,14 @@ pub const Vec3 = struct {
     }
 
     pub fn negate(a: Vec3) Vec3 {
-        const x = a.data[0];
-        const y = a.data[1];
-        const z = a.data[2];
-        return Vec3{
-            .data = [_]f32{
-                -x,
-                -y,
-                -z,
-            },
-        };
+        const x = a.x;
+        const y = a.y;
+        const z = a.z;
+        return Vec3.create(
+            -x,
+            -y,
+            -z,
+        );
     }
 
     test "negate" {
@@ -317,34 +295,30 @@ pub const Vec3 = struct {
     }
 
     pub fn inverse(a: Vec3) Vec3 {
-        const x = 1.0 / a.data[0];
-        const y = 1.0 / a.data[1];
-        const z = 1.0 / a.data[2];
-        return Vec3{
-            .data = [_]f32{
-                -x,
-                -y,
-                -z,
-            },
-        };
+        const x = 1.0 / a.x;
+        const y = 1.0 / a.y;
+        const z = 1.0 / a.z;
+        return Vec3.create(
+            -x,
+            -y,
+            -z,
+        );
     }
 
     pub fn normalize(a: Vec3) Vec3 {
-        const x = a.data[0];
-        const y = a.data[1];
-        const z = a.data[2];
+        const x = a.x;
+        const y = a.y;
+        const z = a.z;
 
         var l = x * x + y * y + z * z;
         if (l > 0)
             l = 1 / @sqrt(l);
 
-        return Vec3{
-            .data = [_]f32{
-                x * l,
-                y * l,
-                z * l,
-            },
-        };
+        return Vec3.create(
+            x * l,
+            y * l,
+            z * l,
+        );
     }
 
     test "normalize" {
@@ -356,9 +330,9 @@ pub const Vec3 = struct {
     }
 
     pub fn dot(a: Vec3, b: Vec3) f32 {
-        return a.data[0] * b.data[0] //
-            + a.data[1] * b.data[1] //
-            + a.data[2] * b.data[2];
+        return a.x * b.x //
+            + a.y * b.y //
+            + a.z * b.z;
     }
 
     test "dot" {
@@ -371,21 +345,19 @@ pub const Vec3 = struct {
     }
 
     pub fn cross(a: Vec3, b: Vec3) Vec3 {
-        const ax = a.data[0];
-        const ay = a.data[1];
-        const az = a.data[2];
+        const ax = a.x;
+        const ay = a.y;
+        const az = a.z;
 
-        const bx = b.data[0];
-        const by = b.data[1];
-        const bz = b.data[2];
+        const bx = b.x;
+        const by = b.y;
+        const bz = b.z;
 
-        return Vec3{
-            .data = [_]f32{
-                ay * bz - az * by,
-                az * bx - ax * bz,
-                ax * by - ay * bx,
-            },
-        };
+        return Vec3.create(
+            ay * bz - az * by,
+            az * bx - ax * bz,
+            ax * by - ay * bx,
+        );
     }
 
     test "cross" {
@@ -398,21 +370,11 @@ pub const Vec3 = struct {
     }
 
     pub fn lerp(a: Vec3, b: Vec3, t: f32) Vec3 {
-        const ax = a.data[0];
-        const ay = a.data[1];
-        const az = a.data[2];
-
-        const bx = b.data[0];
-        const by = b.data[1];
-        const bz = b.data[2];
-
-        return Vec3{
-            .data = [_]f32{
-                ax + t * (bx - ax),
-                ay + t * (by - ay),
-                az + t * (bz - az),
-            },
-        };
+        return Vec3.create(
+            a.x + t * (b.x - a.x),
+            a.y + t * (b.y - a.y),
+            a.z + t * (b.z - a.z),
+        );
     }
 
     test "lerp" {
@@ -431,13 +393,11 @@ pub const Vec3 = struct {
         const factor3 = factorTimes2 * (t - 1);
         const factor4 = factorTimes2 * (3 - 2 * t);
 
-        return Vec3{
-            .data = [_]f32{
-                a.data[0] * factor1 + b.data[0] * factor2 + c.data[0] * factor3 + d.data[0] * factor4,
-                a.data[1] * factor1 + b.data[1] * factor2 + c.data[1] * factor3 + d.data[1] * factor4,
-                a.data[2] * factor1 + b.data[2] * factor2 + c.data[2] * factor3 + d.data[2] * factor4,
-            },
-        };
+        return Vec3.create(
+            a.x * factor1 + b.x * factor2 + c.x * factor3 + d.x * factor4,
+            a.y * factor1 + b.y * factor2 + c.y * factor3 + d.y * factor4,
+            a.z * factor1 + b.z * factor2 + c.z * factor3 + d.z * factor4,
+        );
     }
 
     pub fn bezier(a: Vec3, b: Vec3, c: Vec3, d: Vec3, t: f32) Vec3 {
@@ -449,27 +409,19 @@ pub const Vec3 = struct {
         const factor3 = 3 * factorTimes2 * inverseFactor;
         const factor4 = factorTimes2 * t;
 
-        return Vec3{
-            .data = [_]f32{
-                a.data[0] * factor1 + b.data[0] * factor2 + c.data[0] * factor3 + d.data[0] * factor4,
-                a.data[1] * factor1 + b.data[1] * factor2 + c.data[1] * factor3 + d.data[1] * factor4,
-                a.data[2] * factor1 + b.data[2] * factor2 + c.data[2] * factor3 + d.data[2] * factor4,
-            },
-        };
+        return Vec3.create(
+            a.x * factor1 + b.x * factor2 + c.x * factor3 + d.x * factor4,
+            a.y * factor1 + b.y * factor2 + c.y * factor3 + d.y * factor4,
+            a.z * factor1 + b.z * factor2 + c.z * factor3 + d.z * factor4,
+        );
     }
 
     pub fn transformMat3(a: Vec3, m: Mat3) Vec3 {
-        const x = a.data[0];
-        const y = a.data[1];
-        const z = a.data[2];
-
-        return Vec3{
-            .data = [_]f32{
-                x * m.data[0][0] + y * m.data[1][0] + z * m.data[2][0],
-                x * m.data[0][1] + y * m.data[1][1] + z * m.data[2][1],
-                x * m.data[0][2] + y * m.data[1][2] + z * m.data[2][2],
-            },
-        };
+        return Vec3.create(
+            a.x * m.data[0][0] + a.y * m.data[1][0] + a.z * m.data[2][0],
+            a.x * m.data[0][1] + a.y * m.data[1][1] + a.z * m.data[2][1],
+            a.x * m.data[0][2] + a.y * m.data[1][2] + a.z * m.data[2][2],
+        );
     }
 
     pub fn transformQuat(a: Vec3, q: Quat) Vec3 {
@@ -477,9 +429,9 @@ pub const Vec3 = struct {
         const qy = q.data[1];
         const qz = q.data[2];
         const qw = q.data[3];
-        const x = a.data[0];
-        const y = a.data[1];
-        const z = a.data[2];
+        const x = a.x;
+        const y = a.y;
+        const z = a.z;
 
         // var uv = vec3.cross([], qvec, a);
         var uvx = qy * z - qz * y;
@@ -503,30 +455,26 @@ pub const Vec3 = struct {
         uuvz *= 2;
 
         // return vec3.add(out, a, vec3.add(out, uv, uuv));
-        return Vec3{
-            .data = [_]f32{
-                x + uvx + uuvx,
-                y + uvy + uuvy,
-                z + uvz + uuvz,
-            },
-        };
+        return Vec3.create(
+            x + uvx + uuvx,
+            y + uvy + uuvy,
+            z + uvz + uuvz,
+        );
     }
 
     pub fn transformMat4(a: Vec3, m: Mat4) Vec3 {
-        const x = a.data[0];
-        const y = a.data[1];
-        const z = a.data[2];
+        const x = a.x;
+        const y = a.y;
+        const z = a.z;
 
         var w = m.data[0][3] * x + m.data[1][3] * y + m.data[2][3] * z + m.data[3][3];
         if (w == 0.0) w = 1.0;
 
-        return Vec3{
-            .data = [_]f32{
-                (m.data[0][0] * x + m.data[1][0] * y + m.data[2][0] * z + m.data[3][0]) / w,
-                (m.data[0][1] * x + m.data[1][1] * y + m.data[2][1] * z + m.data[3][1]) / w,
-                (m.data[0][2] * x + m.data[1][2] * y + m.data[2][2] * z + m.data[3][2]) / w,
-            },
-        };
+        return Vec3.create(
+            (m.data[0][0] * x + m.data[1][0] * y + m.data[2][0] * z + m.data[3][0]) / w,
+            (m.data[0][1] * x + m.data[1][1] * y + m.data[2][1] * z + m.data[3][1]) / w,
+            (m.data[0][2] * x + m.data[1][2] * y + m.data[2][2] * z + m.data[3][2]) / w,
+        );
     }
 
     test "transformMat3 identity" {
@@ -567,9 +515,9 @@ pub const Vec3 = struct {
 
     pub fn rotateX(a: Vec3, origin: Vec3, rad: f32) Vec3 {
         //Translate point to the origin
-        const px = a.data[0] - origin.data[0];
-        const py = a.data[1] - origin.data[1];
-        const pz = a.data[2] - origin.data[2];
+        const px = a.x - origin.x;
+        const py = a.y - origin.y;
+        const pz = a.z - origin.z;
 
         const cos = @cos(rad);
         const sin = @sin(rad);
@@ -581,13 +529,11 @@ pub const Vec3 = struct {
 
         //translate to correct position
 
-        return Vec3{
-            .data = [_]f32{
-                rx + origin.data[0],
-                ry + origin.data[1],
-                rz + origin.data[2],
-            },
-        };
+        return Vec3.create(
+            rx + origin.x,
+            ry + origin.y,
+            rz + origin.z,
+        );
     }
 
     test "rotateX around world origin [0, 0, 0]" {
@@ -607,9 +553,9 @@ pub const Vec3 = struct {
     }
 
     pub fn rotateY(a: Vec3, origin: Vec3, rad: f32) Vec3 {
-        const px = a.data[0] - origin.data[0];
-        const py = a.data[1] - origin.data[1];
-        const pz = a.data[2] - origin.data[2];
+        const px = a.x - origin.x;
+        const py = a.y - origin.y;
+        const pz = a.z - origin.z;
 
         const cos = @cos(rad);
         const sin = @sin(rad);
@@ -618,13 +564,11 @@ pub const Vec3 = struct {
         const ry = py;
         const rz = pz * cos - px * sin;
 
-        return Vec3{
-            .data = [_]f32{
-                rx + origin.data[0],
-                ry + origin.data[1],
-                rz + origin.data[2],
-            },
-        };
+        return Vec3.create(
+            rx + origin.x,
+            ry + origin.y,
+            rz + origin.z,
+        );
     }
 
     test "rotateY around world origin [0, 0, 0]" {
@@ -645,9 +589,9 @@ pub const Vec3 = struct {
 
     pub fn rotateZ(a: Vec3, origin: Vec3, rad: f32) Vec3 {
         //Translate point to the origin
-        const px = a.data[0] - origin.data[0];
-        const py = a.data[1] - origin.data[1];
-        const pz = a.data[2] - origin.data[2];
+        const px = a.x - origin.x;
+        const py = a.y - origin.y;
+        const pz = a.z - origin.z;
 
         const cos = @cos(rad);
         const sin = @sin(rad);
@@ -659,13 +603,11 @@ pub const Vec3 = struct {
 
         //translate to correct position
 
-        return Vec3{
-            .data = [_]f32{
-                rx + origin.data[0],
-                ry + origin.data[1],
-                rz + origin.data[2],
-            },
-        };
+        return Vec3.create(
+            rx + origin.x,
+            ry + origin.y,
+            rz + origin.z,
+        );
     }
 
     test "rotateZ around world origin [0, 0, 0]" {
@@ -708,11 +650,11 @@ pub const Vec3 = struct {
     }
 
     pub fn equals(a: Vec3, b: Vec3) bool {
-        return f_eq(a.data[0], b.data[0]) and f_eq(a.data[1], b.data[1]) and f_eq(a.data[2], b.data[2]);
+        return f_eq(a.x, b.x) and f_eq(a.y, b.y) and f_eq(a.z, b.z);
     }
 
     pub fn equalsExact(a: Vec3, b: Vec3) bool {
-        return a.data[0] == b.data[0] and a.data[1] == b.data[1] and a.data[2] == b.data[2];
+        return a.x == b.x and a.y == b.y and a.z == b.z;
     }
 
     pub fn format(
@@ -724,7 +666,7 @@ pub const Vec3 = struct {
         return std.fmt.format(
             writer,
             "Vec3({d:.3}, {d:.3}, {d:.3})",
-            .{ value.data[0], value.data[1], value.data[2] },
+            .{ value.x, value.y, value.z },
         );
     }
 

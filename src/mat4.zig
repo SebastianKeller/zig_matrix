@@ -6,15 +6,15 @@ const Vec3 = @import("vec3.zig").Vec3;
 
 /// A Mat4 identity matrix
 pub const mat4_identity = Mat4{
-    .data = [_][4]f32{
-        [_]f32{ 1, 0, 0, 0 },
-        [_]f32{ 0, 1, 0, 0 },
-        [_]f32{ 0, 0, 1, 0 },
-        [_]f32{ 0, 0, 0, 1 },
+    .data = .{
+        .{ 1, 0, 0, 0 },
+        .{ 0, 1, 0, 0 },
+        .{ 0, 0, 1, 0 },
+        .{ 0, 0, 0, 1 },
     },
 };
 
-pub const Mat4 = struct {
+pub const Mat4 =  struct {
     data: [4][4]f32,
 
     pub const identity = mat4_identity;
@@ -38,11 +38,11 @@ pub const Mat4 = struct {
         m33: f32,
     ) Mat4 {
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{ m00, m01, m02, m03 },
-                [_]f32{ m10, m11, m12, m13 },
-                [_]f32{ m20, m21, m22, m23 },
-                [_]f32{ m30, m31, m32, m33 },
+            .data = .{
+                .{ m00, m01, m02, m03 },
+                .{ m10, m11, m12, m13 },
+                .{ m20, m21, m22, m23 },
+                .{ m30, m31, m32, m33 },
             },
         };
     }
@@ -54,11 +54,11 @@ pub const Mat4 = struct {
         //  8  9 10 11
         // 12 13 14 15
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{ m.data[0][0], m.data[1][0], m.data[2][0], m.data[3][0] },
-                [_]f32{ m.data[0][1], m.data[1][1], m.data[2][1], m.data[3][1] },
-                [_]f32{ m.data[0][2], m.data[1][2], m.data[2][2], m.data[3][2] },
-                [_]f32{ m.data[0][3], m.data[1][3], m.data[2][3], m.data[3][3] },
+            .data = .{
+                .{ m.data[0][0], m.data[1][0], m.data[2][0], m.data[3][0] },
+                .{ m.data[0][1], m.data[1][1], m.data[2][1], m.data[3][1] },
+                .{ m.data[0][2], m.data[1][2], m.data[2][2], m.data[3][2] },
+                .{ m.data[0][3], m.data[1][3], m.data[2][3], m.data[3][3] },
             },
         };
     }
@@ -94,27 +94,26 @@ pub const Mat4 = struct {
         det = 1 / det;
 
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
+            .data = .{
+                .{
                     (m.data[1][1] * b11 - m.data[1][2] * b10 + m.data[1][3] * b09) * det,
                     (m.data[0][2] * b10 - m.data[0][1] * b11 - m.data[0][3] * b09) * det,
                     (m.data[3][1] * b05 - m.data[3][2] * b04 + m.data[3][3] * b03) * det,
                     (m.data[2][2] * b04 - m.data[2][1] * b05 - m.data[2][3] * b03) * det,
                 },
-                [_]f32{
+                .{
                     (m.data[1][2] * b08 - m.data[1][0] * b11 - m.data[1][3] * b07) * det,
                     (m.data[0][0] * b11 - m.data[0][2] * b08 + m.data[0][3] * b07) * det,
                     (m.data[3][2] * b02 - m.data[3][0] * b05 - m.data[3][3] * b01) * det,
                     (m.data[2][0] * b05 - m.data[2][2] * b02 + m.data[2][3] * b01) * det,
                 },
-                [_]f32{
+                .{
                     (m.data[1][0] * b10 - m.data[1][1] * b08 + m.data[1][3] * b06) * det,
                     (m.data[0][1] * b08 - m.data[0][0] * b10 - m.data[0][3] * b06) * det,
                     (m.data[3][0] * b04 - m.data[3][1] * b02 + m.data[3][3] * b00) * det,
                     (m.data[2][1] * b02 - m.data[2][0] * b04 - m.data[2][3] * b00) * det,
                 },
-
-                [_]f32{
+                .{
                     (m.data[1][1] * b07 - m.data[1][0] * b09 - m.data[1][2] * b06) * det,
                     (m.data[0][0] * b09 - m.data[0][1] * b07 + m.data[0][2] * b06) * det,
                     (m.data[3][1] * b01 - m.data[3][0] * b03 - m.data[3][2] * b00) * det,
@@ -134,26 +133,26 @@ pub const Mat4 = struct {
     /// Calculates the adjugate
     pub fn adjoint(m: Mat4) Mat4 {
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
+            .data = .{
+                .{
                     (m.data[1][1] * (m.data[2][2] * m.data[3][3] - m.data[2][3] * m.data[3][2]) - m.data[2][1] * (m.data[1][2] * m.data[3][3] - m.data[1][3] * m.data[3][2]) + m.data[3][1] * (m.data[1][2] * m.data[2][3] - m.data[1][3] * m.data[2][2])),
                     -(m.data[0][1] * (m.data[2][2] * m.data[3][3] - m.data[2][3] * m.data[3][2]) - m.data[2][1] * (m.data[0][2] * m.data[3][3] - m.data[0][3] * m.data[3][2]) + m.data[3][1] * (m.data[0][2] * m.data[2][3] - m.data[0][3] * m.data[2][2])),
                     (m.data[0][1] * (m.data[1][2] * m.data[3][3] - m.data[1][3] * m.data[3][2]) - m.data[1][1] * (m.data[0][2] * m.data[3][3] - m.data[0][3] * m.data[3][2]) + m.data[3][1] * (m.data[0][2] * m.data[1][3] - m.data[0][3] * m.data[1][2])),
                     -(m.data[0][1] * (m.data[1][2] * m.data[2][3] - m.data[1][3] * m.data[2][2]) - m.data[1][1] * (m.data[0][2] * m.data[2][3] - m.data[0][3] * m.data[2][2]) + m.data[2][1] * (m.data[0][2] * m.data[1][3] - m.data[0][3] * m.data[1][2])),
                 },
-                [_]f32{
+                .{
                     -(m.data[1][0] * (m.data[2][2] * m.data[3][3] - m.data[2][3] * m.data[3][2]) - m.data[2][0] * (m.data[1][2] * m.data[3][3] - m.data[1][3] * m.data[3][2]) + m.data[3][0] * (m.data[1][2] * m.data[2][3] - m.data[1][3] * m.data[2][2])),
                     (m.data[0][0] * (m.data[2][2] * m.data[3][3] - m.data[2][3] * m.data[3][2]) - m.data[2][0] * (m.data[0][2] * m.data[3][3] - m.data[0][3] * m.data[3][2]) + m.data[3][0] * (m.data[0][2] * m.data[2][3] - m.data[0][3] * m.data[2][2])),
                     -(m.data[0][0] * (m.data[1][2] * m.data[3][3] - m.data[1][3] * m.data[3][2]) - m.data[1][0] * (m.data[0][2] * m.data[3][3] - m.data[0][3] * m.data[3][2]) + m.data[3][0] * (m.data[0][2] * m.data[1][3] - m.data[0][3] * m.data[1][2])),
                     (m.data[0][0] * (m.data[1][2] * m.data[2][3] - m.data[1][3] * m.data[2][2]) - m.data[1][0] * (m.data[0][2] * m.data[2][3] - m.data[0][3] * m.data[2][2]) + m.data[2][0] * (m.data[0][2] * m.data[1][3] - m.data[0][3] * m.data[1][2])),
                 },
-                [_]f32{
+                .{
                     (m.data[1][0] * (m.data[2][1] * m.data[3][3] - m.data[2][3] * m.data[3][1]) - m.data[2][0] * (m.data[1][1] * m.data[3][3] - m.data[1][3] * m.data[3][1]) + m.data[3][0] * (m.data[1][1] * m.data[2][3] - m.data[1][3] * m.data[2][1])),
                     -(m.data[0][0] * (m.data[2][1] * m.data[3][3] - m.data[2][3] * m.data[3][1]) - m.data[2][0] * (m.data[0][1] * m.data[3][3] - m.data[0][3] * m.data[3][1]) + m.data[3][0] * (m.data[0][1] * m.data[2][3] - m.data[0][3] * m.data[2][1])),
                     (m.data[0][0] * (m.data[1][1] * m.data[3][3] - m.data[1][3] * m.data[3][1]) - m.data[1][0] * (m.data[0][1] * m.data[3][3] - m.data[0][3] * m.data[3][1]) + m.data[3][0] * (m.data[0][1] * m.data[1][3] - m.data[0][3] * m.data[1][1])),
                     -(m.data[0][0] * (m.data[1][1] * m.data[2][3] - m.data[1][3] * m.data[2][1]) - m.data[1][0] * (m.data[0][1] * m.data[2][3] - m.data[0][3] * m.data[2][1]) + m.data[2][0] * (m.data[0][1] * m.data[1][3] - m.data[0][3] * m.data[1][1])),
                 },
-                [_]f32{
+                .{
                     -(m.data[1][0] * (m.data[2][1] * m.data[3][2] - m.data[2][2] * m.data[3][1]) - m.data[2][0] * (m.data[1][1] * m.data[3][2] - m.data[1][2] * m.data[3][1]) + m.data[3][0] * (m.data[1][1] * m.data[2][2] - m.data[1][2] * m.data[2][1])),
                     (m.data[0][0] * (m.data[2][1] * m.data[3][2] - m.data[2][2] * m.data[3][1]) - m.data[2][0] * (m.data[0][1] * m.data[3][2] - m.data[0][2] * m.data[3][1]) + m.data[3][0] * (m.data[0][1] * m.data[2][2] - m.data[0][2] * m.data[2][1])),
                     -(m.data[0][0] * (m.data[1][1] * m.data[3][2] - m.data[1][2] * m.data[3][1]) - m.data[1][0] * (m.data[0][1] * m.data[3][2] - m.data[0][2] * m.data[3][1]) + m.data[3][0] * (m.data[0][1] * m.data[1][2] - m.data[0][2] * m.data[1][1])),
@@ -199,27 +198,27 @@ pub const Mat4 = struct {
     /// Adds two mat4's
     pub fn add(a: Mat4, b: Mat4) Mat4 {
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
+            .data = .{
+                .{
                     a.data[0][0] + b.data[0][0],
                     a.data[0][1] + b.data[0][1],
                     a.data[0][2] + b.data[0][2],
                     a.data[0][3] + b.data[0][3],
                 },
 
-                [_]f32{
+                .{
                     a.data[1][0] + b.data[1][0],
                     a.data[1][1] + b.data[1][1],
                     a.data[1][2] + b.data[1][2],
                     a.data[1][3] + b.data[1][3],
                 },
-                [_]f32{
+                .{
                     a.data[2][0] + b.data[2][0],
                     a.data[2][1] + b.data[2][1],
                     a.data[2][2] + b.data[2][2],
                     a.data[2][3] + b.data[2][3],
                 },
-                [_]f32{
+                .{
                     a.data[3][0] + b.data[3][0],
                     a.data[3][1] + b.data[3][1],
                     a.data[3][2] + b.data[3][2],
@@ -240,27 +239,27 @@ pub const Mat4 = struct {
     /// Subtracts matrix b from matrix a
     pub fn subtract(a: Mat4, b: Mat4) Mat4 {
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
+            .data = .{
+                .{
                     a.data[0][0] - b.data[0][0],
                     a.data[0][1] - b.data[0][1],
                     a.data[0][2] - b.data[0][2],
                     a.data[0][3] - b.data[0][3],
                 },
 
-                [_]f32{
+                .{
                     a.data[1][0] - b.data[1][0],
                     a.data[1][1] - b.data[1][1],
                     a.data[1][2] - b.data[1][2],
                     a.data[1][3] - b.data[1][3],
                 },
-                [_]f32{
+                .{
                     a.data[2][0] - b.data[2][0],
                     a.data[2][1] - b.data[2][1],
                     a.data[2][2] - b.data[2][2],
                     a.data[2][3] - b.data[2][3],
                 },
-                [_]f32{
+                .{
                     a.data[3][0] - b.data[3][0],
                     a.data[3][1] - b.data[3][1],
                     a.data[3][2] - b.data[3][2],
@@ -282,27 +281,27 @@ pub const Mat4 = struct {
     ///Multiplies two Mat4
     pub fn multiply(a: Mat4, b: Mat4) Mat4 {
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
+            .data = .{
+                .{
                     b.data[0][0] * a.data[0][0] + b.data[0][1] * a.data[1][0] + b.data[0][2] * a.data[2][0] + b.data[0][3] * a.data[3][0],
                     b.data[0][0] * a.data[0][1] + b.data[0][1] * a.data[1][1] + b.data[0][2] * a.data[2][1] + b.data[0][3] * a.data[3][1],
                     b.data[0][0] * a.data[0][2] + b.data[0][1] * a.data[1][2] + b.data[0][2] * a.data[2][2] + b.data[0][3] * a.data[3][2],
                     b.data[0][0] * a.data[0][3] + b.data[0][1] * a.data[1][3] + b.data[0][2] * a.data[2][3] + b.data[0][3] * a.data[3][3],
                 },
 
-                [_]f32{
+                .{
                     b.data[1][0] * a.data[0][0] + b.data[1][1] * a.data[1][0] + b.data[1][2] * a.data[2][0] + b.data[1][3] * a.data[3][0],
                     b.data[1][0] * a.data[0][1] + b.data[1][1] * a.data[1][1] + b.data[1][2] * a.data[2][1] + b.data[1][3] * a.data[3][1],
                     b.data[1][0] * a.data[0][2] + b.data[1][1] * a.data[1][2] + b.data[1][2] * a.data[2][2] + b.data[1][3] * a.data[3][2],
                     b.data[1][0] * a.data[0][3] + b.data[1][1] * a.data[1][3] + b.data[1][2] * a.data[2][3] + b.data[1][3] * a.data[3][3],
                 },
-                [_]f32{
+                .{
                     b.data[2][0] * a.data[0][0] + b.data[2][1] * a.data[1][0] + b.data[2][2] * a.data[2][0] + b.data[2][3] * a.data[3][0],
                     b.data[2][0] * a.data[0][1] + b.data[2][1] * a.data[1][1] + b.data[2][2] * a.data[2][1] + b.data[2][3] * a.data[3][1],
                     b.data[2][0] * a.data[0][2] + b.data[2][1] * a.data[1][2] + b.data[2][2] * a.data[2][2] + b.data[2][3] * a.data[3][2],
                     b.data[2][0] * a.data[0][3] + b.data[2][1] * a.data[1][3] + b.data[2][2] * a.data[2][3] + b.data[2][3] * a.data[3][3],
                 },
-                [_]f32{
+                .{
                     b.data[3][0] * a.data[0][0] + b.data[3][1] * a.data[1][0] + b.data[3][2] * a.data[2][0] + b.data[3][3] * a.data[3][0],
                     b.data[3][0] * a.data[0][1] + b.data[3][1] * a.data[1][1] + b.data[3][2] * a.data[2][1] + b.data[3][3] * a.data[3][1],
                     b.data[3][0] * a.data[0][2] + b.data[3][1] * a.data[1][2] + b.data[3][2] * a.data[2][2] + b.data[3][3] * a.data[3][2],
@@ -323,27 +322,27 @@ pub const Mat4 = struct {
 
     pub fn multiplyScalar(a: Mat4, s: f32) Mat4 {
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
+            .data = .{
+                .{
                     a.data[0][0] * s,
                     a.data[0][1] * s,
                     a.data[0][2] * s,
                     a.data[0][3] * s,
                 },
 
-                [_]f32{
+                .{
                     a.data[1][0] * s,
                     a.data[1][1] * s,
                     a.data[1][2] * s,
                     a.data[1][3] * s,
                 },
-                [_]f32{
+                .{
                     a.data[2][0] * s,
                     a.data[2][1] * s,
                     a.data[2][2] * s,
                     a.data[2][3] * s,
                 },
-                [_]f32{
+                .{
                     a.data[3][0] * s,
                     a.data[3][1] * s,
                     a.data[3][2] * s,
@@ -362,27 +361,27 @@ pub const Mat4 = struct {
 
     pub fn multiplyScalarAndAdd(a: Mat4, b: Mat4, s: f32) Mat4 {
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
+            .data = .{
+                .{
                     @mulAdd(f32, b.data[0][0], s, a.data[0][0]),
                     @mulAdd(f32, b.data[0][1], s, a.data[0][1]),
                     @mulAdd(f32, b.data[0][2], s, a.data[0][2]),
                     @mulAdd(f32, b.data[0][3], s, a.data[0][3]),
                 },
 
-                [_]f32{
+                .{
                     @mulAdd(f32, b.data[1][0], s, a.data[1][0]),
                     @mulAdd(f32, b.data[1][1], s, a.data[1][1]),
                     @mulAdd(f32, b.data[1][2], s, a.data[1][2]),
                     @mulAdd(f32, b.data[1][3], s, a.data[1][3]),
                 },
-                [_]f32{
+                .{
                     @mulAdd(f32, b.data[2][0], s, a.data[2][0]),
                     @mulAdd(f32, b.data[2][1], s, a.data[2][1]),
                     @mulAdd(f32, b.data[2][2], s, a.data[2][2]),
                     @mulAdd(f32, b.data[2][3], s, a.data[2][3]),
                 },
-                [_]f32{
+                .{
                     @mulAdd(f32, b.data[3][0], s, a.data[3][0]),
                     @mulAdd(f32, b.data[3][1], s, a.data[3][1]),
                     @mulAdd(f32, b.data[3][2], s, a.data[3][2]),
@@ -395,37 +394,33 @@ pub const Mat4 = struct {
     test "multiplyScalarAndAdd" {}
 
     /// Translate a mat4 by the given vector
-    pub fn translate(a: Mat4, b: Vec3) Mat4 {
-        const x = b.data[0];
-        const y = b.data[1];
-        const z = b.data[2];
-
+    pub fn translate(a: Mat4, v: Vec3) Mat4 {
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
+            .data = .{
+                .{
                     a.data[0][0],
                     a.data[0][1],
                     a.data[0][2],
                     a.data[0][3],
                 },
-                [_]f32{
+                .{
                     a.data[1][0],
                     a.data[1][1],
                     a.data[1][2],
                     a.data[1][3],
                 },
-                [_]f32{
+                .{
                     a.data[2][0],
                     a.data[2][1],
                     a.data[2][2],
                     a.data[2][3],
                 },
 
-                [_]f32{
-                    x * a.data[0][0] + y * a.data[1][0] + a.data[2][0] * z + a.data[3][0],
-                    x * a.data[0][1] + y * a.data[1][1] + a.data[2][1] * z + a.data[3][1],
-                    x * a.data[0][2] + y * a.data[1][2] + a.data[2][2] * z + a.data[3][2],
-                    x * a.data[0][3] + y * a.data[1][3] + a.data[2][3] * z + a.data[3][3],
+                .{
+                    v.x * a.data[0][0] + v.y * a.data[1][0] + a.data[2][0] * v.z + a.data[3][0],
+                    v.x * a.data[0][1] + v.y * a.data[1][1] + a.data[2][1] * v.z + a.data[3][1],
+                    v.x * a.data[0][2] + v.y * a.data[1][2] + a.data[2][2] * v.z + a.data[3][2],
+                    v.x * a.data[0][3] + v.y * a.data[1][3] + a.data[2][3] * v.z + a.data[3][3],
                 },
             },
         };
@@ -440,9 +435,9 @@ pub const Mat4 = struct {
 
     ///Rotates a mat4 by the given angle around the given axis
     pub fn rotate(a: Mat4, rad: f32, axis: Vec3) ?Mat4 {
-        var x = axis.data[0];
-        var y = axis.data[1];
-        var z = axis.data[2];
+        var x = axis.x;
+        var y = axis.y;
+        var z = axis.z;
 
         var l = @sqrt(x * x + y * y + z * z); //len
         if (l < utils.epsilon) return null;
@@ -468,26 +463,26 @@ pub const Mat4 = struct {
         const b22 = z * z * t + c;
 
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
+            .data = .{
+                .{
                     a.data[0][0] * b00 + a.data[1][0] * b01 + a.data[2][0] * b02,
                     a.data[0][1] * b00 + a.data[1][1] * b01 + a.data[2][1] * b02,
                     a.data[0][2] * b00 + a.data[1][2] * b01 + a.data[2][2] * b02,
                     a.data[0][3] * b00 + a.data[1][3] * b01 + a.data[2][3] * b02,
                 },
-                [_]f32{
+                .{
                     a.data[0][0] * b10 + a.data[1][0] * b11 + a.data[2][0] * b12,
                     a.data[0][1] * b10 + a.data[1][1] * b11 + a.data[2][1] * b12,
                     a.data[0][2] * b10 + a.data[1][2] * b11 + a.data[2][2] * b12,
                     a.data[0][3] * b10 + a.data[1][3] * b11 + a.data[2][3] * b12,
                 },
-                [_]f32{
+                .{
                     a.data[0][0] * b20 + a.data[1][0] * b21 + a.data[2][0] * b22,
                     a.data[0][1] * b20 + a.data[1][1] * b21 + a.data[2][1] * b22,
                     a.data[0][2] * b20 + a.data[1][2] * b21 + a.data[2][2] * b22,
                     a.data[0][3] * b20 + a.data[1][3] * b21 + a.data[2][3] * b22,
                 },
-                [_]f32{
+                .{
                     a.data[3][0],
                     a.data[3][1],
                     a.data[3][2],
@@ -507,32 +502,28 @@ pub const Mat4 = struct {
     }
 
     pub fn scale(a: Mat4, v: Vec3) Mat4 {
-        const x = v.data[0];
-        const y = v.data[1];
-        const z = v.data[2];
-
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
-                    x * a.data[0][0],
-                    x * a.data[0][1],
-                    x * a.data[0][2],
-                    x * a.data[0][3],
+            .data = .{
+                .{
+                    v.x * a.data[0][0],
+                    v.x * a.data[0][1],
+                    v.x * a.data[0][2],
+                    v.x * a.data[0][3],
                 },
 
-                [_]f32{
-                    y * a.data[1][0],
-                    y * a.data[1][1],
-                    y * a.data[1][2],
-                    y * a.data[1][3],
+                .{
+                    v.y * a.data[1][0],
+                    v.y * a.data[1][1],
+                    v.y * a.data[1][2],
+                    v.y * a.data[1][3],
                 },
-                [_]f32{
-                    z * a.data[2][0],
-                    z * a.data[2][1],
-                    z * a.data[2][2],
-                    z * a.data[2][3],
+                .{
+                    v.z * a.data[2][0],
+                    v.z * a.data[2][1],
+                    v.z * a.data[2][2],
+                    v.z * a.data[2][3],
                 },
-                [_]f32{
+                .{
                     a.data[3][0],
                     a.data[3][1],
                     a.data[3][2],
@@ -551,34 +542,30 @@ pub const Mat4 = struct {
 
     ///Creates a matrix from a vector translation
     pub fn fromTranslation(v: Vec3) Mat4 {
-        const x = v.data[0];
-        const y = v.data[1];
-        const z = v.data[1];
-
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
+            .data = .{
+                .{
                     1, 0, 0, 0,
                 },
 
-                [_]f32{
+                .{
                     0, 1, 0, 0,
                 },
 
-                [_]f32{
+                .{
                     0, 0, 1, 0,
                 },
-                [_]f32{
-                    x, y, z, 1,
+                .{
+                    v.x, v.y, v.z, 1,
                 },
             },
         };
     }
 
     pub fn fromRotation(rad: f32, axis: Vec3) ?Mat4 {
-        var x = axis.data[0];
-        var y = axis.data[1];
-        var z = axis.data[2];
+        var x = axis.x;
+        var y = axis.y;
+        var z = axis.z;
 
         var l = @sqrt(x * x + y * y + z * z);
         if (l < utils.epsilon) return null;
@@ -593,27 +580,27 @@ pub const Mat4 = struct {
         const t = 1 - c;
 
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
+            .data = .{
+                .{
                     x * x * t + c,
                     y * x * t + z * s,
                     z * x * t - y * s,
                     0,
                 },
 
-                [_]f32{
+                .{
                     x * y * t - z * s,
                     y * y * t + c,
                     z * y * t + x * s,
                     0,
                 },
-                [_]f32{
+                .{
                     x * z * t + y * s,
                     y * z * t - x * s,
                     z * z * t + c,
                     0,
                 },
-                [_]f32{
+                .{
                     0, 0, 0, 1,
                 },
             },
@@ -625,18 +612,18 @@ pub const Mat4 = struct {
         const c = @cos(rad);
 
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
+            .data = .{
+                .{
                     1, 0, 0, 0,
                 },
 
-                [_]f32{
+                .{
                     0, c, s, 0,
                 },
-                [_]f32{
+                .{
                     0, -s, c, 0,
                 },
-                [_]f32{
+                .{
                     0, 0, 0, 1,
                 },
             },
@@ -649,18 +636,18 @@ pub const Mat4 = struct {
         const c = @cos(rad);
 
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
+            .data = .{
+                .{
                     c, 0, -s, 0,
                 },
 
-                [_]f32{
+                .{
                     0, 1, 0, 0,
                 },
-                [_]f32{
+                .{
                     s, 0, c, 0,
                 },
-                [_]f32{
+                .{
                     0, 0, 0, 1,
                 },
             },
@@ -673,18 +660,18 @@ pub const Mat4 = struct {
         const c = @cos(rad);
 
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
+            .data = .{
+                .{
                     c, s, 0, 0,
                 },
 
-                [_]f32{
+                .{
                     -s, c, 0, 0,
                 },
-                [_]f32{
+                .{
                     0, 0, 1, 0,
                 },
-                [_]f32{
+                .{
                     0, 0, 0, 1,
                 },
             },
@@ -694,19 +681,19 @@ pub const Mat4 = struct {
     /// Creates a matrix from a vector scaling
     pub fn fromScaling(v: Vec3) Mat4 {
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
-                    v.data[0], 0, 0, 0,
+            .data = .{
+                .{
+                    v.x, 0, 0, 0,
                 },
 
-                [_]f32{
-                    0, v.data[1], 0, 0,
+                .{
+                    0, v.y, 0, 0,
                 },
-                [_]f32{
-                    0, 0, v.data[2], 0,
+                .{
+                    0, 0, v.z, 0,
                 },
 
-                [_]f32{
+                .{
                     0, 0, 0, 1,
                 },
             },
@@ -771,26 +758,26 @@ pub const Mat4 = struct {
         const nf = 1 / (near - far);
 
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
+            .data = .{
+                .{
                     (near * 2) * rl,
                     0,
                     0,
                     0,
                 },
-                [_]f32{
+                .{
                     0,
                     (near * 2) * tb,
                     0,
                     0,
                 },
-                [_]f32{
+                .{
                     (right + left) * rl,
                     (top + bottom) * tb,
                     (far + near) * nf,
                     -1,
                 },
-                [_]f32{
+                .{
                     0,
                     0,
                     (far * near * 2) * nf,
@@ -817,26 +804,26 @@ pub const Mat4 = struct {
         const m32 = if (!math.isInf(far)) ((2 * far * near) * nf) else (-2.0 * near);
 
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
+            .data = .{
+                .{
                     fasp,
                     0,
                     0,
                     0,
                 },
-                [_]f32{
+                .{
                     0,
                     f,
                     0,
                     0,
                 },
-                [_]f32{
+                .{
                     0,
                     0,
                     m22,
                     -1,
                 },
-                [_]f32{
+                .{
                     0,
                     0,
                     m32,
@@ -871,26 +858,26 @@ pub const Mat4 = struct {
         const nf = 1 / (near - far);
 
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
+            .data = .{
+                .{
                     -2 * lr,
                     0,
                     0,
                     0,
                 },
-                [_]f32{
+                .{
                     0,
                     -2 * bt,
                     0,
                     0,
                 },
-                [_]f32{
+                .{
                     0,
                     0,
                     2 * nf,
                     0,
                 },
-                [_]f32{
+                .{
                     (left + right) * lr,
                     (top + bottom) * bt,
                     (far + near) * nf,
@@ -909,17 +896,17 @@ pub const Mat4 = struct {
     /// Generates a look-at matrix with the given eye position, focal point, and up axis.
     /// If you want a matrix that actually makes an object look at another object, you should use targetTo instead.
     pub fn lookat(eye: Vec3, center: Vec3, up: Vec3) Mat4 {
-        const eyex = eye.data[0];
-        const eyey = eye.data[1];
-        const eyez = eye.data[2];
+        const eyex = eye.x;
+        const eyey = eye.y;
+        const eyez = eye.z;
 
-        const upx = up.data[0];
-        const upy = up.data[1];
-        const upz = up.data[2];
+        const upx = up.x;
+        const upy = up.y;
+        const upz = up.z;
 
-        const centerx = center.data[0];
-        const centery = center.data[1];
-        const centerz = center.data[2];
+        const centerx = center.x;
+        const centery = center.y;
+        const centerz = center.z;
 
         if (@fabs(eyex - centerx) < utils.epsilon and
             @fabs(eyey - centery) < utils.epsilon and
@@ -967,17 +954,17 @@ pub const Mat4 = struct {
         }
 
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
+            .data = .{
+                .{
                     x0, y0, z0, 0,
                 },
-                [_]f32{
+                .{
                     x1, y1, z1, 0,
                 },
-                [_]f32{
+                .{
                     x2, y2, z2, 0,
                 },
-                [_]f32{
+                .{
                     -(x0 * eyex + x1 * eyey + x2 * eyez),
                     -(y0 * eyex + y1 * eyey + y2 * eyez),
                     -(z0 * eyex + z1 * eyey + z2 * eyez),
@@ -1008,16 +995,16 @@ pub const Mat4 = struct {
 
     /// Generates a matrix that makes something look at something else.
     pub fn targetTo(eye: Vec3, target: Vec3, up: Vec3) Mat4 {
-        const eyex = eye.data[0];
-        const eyey = eye.data[1];
-        const eyez = eye.data[2];
-        const upx = up.data[0];
-        const upy = up.data[1];
-        const upz = up.data[2];
+        const eyex = eye.x;
+        const eyey = eye.y;
+        const eyez = eye.z;
+        const upx = up.x;
+        const upy = up.y;
+        const upz = up.z;
 
-        var z0 = eyex - target.data[0];
-        var z1 = eyey - target.data[1];
-        var z2 = eyez - target.data[2];
+        var z0 = eyex - target.x;
+        var z1 = eyey - target.y;
+        var z2 = eyez - target.z;
 
         var l = z0 * z0 + z1 * z1 + z2 * z2;
         if (l > 0) {
@@ -1040,20 +1027,20 @@ pub const Mat4 = struct {
         }
 
         return Mat4{
-            .data = [_][4]f32{
-                [_]f32{
+            .data = .{
+                .{
                     x0, x1, x2, 0,
                 },
-                [_]f32{
+                .{
                     z1 * x2 - z2 * x1,
                     z2 * x0 - z0 * x2,
                     z0 * x1 - z1 * x0,
                     0,
                 },
-                [_]f32{
+                .{
                     z0, z1, z2, 0,
                 },
-                [_]f32{
+                .{
                     eyex, eyey, eyez, 1,
                 },
             },

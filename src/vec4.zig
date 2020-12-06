@@ -4,25 +4,27 @@ const math = @import("std").math;
 const f_eq = @import("utils.zig").f_eq;
 const debug = @import("std").debug;
 
-pub const Vec4 = struct {
-    data: [4]f32,
+pub const Vec4 = packed struct {
+    x: f32,
+    y: f32,
+    z: f32,
+    w: f32,
 
     pub fn create(x: f32, y: f32, z: f32, w: f32) Vec4 {
         return Vec4{
-            .data = [_]f32{
-                x, y, z, w,
-            },
+            .x = x,
+            .y = y,
+            .z = z,
+            .w = w,
         };
     }
 
     pub fn add(a: Vec4, b: Vec4) Vec4 {
         return Vec4{
-            .data = [_]f32{
-                a.data[0] + b.data[0],
-                a.data[1] + b.data[1],
-                a.data[2] + b.data[2],
-                a.data[3] + b.data[3],
-            },
+            .x = a.x + b.x,
+            .y = a.y + b.y,
+            .z = a.z + b.z,
+            .w = a.w + b.w,
         };
     }
 
@@ -36,12 +38,10 @@ pub const Vec4 = struct {
 
     pub fn substract(a: Vec4, b: Vec4) Vec4 {
         return Vec4{
-            .data = [_]f32{
-                a.data[0] - b.data[0],
-                a.data[1] - b.data[1],
-                a.data[2] - b.data[2],
-                a.data[3] - b.data[3],
-            },
+            .x = a.x - b.x,
+            .y = a.y - b.y,
+            .z = a.z - b.z,
+            .w = a.w - b.w,
         };
     }
 
@@ -55,12 +55,10 @@ pub const Vec4 = struct {
 
     pub fn multiply(a: Vec4, b: Vec4) Vec4 {
         return Vec4{
-            .data = [_]f32{
-                a.data[0] * b.data[0],
-                a.data[1] * b.data[1],
-                a.data[2] * b.data[2],
-                a.data[3] * b.data[3],
-            },
+            .x = a.x * b.x,
+            .y = a.y * b.y,
+            .z = a.z * b.z,
+            .w = a.w * b.w,
         };
     }
 
@@ -74,12 +72,10 @@ pub const Vec4 = struct {
 
     pub fn divide(a: Vec4, b: Vec4) Vec4 {
         return Vec4{
-            .data = [_]f32{
-                a.data[0] / b.data[0],
-                a.data[1] / b.data[1],
-                a.data[2] / b.data[2],
-                a.data[3] / b.data[3],
-            },
+            .x = a.x / b.x,
+            .y = a.y / b.y,
+            .z = a.z / b.z,
+            .w = a.w / b.w,
         };
     }
 
@@ -93,12 +89,10 @@ pub const Vec4 = struct {
 
     pub fn ceil(a: Vec4) Vec4 {
         return Vec4{
-            .data = [_]f32{
-                @ceil(a.data[0]),
-                @ceil(a.data[1]),
-                @ceil(a.data[2]),
-                @ceil(a.data[3]),
-            },
+            .x = @ceil(a.x),
+            .y = @ceil(a.y),
+            .z = @ceil(a.z),
+            .w = @ceil(a.w),
         };
     }
 
@@ -111,12 +105,10 @@ pub const Vec4 = struct {
 
     pub fn floor(a: Vec4) Vec4 {
         return Vec4{
-            .data = [_]f32{
-                @floor(a.data[0]),
-                @floor(a.data[1]),
-                @floor(a.data[2]),
-                @floor(a.data[3]),
-            },
+            .x = @floor(a.x),
+            .y = @floor(a.y),
+            .z = @floor(a.z),
+            .w = @floor(a.w),
         };
     }
 
@@ -129,12 +121,10 @@ pub const Vec4 = struct {
 
     pub fn min(a: Vec4, b: Vec4) Vec4 {
         return Vec4{
-            .data = [_]f32{
-                math.min(a.data[0], b.data[0]),
-                math.min(a.data[1], b.data[1]),
-                math.min(a.data[2], b.data[2]),
-                math.min(a.data[3], b.data[3]),
-            },
+            .x = math.min(a.x, b.x),
+            .y = math.min(a.y, b.y),
+            .z = math.min(a.z, b.z),
+            .w = math.min(a.w, b.w),
         };
     }
 
@@ -148,12 +138,10 @@ pub const Vec4 = struct {
 
     pub fn max(a: Vec4, b: Vec4) Vec4 {
         return Vec4{
-            .data = [_]f32{
-                math.max(a.data[0], b.data[0]),
-                math.max(a.data[1], b.data[1]),
-                math.max(a.data[2], b.data[2]),
-                math.max(a.data[3], b.data[3]),
-            },
+            .x = math.max(a.x, b.x),
+            .y = math.max(a.y, b.y),
+            .z = math.max(a.z, b.z),
+            .w = math.max(a.w, b.w),
         };
     }
 
@@ -167,12 +155,10 @@ pub const Vec4 = struct {
 
     pub fn round(a: Vec4) Vec4 {
         return Vec4{
-            .data = [_]f32{
-                @round(a.data[0]),
-                @round(a.data[1]),
-                @round(a.data[2]),
-                @round(a.data[3]),
-            },
+            .x = @round(a.x),
+            .y = @round(a.y),
+            .z = @round(a.z),
+            .w = @round(a.w),
         };
     }
 
@@ -185,12 +171,10 @@ pub const Vec4 = struct {
 
     pub fn scale(a: Vec4, s: f32) Vec4 {
         return Vec4{
-            .data = [_]f32{
-                a.data[0] * s,
-                a.data[1] * s,
-                a.data[2] * s,
-                a.data[3] * s,
-            },
+            .x = a.x * s,
+            .y = a.y * s,
+            .z = a.z * s,
+            .w = a.w * s,
         };
     }
 
@@ -203,12 +187,10 @@ pub const Vec4 = struct {
 
     pub fn scaleAndAdd(a: Vec4, b: Vec4, s: f32) Vec4 {
         return Vec4{
-            .data = [_]f32{
-                a.data[0] + (b.data[0] * s),
-                a.data[1] + (b.data[1] * s),
-                a.data[2] + (b.data[2] * s),
-                a.data[3] + (b.data[3] * s),
-            },
+            .x = a.x + (b.x * s),
+            .y = a.y + (b.y * s),
+            .z = a.z + (b.z * s),
+            .w = a.w + (b.w * s),
         };
     }
 
@@ -233,10 +215,10 @@ pub const Vec4 = struct {
     }
 
     pub fn squaredDistance(a: Vec4, b: Vec4) f32 {
-        const x = a.data[0] - b.data[0];
-        const y = a.data[1] - b.data[1];
-        const z = a.data[2] - b.data[2];
-        const w = a.data[3] - b.data[3];
+        const x = a.x - b.x;
+        const y = a.y - b.y;
+        const z = a.z - b.z;
+        const w = a.w - b.w;
         return x * x + y * y + z * z + w * w;
     }
 
@@ -259,10 +241,10 @@ pub const Vec4 = struct {
     }
 
     pub fn squaredLength(a: Vec4) f32 {
-        const x = a.data[0];
-        const y = a.data[1];
-        const z = a.data[2];
-        const w = a.data[3];
+        const x = a.x;
+        const y = a.y;
+        const z = a.z;
+        const w = a.w;
         return x * x + y * y + z * z + w * w;
     }
 
@@ -273,17 +255,11 @@ pub const Vec4 = struct {
     }
 
     pub fn negate(a: Vec4) Vec4 {
-        const x = a.data[0];
-        const y = a.data[1];
-        const z = a.data[2];
-        const w = a.data[3];
         return Vec4{
-            .data = [_]f32{
-                -x,
-                -y,
-                -z,
-                -w,
-            },
+            .x = -a.x,
+            .y = -a.y,
+            .z = -a.z,
+            .w = -a.w,
         };
     }
 
@@ -295,37 +271,29 @@ pub const Vec4 = struct {
     }
 
     pub fn inverse(a: Vec4) Vec4 {
-        const x = 1.0 / a.data[0];
-        const y = 1.0 / a.data[1];
-        const z = 1.0 / a.data[2];
-        const w = 1.0 / a.data[3];
         return Vec4{
-            .data = [_]f32{
-                -x,
-                -y,
-                -z,
-                -w,
-            },
+            .x = -(1.0 / a.x),
+            .y = -(1.0 / a.y),
+            .z = -(1.0 / a.z),
+            .w = -(1.0 / a.w),
         };
     }
 
     pub fn normalize(a: Vec4) Vec4 {
-        const x = a.data[0];
-        const y = a.data[1];
-        const z = a.data[2];
-        const w = a.data[3];
+        const x = a.x;
+        const y = a.y;
+        const z = a.z;
+        const w = a.w;
 
         var l = x * x + y * y + z * z + w * w;
         if (l > 0)
             l = 1 / @sqrt(l);
 
         return Vec4{
-            .data = [_]f32{
-                x * l,
-                y * l,
-                z * l,
-                w * l,
-            },
+            .x = x * l,
+            .y = y * l,
+            .z = z * l,
+            .w = w * l,
         };
     }
 
@@ -337,10 +305,10 @@ pub const Vec4 = struct {
     }
 
     pub fn dot(a: Vec4, b: Vec4) f32 {
-        return a.data[0] * b.data[0] //
-            + a.data[1] * b.data[1] //
-            + a.data[2] * b.data[2] //
-            + a.data[3] * b.data[3];
+        return a.x * b.x //
+            + a.y * b.y //
+            + a.z * b.z //
+            + a.w * b.w;
     }
 
     test "dot" {
@@ -353,24 +321,22 @@ pub const Vec4 = struct {
 
     /// Returns the cross-product of three vectors in a 4-dimensional space
     pub fn cross(u: Vec4, v: Vec4, w: Vec4) Vec4 {
-        const A = (v.data[0] * w.data[1]) - (v.data[1] * w.data[0]);
-        const B = (v.data[0] * w.data[2]) - (v.data[2] * w.data[0]);
-        const C = (v.data[0] * w.data[3]) - (v.data[3] * w.data[0]);
-        const D = (v.data[1] * w.data[2]) - (v.data[2] * w.data[1]);
-        const E = (v.data[1] * w.data[3]) - (v.data[3] * w.data[1]);
-        const F = (v.data[2] * w.data[3]) - (v.data[3] * w.data[2]);
-        const G = u.data[0];
-        const H = u.data[1];
-        const I = u.data[2];
-        const J = u.data[3];
+        const A = (v.x * w.y) - (v.y * w.x);
+        const B = (v.x * w.z) - (v.z * w.x);
+        const C = (v.x * w.w) - (v.w * w.x);
+        const D = (v.y * w.z) - (v.z * w.y);
+        const E = (v.y * w.w) - (v.w * w.y);
+        const F = (v.z * w.w) - (v.w * w.z);
+        const G = u.x;
+        const H = u.y;
+        const I = u.z;
+        const J = u.w;
 
         return Vec4{
-            .data = [_]f32{
-                (H * F) - (I * E) + (J * D),
-                -(G * F) + (I * C) - (J * B),
-                (G * E) - (H * C) + (J * A),
-                -(G * D) + (H * B) - (I * A),
-            },
+            .x = (H * F) - (I * E) + (J * D),
+            .y = -(G * F) + (I * C) - (J * B),
+            .z = (G * E) - (H * C) + (J * A),
+            .w = -(G * D) + (H * B) - (I * A),
         };
     }
 
@@ -384,23 +350,11 @@ pub const Vec4 = struct {
     }
 
     pub fn lerp(a: Vec4, b: Vec4, t: f32) Vec4 {
-        const ax = a.data[0];
-        const ay = a.data[1];
-        const az = a.data[2];
-        const aw = a.data[3];
-
-        const bx = b.data[0];
-        const by = b.data[1];
-        const bz = b.data[2];
-        const bw = b.data[3];
-
         return Vec4{
-            .data = [_]f32{
-                ax + t * (bx - ax),
-                ay + t * (by - ay),
-                az + t * (bz - az),
-                aw + t * (bw - aw),
-            },
+            .x = a.x + t * (b.x - a.x),
+            .y = a.y + t * (b.y - a.y),
+            .z = a.z + t * (b.z - a.z),
+            .w = a.w + t * (b.w - a.w),
         };
     }
 
@@ -413,11 +367,11 @@ pub const Vec4 = struct {
     }
 
     pub fn equals(a: Vec4, b: Vec4) bool {
-        return f_eq(a.data[0], b.data[0]) and f_eq(a.data[1], b.data[1]) and f_eq(a.data[2], b.data[2]) and f_eq(a.data[3], b.data[3]);
+        return f_eq(a.x, b.x) and f_eq(a.y, b.y) and f_eq(a.z, b.z) and f_eq(a.w, b.w);
     }
 
     pub fn equalsExact(a: Vec4, b: Vec4) bool {
-        return a.data[0] == b.data[0] and a.data[1] == b.data[1] and a.data[2] == b.data[2] and a.data[3] == b.data[3];
+        return a.x == b.x and a.y == b.y and a.z == b.z and a.w == b.w;
     }
 
     pub fn format(
@@ -429,7 +383,7 @@ pub const Vec4 = struct {
         return std.fmt.format(
             writer,
             "Vec4({d:.3}, {d:.3}, {d:.3}, {d:.3})",
-            .{ value.data[0], value.data[1], value.data[2], value.data[3] },
+            .{ value.x, value.y, value.z, value.w },
         );
     }
 

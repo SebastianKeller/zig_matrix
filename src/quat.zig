@@ -6,12 +6,13 @@ const utils = @import("utils.zig");
 const Vec3 = @import("vec3.zig").Vec3;
 
 pub const quat_identity = Quat{
-    .data = [_]f32{
+    .data = .{
         0, 0, 0, 1,
     },
 };
+
 pub const quat_zero = Quat{
-    .data = [_]f32{
+    .data = .{
         0, 0, 0, 0,
     },
 };
@@ -21,7 +22,7 @@ pub const Quat = struct {
 
     pub fn create(x: f32, y: f32, z: f32, w: f32) Quat {
         return Quat{
-            .data = [_]f32{
+            .data = .{
                 x, y, z, w,
             },
         };
@@ -52,21 +53,13 @@ pub const Quat = struct {
         if (out_axis) |v| {
             const s = @sin(rad / 2.0);
             if (s > utils.epsilon) {
-                v.* = Vec3{
-                    .data = [_]f32{
-                        q.data[0] / s,
-                        q.data[1] / s,
-                        q.data[2] / s,
-                    },
-                };
+                v.* = Vec3.create(
+                    q.data[0] / s,
+                    q.data[1] / s,
+                    q.data[2] / s,
+                );
             } else {
-                v.* = Vec3{
-                    .data = [_]f32{
-                        1,
-                        0,
-                        0,
-                    },
-                };
+                v.* = Vec3.create(1, 0, 0);
             }
         }
         return rad;
@@ -133,10 +126,10 @@ pub const Quat = struct {
         const s = @sin(radHalf);
         const c = @cos(radHalf);
         return Quat{
-            .data = [_]f32{
-                s * axis.data[0],
-                s * axis.data[1],
-                s * axis.data[2],
+            .data = .{
+                s * axis.x,
+                s * axis.y,
+                s * axis.z,
                 c,
             },
         };
@@ -181,7 +174,7 @@ pub const Quat = struct {
     /// Adds two quats
     pub fn add(a: Quat, b: Quat) Quat {
         return Quat{
-            .data = [_]f32{
+            .data = .{
                 a.data[0] + b.data[0],
                 a.data[1] + b.data[1],
                 a.data[2] + b.data[2],
@@ -211,7 +204,7 @@ pub const Quat = struct {
         const bw = b.data[3];
 
         return Quat{
-            .data = [_]f32{
+            .data = .{
                 ax * bw + aw * bx + ay * bz - az * by,
                 ay * bw + aw * by + az * bx - ax * bz,
                 az * bw + aw * bz + ax * by - ay * bx,
@@ -223,7 +216,7 @@ pub const Quat = struct {
     /// Scales a quat by a scalar number
     pub fn scale(a: Quat, s: f32) Quat {
         return Quat{
-            .data = [_]f32{
+            .data = .{
                 a.data[0] * s,
                 a.data[1] * s,
                 a.data[2] * s,
@@ -266,7 +259,7 @@ pub const Quat = struct {
         const bw = b.data[3];
 
         return Quat{
-            .data = [_]f32{
+            .data = .{
                 ax + t * (bx - ax),
                 ay + t * (by - ay),
                 az + t * (bz - az),
@@ -319,7 +312,7 @@ pub const Quat = struct {
             l = 1 / @sqrt(l);
 
         return Quat{
-            .data = [_]f32{
+            .data = .{
                 x * l,
                 y * l,
                 z * l,
@@ -347,7 +340,7 @@ pub const Quat = struct {
         const bw = @cos(radHalf);
 
         return Quat{
-            .data = [_]f32{
+            .data = .{
                 ax * bw + aw * bx,
                 ay * bw + az * bx,
                 az * bw - ay * bx,
@@ -377,7 +370,7 @@ pub const Quat = struct {
         const bw = @cos(radHalf);
 
         return Quat{
-            .data = [_]f32{
+            .data = .{
                 ax * bw - az * by,
                 ay * bw + aw * by,
                 az * bw + ax * by,
@@ -407,7 +400,7 @@ pub const Quat = struct {
         const bw = @cos(radHalf);
 
         return Quat{
-            .data = [_]f32{
+            .data = .{
                 ax * bw + ay * bz,
                 ay * bw - ax * bz,
                 az * bw + aw * bz,
@@ -433,7 +426,7 @@ pub const Quat = struct {
         const z = a.data[2];
 
         return Quat{
-            .data = [_]f32{
+            .data = .{
                 x,
                 y,
                 z,
@@ -454,7 +447,7 @@ pub const Quat = struct {
         var s = if (r > 0) (et * @sin(r) / r) else 0.0;
 
         return Quat{
-            .data = [_]f32{
+            .data = .{
                 x * s,
                 y * s,
                 z * s,
@@ -476,7 +469,7 @@ pub const Quat = struct {
             t = math.atan2(f32, r, w) / r;
 
         return Quat{
-            .data = [_]f32{
+            .data = .{
                 x * t,
                 y * t,
                 z * t,
@@ -556,7 +549,7 @@ pub const Quat = struct {
 
         // calculate final values
         return Quat{
-            .data = [_]f32{
+            .data = .{
                 scale0 * ax + scale1 * bx,
                 scale0 * ay + scale1 * by,
                 scale0 * az + scale1 * bz,
@@ -603,7 +596,7 @@ pub const Quat = struct {
         if (invDot == 0) return quat_zero;
 
         return Quat{
-            .data = [_]f32{
+            .data = .{
                 -x * invDot,
                 -y * invDot,
                 -z * invDot,
@@ -628,7 +621,7 @@ pub const Quat = struct {
         const w = a.data[3];
 
         return Quat{
-            .data = [_]f32{
+            .data = .{
                 -x,
                 -y,
                 -z,
@@ -668,7 +661,7 @@ pub const Quat = struct {
             const fRoot4 = 0.5 / fRoot;
 
             return Quat{
-                .data = [_]f32{
+                .data = .{
                     (m.data[1][2] - m.data[2][1]) * fRoot4,
                     (m.data[2][0] - m.data[0][2]) * fRoot4,
                     (m.data[0][1] - m.data[1][0]) * fRoot4,
@@ -752,7 +745,7 @@ pub const Quat = struct {
         const cz = @cos(zH);
 
         return Quat{
-            .data = [_]f32{
+            .data = .{
                 sx * cy * cz - cx * sy * sz,
                 cx * sy * cz + sx * cy * sz,
                 cx * cy * sz - sx * sy * cz,
@@ -788,17 +781,17 @@ pub const Quat = struct {
             return fromAxisAngle(tmpvec3, math.pi);
         } else if (dotProduct > (1 - utils.epsilon)) {
             return Quat{
-                .data = [_]f32{
+                .data = .{
                     0, 0, 0, 1,
                 },
             };
         } else {
             tmpvec3 = Vec3.cross(a, b);
             const out = Quat{
-                .data = [_]f32{
-                    tmpvec3.data[0],
-                    tmpvec3.data[1],
-                    tmpvec3.data[2],
+                .data = .{
+                    tmpvec3.x,
+                    tmpvec3.y,
+                    tmpvec3.z,
                     1 + dotProduct,
                 },
             };
