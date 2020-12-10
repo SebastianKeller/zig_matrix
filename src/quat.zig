@@ -5,35 +5,22 @@ const Mat4 = @import("mat4.zig").Mat4;
 const utils = @import("utils.zig");
 const Vec3 = @import("vec3.zig").Vec3;
 
-pub const quat_identity = Quat{
-    .data = .{
-        0, 0, 0, 1,
-    },
-};
+pub const quat_identity = Quat.create(0, 0, 0, 1);
+pub const quat_zero = Quat.create(0, 0, 0, 0);
 
-pub const quat_zero = Quat{
-    .data = .{
-        0, 0, 0, 0,
-    },
-};
-
-pub const Quat = struct {
-    data: [4]f32,
+pub const Quat = packed struct {
+    x: f32,
+    y: f32,
+    z: f32,
+    w: f32,
 
     pub fn create(x: f32, y: f32, z: f32, w: f32) Quat {
         return Quat{
-            .data = .{
-                x, y, z, w,
-            },
+            .x = x,
+            .y = y,
+            .z = z,
+            .w = w,
         };
-    }
-
-    test "create" {
-        const quatA = Quat.create(1, 2, 3, 4);
-        std.testing.expect(utils.f_eq(quatA.data[0], 1));
-        std.testing.expect(utils.f_eq(quatA.data[1], 2));
-        std.testing.expect(utils.f_eq(quatA.data[2], 3));
-        std.testing.expect(utils.f_eq(quatA.data[3], 4));
     }
 
     pub const identity = quat_identity;
@@ -41,22 +28,22 @@ pub const Quat = struct {
 
     test "identity" {
         const quatA = Quat.identity;
-        std.testing.expect(utils.f_eq(quatA.data[0], 0));
-        std.testing.expect(utils.f_eq(quatA.data[1], 0));
-        std.testing.expect(utils.f_eq(quatA.data[2], 0));
-        std.testing.expect(utils.f_eq(quatA.data[3], 1));
+        std.testing.expect(utils.f_eq(quatA.x, 0));
+        std.testing.expect(utils.f_eq(quatA.y, 0));
+        std.testing.expect(utils.f_eq(quatA.z, 0));
+        std.testing.expect(utils.f_eq(quatA.w, 1));
     }
 
     ///Gets the rotation axis and angle for a given quaternion.
     pub fn getAxisAngle(q: Quat, out_axis: ?*Vec3) f32 {
-        const rad = math.acos(q.data[3]) * 2.0;
+        const rad = math.acos(q.w) * 2.0;
         if (out_axis) |v| {
             const s = @sin(rad / 2.0);
             if (s > utils.epsilon) {
                 v.* = Vec3.create(
-                    q.data[0] / s,
-                    q.data[1] / s,
-                    q.data[2] / s,
+                    q.x / s,
+                    q.y / s,
+                    q.z / s,
                 );
             } else {
                 v.* = Vec3.create(1, 0, 0);
@@ -126,12 +113,10 @@ pub const Quat = struct {
         const s = @sin(radHalf);
         const c = @cos(radHalf);
         return Quat{
-            .data = .{
-                s * axis.x,
-                s * axis.y,
-                s * axis.z,
-                c,
-            },
+            .x = s * axis.x,
+            .y = s * axis.y,
+            .z = s * axis.z,
+            .w = c,
         };
     }
 
@@ -150,7 +135,7 @@ pub const Quat = struct {
     test "getAngle from itself" {
         const quatA = create(1, 2, 3, 4).normalize();
         const out = getAngle(quatA, quatA);
-        std.testing.expectEqual(out, 0.0);
+        std.testing.expect(utils.f_eq(out, 0.0));
     }
 
     test "getAngle from rotated" {
@@ -174,12 +159,10 @@ pub const Quat = struct {
     /// Adds two quats
     pub fn add(a: Quat, b: Quat) Quat {
         return Quat{
-            .data = .{
-                a.data[0] + b.data[0],
-                a.data[1] + b.data[1],
-                a.data[2] + b.data[2],
-                a.data[3] + b.data[3],
-            },
+            .x = a.x + b.x,
+            .y = a.y + b.y,
+            .z = a.z + b.z,
+            .w = a.w + b.w,
         };
     }
 
@@ -193,35 +176,21 @@ pub const Quat = struct {
 
     /// Multiplies two quats
     pub fn multiply(a: Quat, b: Quat) Quat {
-        const ax = a.data[0];
-        const ay = a.data[1];
-        const az = a.data[2];
-        const aw = a.data[3];
-
-        const bx = b.data[0];
-        const by = b.data[1];
-        const bz = b.data[2];
-        const bw = b.data[3];
-
         return Quat{
-            .data = .{
-                ax * bw + aw * bx + ay * bz - az * by,
-                ay * bw + aw * by + az * bx - ax * bz,
-                az * bw + aw * bz + ax * by - ay * bx,
-                aw * bw - ax * bx - ay * by - az * bz,
-            },
+            .x = a.x * b.w + a.w * b.x + a.y * b.z - a.z * b.y,
+            .y = a.y * b.w + a.w * b.y + a.z * b.x - a.x * b.z,
+            .z = a.z * b.w + a.w * b.z + a.x * b.y - a.y * b.x,
+            .w = a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z,
         };
     }
 
     /// Scales a quat by a scalar number
     pub fn scale(a: Quat, s: f32) Quat {
         return Quat{
-            .data = .{
-                a.data[0] * s,
-                a.data[1] * s,
-                a.data[2] * s,
-                a.data[3] * s,
-            },
+            .x = a.x * s,
+            .y = a.y * s,
+            .z = a.z * s,
+            .w = a.w * s,
         };
     }
 
@@ -233,10 +202,10 @@ pub const Quat = struct {
     }
 
     pub fn dot(a: Quat, b: Quat) f32 {
-        return a.data[0] * b.data[0] //
-            + a.data[1] * b.data[1] //
-            + a.data[2] * b.data[2] //
-            + a.data[3] * b.data[3];
+        return a.x * b.x //
+            + a.y * b.y //
+            + a.z * b.z //
+            + a.w * b.w;
     }
 
     test "dot" {
@@ -248,23 +217,11 @@ pub const Quat = struct {
     }
 
     pub fn lerp(a: Quat, b: Quat, t: f32) Quat {
-        const ax = a.data[0];
-        const ay = a.data[1];
-        const az = a.data[2];
-        const aw = a.data[3];
-
-        const bx = b.data[0];
-        const by = b.data[1];
-        const bz = b.data[2];
-        const bw = b.data[3];
-
         return Quat{
-            .data = .{
-                ax + t * (bx - ax),
-                ay + t * (by - ay),
-                az + t * (bz - az),
-                aw + t * (bw - aw),
-            },
+            .x = a.x + t * (b.x - a.x),
+            .y = a.y + t * (b.y - a.y),
+            .z = a.z + t * (b.z - a.z),
+            .w = a.w + t * (b.w - a.w),
         };
     }
 
@@ -288,11 +245,7 @@ pub const Quat = struct {
     }
 
     pub fn squaredLength(a: Quat) f32 {
-        const x = a.data[0];
-        const y = a.data[1];
-        const z = a.data[2];
-        const w = a.data[3];
-        return x * x + y * y + z * z + w * w;
+        return a.x * a.x + a.y * a.y + a.z * a.z + a.w * a.w;
     }
 
     test "squaredLength" {
@@ -302,22 +255,15 @@ pub const Quat = struct {
     }
 
     pub fn normalize(a: Quat) Quat {
-        const x = a.data[0];
-        const y = a.data[1];
-        const z = a.data[2];
-        const w = a.data[3];
-
-        var l = x * x + y * y + z * z + w * w;
+        var l = a.x * a.x + a.y * a.y + a.z * a.z + a.w * a.w;
         if (l > 0)
             l = 1 / @sqrt(l);
 
         return Quat{
-            .data = .{
-                x * l,
-                y * l,
-                z * l,
-                w * l,
-            },
+            .x = a.x * l,
+            .y = a.y * l,
+            .z = a.z * l,
+            .w = a.w * l,
         };
     }
 
@@ -330,22 +276,15 @@ pub const Quat = struct {
 
     /// Rotates a quaternion by the given angle about the X axis
     pub fn rotateX(a: Quat, rad: f32) Quat {
-        const ax = a.data[0];
-        const ay = a.data[1];
-        const az = a.data[2];
-        const aw = a.data[3];
-
         var radHalf = rad * 0.5;
         const bx = @sin(radHalf);
         const bw = @cos(radHalf);
 
         return Quat{
-            .data = .{
-                ax * bw + aw * bx,
-                ay * bw + az * bx,
-                az * bw - ay * bx,
-                aw * bw - ax * bx,
-            },
+            .x = a.x * bw + a.w * bx,
+            .y = a.y * bw + a.z * bx,
+            .z = a.z * bw - a.y * bx,
+            .w = a.w * bw - a.x * bx,
         };
     }
 
@@ -359,23 +298,16 @@ pub const Quat = struct {
 
     /// Rotates a quaternion by the given angle about the Y axis
     pub fn rotateY(a: Quat, rad: f32) Quat {
-        const ax = a.data[0];
-        const ay = a.data[1];
-        const az = a.data[2];
-        const aw = a.data[3];
-
         var radHalf = rad * 0.5;
 
         const by = @sin(radHalf);
         const bw = @cos(radHalf);
 
         return Quat{
-            .data = .{
-                ax * bw - az * by,
-                ay * bw + aw * by,
-                az * bw + ax * by,
-                aw * bw - ay * by,
-            },
+            .x = a.x * bw - a.z * by,
+            .y = a.y * bw + a.w * by,
+            .z = a.z * bw + a.x * by,
+            .w = a.w * bw - a.y * by,
         };
     }
 
@@ -389,23 +321,16 @@ pub const Quat = struct {
 
     /// Rotates a quaternion by the given angle about the Z axis
     pub fn rotateZ(a: Quat, rad: f32) Quat {
-        const ax = a.data[0];
-        const ay = a.data[1];
-        const az = a.data[2];
-        const aw = a.data[3];
-
         const radHalf = rad * 0.5;
 
         const bz = @sin(radHalf);
         const bw = @cos(radHalf);
 
         return Quat{
-            .data = .{
-                ax * bw + ay * bz,
-                ay * bw - ax * bz,
-                az * bw + aw * bz,
-                aw * bw - az * bz,
-            },
+            .x = a.x * bw + a.y * bz,
+            .y = a.y * bw - a.x * bz,
+            .z = a.z * bw + a.w * bz,
+            .w = a.w * bw - a.z * bz,
         };
     }
 
@@ -421,60 +346,40 @@ pub const Quat = struct {
     /// Assumes that quaternion is 1 unit in length.
     /// Any existing W component will be ignored.
     pub fn calculatW(a: Quat) Quat {
-        const x = a.data[0];
-        const y = a.data[1];
-        const z = a.data[2];
-
         return Quat{
-            .data = .{
-                x,
-                y,
-                z,
-                @sqrt(@fabs(1.0 - x * x - y * y - z * z)),
-            },
+            .x = a.x,
+            .y = a.y,
+            .z = a.z,
+            .w = @sqrt(@fabs(1.0 - a.x * a.x - a.y * a.y - a.z * a.z)),
         };
     }
 
     /// Calculate the exponential of a unit quaternion.
     pub fn exp(a: Quat) Quat {
-        const x = a.data[0];
-        const y = a.data[1];
-        const z = a.data[2];
-        const w = a.data[3];
-
-        var r = @sqrt(x * x + y * y + z * z);
-        var et = @exp(w);
+        var r = @sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+        var et = @exp(a.w);
         var s = if (r > 0) (et * @sin(r) / r) else 0.0;
 
         return Quat{
-            .data = .{
-                x * s,
-                y * s,
-                z * s,
-                et * @cos(r),
-            },
+            .x = a.x * s,
+            .y = a.y * s,
+            .z = a.z * s,
+            .w = et * @cos(r),
         };
     }
 
     /// Calculate the naturl logarithm of a unit quaternion.
     pub fn ln(a: Quat) Quat {
-        const x = a.data[0];
-        const y = a.data[1];
-        const z = a.data[2];
-        const w = a.data[3];
-
-        var r = @sqrt(x * x + y * y + z * z);
+        var r = @sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
         var t: f32 = 0.0;
         if (r > 0)
-            t = math.atan2(f32, r, w) / r;
+            t = math.atan2(f32, r, a.w) / r;
 
         return Quat{
-            .data = .{
-                x * t,
-                y * t,
-                z * t,
-                0.5 * @log10(x * x + y * y + z * z + w * w),
-            },
+            .x = a.x * t,
+            .y = a.y * t,
+            .z = a.z * t,
+            .w = 0.5 * @log10(a.x * a.x + a.y * a.y + a.z * a.z + a.w * a.w),
         };
     }
 
@@ -509,18 +414,13 @@ pub const Quat = struct {
 
     /// Performs a spherical linear interpolation between two quats
     pub fn slerp(a: Quat, b: Quat, t: f32) Quat {
-        const ax = a.data[0];
-        const ay = a.data[1];
-        const az = a.data[2];
-        const aw = a.data[3];
-
-        var bx = b.data[0];
-        var by = b.data[1];
-        var bz = b.data[2];
-        var bw = b.data[3];
-
         // calc cosine
-        var cosom = ax * bx + ay * by + az * bz + aw * bw;
+        var cosom = a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+
+        var bx = b.x;
+        var by = b.y;
+        var bz = b.z;
+        var bw = b.w;
 
         // adjust signs (if necessary)
         if (cosom < 0.0) {
@@ -549,12 +449,10 @@ pub const Quat = struct {
 
         // calculate final values
         return Quat{
-            .data = .{
-                scale0 * ax + scale1 * bx,
-                scale0 * ay + scale1 * by,
-                scale0 * az + scale1 * bz,
-                scale0 * aw + scale1 * bw,
-            },
+            .x = scale0 * a.x + scale1 * bx,
+            .y = scale0 * a.y + scale1 * by,
+            .z = scale0 * a.z + scale1 * bz,
+            .w = scale0 * a.w + scale1 * bw,
         };
     }
 
@@ -585,23 +483,16 @@ pub const Quat = struct {
 
     /// Calculates the inverse of a quat
     pub fn invert(a: Quat) Quat {
-        const x = a.data[0];
-        const y = a.data[1];
-        const z = a.data[2];
-        const w = a.data[3];
-
-        const dotProduct = x * x + y * y + z * z + w * w;
+        const dotProduct = Quat.dot(a, a);
 
         const invDot = if (dotProduct != 0.0) 1.0 / dotProduct else 0.0;
         if (invDot == 0) return quat_zero;
 
         return Quat{
-            .data = .{
-                -x * invDot,
-                -y * invDot,
-                -z * invDot,
-                w * invDot,
-            },
+            .x = -a.x * invDot,
+            .y = -a.y * invDot,
+            .z = -a.z * invDot,
+            .w = a.w * invDot,
         };
     }
 
@@ -615,18 +506,11 @@ pub const Quat = struct {
     /// If the quaternion is normalized, this function is faster than Quat.inverse
     /// and produces the same result.
     pub fn conjugate(a: Quat) Quat {
-        const x = a.data[0];
-        const y = a.data[1];
-        const z = a.data[2];
-        const w = a.data[3];
-
         return Quat{
-            .data = .{
-                -x,
-                -y,
-                -z,
-                w,
-            },
+            .x = -a.x,
+            .y = -a.y,
+            .z = -a.z,
+            .w = a.w,
         };
     }
 
@@ -661,12 +545,10 @@ pub const Quat = struct {
             const fRoot4 = 0.5 / fRoot;
 
             return Quat{
-                .data = .{
-                    (m.data[1][2] - m.data[2][1]) * fRoot4,
-                    (m.data[2][0] - m.data[0][2]) * fRoot4,
-                    (m.data[0][1] - m.data[1][0]) * fRoot4,
-                    0.5 * fRoot,
-                },
+                .x = (m.data[1][2] - m.data[2][1]) * fRoot4,
+                .y = (m.data[2][0] - m.data[0][2]) * fRoot4,
+                .z = (m.data[0][1] - m.data[1][0]) * fRoot4,
+                .w = 0.5 * fRoot,
             };
         } else {
             // 0 1 2
@@ -692,7 +574,10 @@ pub const Quat = struct {
             out[k] = (m.data[k][i] + m.data[i][k]) * fRoot2;
 
             return Quat{
-                .data = out,
+                .x = out[0],
+                .y = out[1],
+                .z = out[2],
+                .w = out[3],
             };
         }
     }
@@ -745,12 +630,10 @@ pub const Quat = struct {
         const cz = @cos(zH);
 
         return Quat{
-            .data = .{
-                sx * cy * cz - cx * sy * sz,
-                cx * sy * cz + sx * cy * sz,
-                cx * cy * sz - sx * sy * cz,
-                cx * cy * cz + sx * sy * sz,
-            },
+            .x = sx * cy * cz - cx * sy * sz,
+            .y = cx * sy * cz + sx * cy * sz,
+            .z = cx * cy * sz - sx * sy * cz,
+            .w = cx * cy * cz + sx * sy * sz,
         };
     }
 
@@ -780,20 +663,14 @@ pub const Quat = struct {
             tmpvec3 = Vec3.normalize(tmpvec3);
             return fromAxisAngle(tmpvec3, math.pi);
         } else if (dotProduct > (1 - utils.epsilon)) {
-            return Quat{
-                .data = .{
-                    0, 0, 0, 1,
-                },
-            };
+            return quat_identity;
         } else {
             tmpvec3 = Vec3.cross(a, b);
             const out = Quat{
-                .data = .{
-                    tmpvec3.x,
-                    tmpvec3.y,
-                    tmpvec3.z,
-                    1 + dotProduct,
-                },
+                .x = tmpvec3.x,
+                .y = tmpvec3.y,
+                .z = tmpvec3.z,
+                .w = 1 + dotProduct,
             };
             return normalize(out);
         }
@@ -832,17 +709,17 @@ pub const Quat = struct {
     }
 
     pub fn equals(a: Quat, b: Quat) bool {
-        return utils.f_eq(a.data[0], b.data[0]) //
-            and utils.f_eq(a.data[1], b.data[1]) //
-            and utils.f_eq(a.data[2], b.data[2]) //
-            and utils.f_eq(a.data[3], b.data[3]);
+        return utils.f_eq(a.x, b.x) //
+            and utils.f_eq(a.y, b.y) //
+            and utils.f_eq(a.z, b.z) //
+            and utils.f_eq(a.w, b.w);
     }
 
     pub fn equalsExact(a: Quat, b: Quat) bool {
-        return a.data[0] == b.data[0] //
-            and a.data[1] == b.data[1] //
-            and a.data[2] == b.data[2] //
-            and a.data[3] == b.data[3];
+        return a.x == b.x //
+            and a.y == b.y //
+            and a.z == b.z //
+            and a.w == b.w;
     }
 
     pub fn format(
@@ -851,12 +728,8 @@ pub const Quat = struct {
         options: std.fmt.FormatOptions,
         writer: anytype,
     ) !void {
-        const x = value.data[0];
-        const y = value.data[1];
-        const z = value.data[2];
-        const w = value.data[3];
         const str = "Quat({d:.3}, {d:.3}, {d:.3}, {d:.3})";
-        return std.fmt.format(writer, str, .{ x, y, z, w });
+        return std.fmt.format(writer, str, .{ value.x, value.y, value.z, value.w });
     }
 
     fn expectEqual(expected: Quat, actual: Quat) void {

@@ -425,26 +425,18 @@ pub const Vec3 = packed struct {
     }
 
     pub fn transformQuat(a: Vec3, q: Quat) Vec3 {
-        const qx = q.data[0];
-        const qy = q.data[1];
-        const qz = q.data[2];
-        const qw = q.data[3];
-        const x = a.x;
-        const y = a.y;
-        const z = a.z;
-
         // var uv = vec3.cross([], qvec, a);
-        var uvx = qy * z - qz * y;
-        var uvy = qz * x - qx * z;
-        var uvz = qx * y - qy * x;
+        var uvx = q.y * a.z - q.z * a.y;
+        var uvy = q.z * a.x - q.x * a.z;
+        var uvz = q.x * a.y - q.y * a.x;
 
         // var uuv = vec3.cross([], qvec, uv);
-        var uuvx = qy * uvz - qz * uvy;
-        var uuvy = qz * uvx - qx * uvz;
-        var uuvz = qx * uvy - qy * uvx;
+        var uuvx = q.y * uvz - q.z * uvy;
+        var uuvy = q.z * uvx - q.x * uvz;
+        var uuvz = q.x * uvy - q.y * uvx;
 
         // vec3.scale(uv, uv, 2 * w);
-        const w2 = qw * 2;
+        const w2 = q.w * 2;
         uvx *= w2;
         uvy *= w2;
         uvz *= w2;
@@ -456,9 +448,9 @@ pub const Vec3 = packed struct {
 
         // return vec3.add(out, a, vec3.add(out, uv, uuv));
         return Vec3.create(
-            x + uvx + uuvx,
-            y + uvy + uuvy,
-            z + uvz + uuvz,
+            a.x + uvx + uuvx,
+            a.y + uvy + uuvy,
+            a.z + uvz + uuvz,
         );
     }
 
