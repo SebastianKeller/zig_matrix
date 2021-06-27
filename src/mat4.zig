@@ -14,7 +14,7 @@ pub const mat4_identity = Mat4{
     },
 };
 
-pub const Mat4 =  struct {
+pub const Mat4 = struct {
     data: [4][4]f32,
 
     pub const identity = mat4_identity;
@@ -67,7 +67,7 @@ pub const Mat4 =  struct {
         const matA = Mat4.create(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 2, 3, 1);
         const out = Mat4.transpose(matA);
         const expected = Mat4.create(1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 3, 0, 0, 0, 1);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     /// Inverts a mat4
@@ -127,7 +127,7 @@ pub const Mat4 =  struct {
         const matA = Mat4.create(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 2, 3, 1);
         const out = Mat4.invert(matA) orelse @panic("test failed");
         const expected = Mat4.create(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -1, -2, -3, 1);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     /// Calculates the adjugate
@@ -166,7 +166,7 @@ pub const Mat4 =  struct {
         const matA = Mat4.create(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 2, 3, 1);
         const out = Mat4.adjoint(matA);
         const expected = Mat4.create(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -1, -2, -3, 1);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     ///Calculates the determinant
@@ -192,7 +192,7 @@ pub const Mat4 =  struct {
         const matA = Mat4.create(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 2, 3, 1);
         const out = Mat4.determinant(matA);
         const expected = 1;
-        testing.expect(utils.f_eq(out, expected));
+        try testing.expect(utils.f_eq(out, expected));
     }
 
     /// Adds two mat4's
@@ -233,7 +233,7 @@ pub const Mat4 =  struct {
         const matB = Mat4.create(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32);
         const out = Mat4.add(matA, matB);
         const expected = Mat4.create(18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     /// Subtracts matrix b from matrix a
@@ -275,7 +275,7 @@ pub const Mat4 =  struct {
         const matB = Mat4.create(17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32);
         const out = Mat4.sub(matA, matB);
         const expected = Mat4.create(-16, -16, -16, -16, -16, -16, -16, -16, -16, -16, -16, -16, -16, -16, -16, -16);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     ///Multiplies two Mat4
@@ -317,7 +317,7 @@ pub const Mat4 =  struct {
         const matB = Mat4.create(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 4, 5, 6, 1);
         const out = Mat4.mul(matA, matB);
         const expected = Mat4.create(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 5, 7, 9, 1);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     pub fn multiplyScalar(a: Mat4, s: f32) Mat4 {
@@ -356,7 +356,7 @@ pub const Mat4 =  struct {
         const matA = Mat4.create(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
         const out = Mat4.multiplyScalar(matA, 2.0);
         const expected = Mat4.create(2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     pub fn multiplyScalarAndAdd(a: Mat4, b: Mat4, s: f32) Mat4 {
@@ -430,7 +430,7 @@ pub const Mat4 =  struct {
         const matA = Mat4.create(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 2, 3, 1);
         const out = Mat4.translate(matA, Vec3.create(4, 5, 6));
         const expected = Mat4.create(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 5, 7, 9, 1);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     ///Rotates a mat4 by the given angle around the given axis
@@ -498,7 +498,7 @@ pub const Mat4 =  struct {
         const matA = Mat4.create(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 2, 3, 1);
         const out = Mat4.rotate(matA, rad, axis) orelse @panic("test failed");
         const expected = Mat4.create(1, 0, 0, 0, 0, @cos(rad), @sin(rad), 0, 0, -@sin(rad), @cos(rad), 0, 1, 2, 3, 1);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     pub fn scale(a: Mat4, v: Vec3) Mat4 {
@@ -537,7 +537,7 @@ pub const Mat4 =  struct {
         const matA = Mat4.create(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 2, 3, 1);
         const out = Mat4.scale(matA, Vec3.create(4, 5, 6));
         const expected = Mat4.create(4, 0, 0, 0, 0, 5, 0, 0, 0, 0, 6, 0, 1, 2, 3, 1);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     ///Creates a matrix from a vector translation
@@ -711,7 +711,7 @@ pub const Mat4 =  struct {
     test "getTranslation - identity" {
         var out = Mat4.getTranslation(mat4_identity);
         const expected = Vec3.create(0, 0, 0);
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     test "getTranslation - translation-only" {
@@ -719,7 +719,7 @@ pub const Mat4 =  struct {
 
         var out = Mat4.getTranslation(matB);
         const expected = Vec3.create(4, 5, 6);
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     /// Returns the scaling factor component of a transformation
@@ -749,7 +749,7 @@ pub const Mat4 =  struct {
         const matA = Mat4.targetTo(Vec3.create(0, 1, 0), Vec3.create(0, 0, 1), Vec3.create(0, 0, -1));
         const out = Mat4.getScaling(matA);
         const expected = Vec3.create(1, 1, 1);
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     pub fn frustum(left: f32, right: f32, bottom: f32, top: f32, near: f32, far: f32) Mat4 {
@@ -790,7 +790,7 @@ pub const Mat4 =  struct {
     test "frustum" {
         const out = Mat4.frustum(-1, 1, -1, 1, -1, 1);
         const expected = Mat4.create(-1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, -1, 0, 0, 1, 0);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     /// Generates a perspective projection matrix with the given bounds.
@@ -836,19 +836,19 @@ pub const Mat4 =  struct {
     test "perspective" {
         const out = Mat4.perspective(math.pi * 0.5, 1, 0, 1);
         const expected = Mat4.create(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, -1, 0, 0, 0, 0);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     test "perspective, 45deg fovy, realistic aspect ratio" {
         const out = Mat4.perspective(45 * math.pi / 180.0, 640.0 / 480.0, 0.1, 200);
         const expected = Mat4.create(1.81066, 0, 0, 0, 0, 2.414213, 0, 0, 0, 0, -1.001, -1, 0, 0, -0.2001, 0);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     test "perspective, 45deg fovy, realistic aspect ratio, no far plane" {
         const out = Mat4.perspective(45 * math.pi / 180.0, 640.0 / 480.0, 0.1, math.inf_f32);
         const expected = Mat4.create(1.81066, 0, 0, 0, 0, 2.414213, 0, 0, 0, 0, -1, -1, 0, 0, -0.2, 0);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     /// Generates a orthogonal projection matrix with the given bounds
@@ -890,7 +890,7 @@ pub const Mat4 =  struct {
     test "ortho" {
         const out = Mat4.ortho(-1, 1, -1, 1, -1, 1);
         const expected = Mat4.create(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     /// Generates a look-at matrix with the given eye position, focal point, and up axis.
@@ -984,13 +984,13 @@ pub const Mat4 =  struct {
         const out = Mat4.lookat(Vec3.create(0, 0, 0), view, up);
 
         var result = Vec3.transformMat4(view, out);
-        Vec3.expectEqual(result, Vec3.create(0, 0, -1));
+        try Vec3.expectEqual(result, Vec3.create(0, 0, -1));
 
         result = Vec3.transformMat4(up, out);
-        Vec3.expectEqual(result, Vec3.create(0, 1, 0));
+        try Vec3.expectEqual(result, Vec3.create(0, 1, 0));
 
         result = Vec3.transformMat4(right, out);
-        Vec3.expectEqual(result, Vec3.create(1, 0, 0));
+        try Vec3.expectEqual(result, Vec3.create(1, 0, 0));
     }
 
     /// Generates a matrix that makes something look at something else.
@@ -1057,13 +1057,13 @@ pub const Mat4 =  struct {
         const out = Mat4.targetTo(Vec3.create(0, 0, 0), view, up);
 
         var result = Vec3.transformMat4(view, out);
-        Vec3.expectEqual(result, Vec3.create(0, 0, 1));
+        try Vec3.expectEqual(result, Vec3.create(0, 0, 1));
 
         result = Vec3.transformMat4(up, out);
-        Vec3.expectEqual(result, Vec3.create(0, -1, 0));
+        try Vec3.expectEqual(result, Vec3.create(0, -1, 0));
 
         result = Vec3.transformMat4(right, out);
-        Vec3.expectEqual(result, Vec3.create(1, 0, 0));
+        try Vec3.expectEqual(result, Vec3.create(1, 0, 0));
     }
 
     pub fn equals(a: Mat4, b: Mat4) bool {
@@ -1170,10 +1170,10 @@ pub const Mat4 =  struct {
         );
     }
 
-    fn expectEqual(a: Mat4, b: Mat4) void {
+    fn expectEqual(a: Mat4, b: Mat4) !void {
         if (!a.equals(b)) {
             std.debug.warn("Expected:\n{}, found\n{}\n", .{ a, b });
-            @panic("test failed");
+            return error.NotEqual;
         }
     }
 };

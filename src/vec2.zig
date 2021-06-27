@@ -13,8 +13,8 @@ pub const Vec2 = packed struct {
 
     test "create" {
         const vecA = Vec2.create(1, 2);
-        std.testing.expect(f_eq(vecA.x, 1));
-        std.testing.expect(f_eq(vecA.y, 2));
+        try std.testing.expect(f_eq(vecA.x, 1));
+        try std.testing.expect(f_eq(vecA.y, 2));
     }
 
     /// Adds two vec2
@@ -31,7 +31,7 @@ pub const Vec2 = packed struct {
         const out = vecA.add(vecB);
         const expected = Vec2.create(4, 6);
 
-        Vec2.expectEqual(out, expected);
+        try Vec2.expectEqual(out, expected);
     }
 
     /// substracts vec2 b from vec2 a
@@ -48,7 +48,7 @@ pub const Vec2 = packed struct {
         const out = a.sub(b);
         const expected = Vec2.create(-2, -2);
 
-        Vec2.expectEqual(out, expected);
+        try Vec2.expectEqual(out, expected);
     }
 
     /// Multiplies two vec2
@@ -65,7 +65,7 @@ pub const Vec2 = packed struct {
         const out = a.mul(b);
         const expected = Vec2.create(3, 8);
 
-        Vec2.expectEqual(out, expected);
+        try Vec2.expectEqual(out, expected);
     }
 
     /// Divides two vec2
@@ -82,7 +82,7 @@ pub const Vec2 = packed struct {
         const out = a.div(b);
         const expected = Vec2.create(0.3333333, 0.5);
 
-        Vec2.expectEqual(out, expected);
+        try Vec2.expectEqual(out, expected);
     }
 
     /// ceil the components
@@ -98,7 +98,7 @@ pub const Vec2 = packed struct {
         const out = a.ceil();
         const expected = Vec2.create(3, 4);
 
-        Vec2.expectEqual(out, expected);
+        try Vec2.expectEqual(out, expected);
     }
 
     /// floor the components
@@ -114,7 +114,7 @@ pub const Vec2 = packed struct {
         const out = a.floor();
         const expected = Vec2.create(2, 3);
 
-        Vec2.expectEqual(out, expected);
+        try Vec2.expectEqual(out, expected);
     }
 
     /// Returns the minimum of two vec2
@@ -131,7 +131,7 @@ pub const Vec2 = packed struct {
         const out = a.min(b);
         const expected = Vec2.create(1, 2);
 
-        Vec2.expectEqual(out, expected);
+        try Vec2.expectEqual(out, expected);
     }
 
     /// Returns the maximum of two vec2
@@ -148,7 +148,7 @@ pub const Vec2 = packed struct {
         const out = a.max(b);
         const expected = Vec2.create(3, 4);
 
-        Vec2.expectEqual(out, expected);
+        try Vec2.expectEqual(out, expected);
     }
 
     /// round  the components of a vec
@@ -164,7 +164,7 @@ pub const Vec2 = packed struct {
         const out = a.round();
         const expected = Vec2.create(3, 3);
 
-        Vec2.expectEqual(out, expected);
+        try Vec2.expectEqual(out, expected);
     }
 
     /// Scales a Vec2 by a scalar number
@@ -180,7 +180,7 @@ pub const Vec2 = packed struct {
         const out = a.scale(2);
         const expected = Vec2.create(2, 4);
 
-        Vec2.expectEqual(out, expected);
+        try Vec2.expectEqual(out, expected);
     }
 
     /// Adds two vec2's after scaling the second operand by a scalar value
@@ -197,7 +197,7 @@ pub const Vec2 = packed struct {
         const out = Vec2.scaleAndAdd(a, b, 0.5);
         const expected = Vec2.create(2.5, 4);
 
-        Vec2.expectEqual(out, expected);
+        try Vec2.expectEqual(out, expected);
     }
 
     /// Calculates the euclidian distance between two vec2
@@ -209,7 +209,7 @@ pub const Vec2 = packed struct {
         const a = Vec2.create(1, 2);
         const b = Vec2.create(3, 4);
         const out = a.distance(b);
-        std.testing.expectEqual(out, 2.828427);
+        try std.testing.expectEqual(out, 2.828427);
     }
 
     /// Calculates the squared euclidian distance between two vec2's
@@ -223,7 +223,7 @@ pub const Vec2 = packed struct {
         const a = Vec2.create(1, 2);
         const b = Vec2.create(3, 4);
         const out = a.squaredDistance(b);
-        std.testing.expectEqual(out, 8);
+        try std.testing.expectEqual(out, 8);
     }
 
     /// Calculates the length of a vec2
@@ -234,7 +234,7 @@ pub const Vec2 = packed struct {
     test "length" {
         const a = Vec2.create(1, 2);
         const out = a.len();
-        std.testing.expectEqual(out, 2.23606801);
+        try std.testing.expectEqual(out, 2.23606801);
     }
 
     /// Calculates the squared length of a vec2
@@ -245,7 +245,7 @@ pub const Vec2 = packed struct {
     test "squaredLength" {
         const a = Vec2.create(1, 2);
         const out = a.squaredLength();
-        std.testing.expectEqual(out, 5);
+        try std.testing.expectEqual(out, 5);
     }
 
     /// Negates the components of a vec2
@@ -261,7 +261,7 @@ pub const Vec2 = packed struct {
         const out = a.negate();
         const expected = Vec2.create(-1, -2);
 
-        Vec2.expectEqual(out, expected);
+        try Vec2.expectEqual(out, expected);
     }
 
     /// Inverse the components of a vec2
@@ -290,7 +290,7 @@ pub const Vec2 = packed struct {
         const out = a.normalize();
         const expected = Vec2.create(1, 0);
 
-        Vec2.expectEqual(out, expected);
+        try Vec2.expectEqual(out, expected);
     }
 
     ///Calculates the dot product of two Vec2
@@ -304,7 +304,7 @@ pub const Vec2 = packed struct {
         const b = Vec2.create(3, 4);
         const out = Vec2.dot(a, b);
 
-        std.testing.expectEqual(out, 11);
+        try std.testing.expectEqual(out, 11);
     }
 
     /// Returns the cross product
@@ -317,7 +317,7 @@ pub const Vec2 = packed struct {
         const b = Vec2.create(3, 4);
         const out = Vec2.cross(a, b);
 
-        std.testing.expectEqual(out, -2);
+        try std.testing.expectEqual(out, -2);
     }
 
     /// Performs a liniear interpolation between two Vec2
@@ -334,7 +334,7 @@ pub const Vec2 = packed struct {
         const out = Vec2.lerp(a, b, 0.5);
         const expected = Vec2.create(2, 3);
 
-        Vec2.expectEqual(out, expected);
+        try Vec2.expectEqual(out, expected);
     }
 
     /// Transforms the vec2 with a mat2
@@ -352,7 +352,7 @@ pub const Vec2 = packed struct {
 
         const expected = Vec2.create(7, 10);
 
-        Vec2.expectEqual(out, expected);
+        try Vec2.expectEqual(out, expected);
     }
 
     /// Rotate a 2D vector
@@ -375,7 +375,7 @@ pub const Vec2 = packed struct {
 
         const expected = Vec2.create(0, -1);
 
-        Vec2.expectEqual(out, expected);
+        try Vec2.expectEqual(out, expected);
     }
 
     test "rotate around arbitrary origin" {
@@ -385,7 +385,7 @@ pub const Vec2 = packed struct {
 
         const expected = Vec2.create(-6, -5);
 
-        Vec2.expectEqual(out, expected);
+        try Vec2.expectEqual(out, expected);
     }
 
     /// Get the angle (rad) between two Vec2
@@ -418,7 +418,7 @@ pub const Vec2 = packed struct {
         const b = Vec2.create(1, 2);
         const out = Vec2.angle(a, b);
 
-        std.testing.expect(f_eq(out, 1.10714));
+        try std.testing.expect(f_eq(out, 1.10714));
     }
 
     pub fn equals(a: Vec2, b: Vec2) bool {
@@ -446,10 +446,10 @@ pub const Vec2 = packed struct {
         return std.fmt.format(writer, "Vec2({d:.3}, {d:.3})", .{ value.x, value.y });
     }
 
-    fn expectEqual(expected: Vec2, actual: Vec2) void {
+    fn expectEqual(expected: Vec2, actual: Vec2) !void {
         if (!expected.equals(actual)) {
             std.debug.warn("Expected: {}, found {}", .{ expected, actual });
-            @panic("test failed");
+            return error.NotEqual;
         }
     }
 };

@@ -192,34 +192,34 @@ pub const Mat2 = packed struct {
             },
         };
 
-        testing.expect(Mat2.equals(out, expected));
+        try testing.expect(Mat2.equals(out, expected));
     }
 
     test "transpose" {
         const matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
         const out = matA.transpose();
         const expected = Mat2.create(1.0, 3.0, 2.0, 4.0);
-        testing.expect(Mat2.equals(out, expected));
+        try testing.expect(Mat2.equals(out, expected));
     }
 
     test "invert" {
         const matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
         const out = matA.invert() orelse @panic("could not invert mat2");
         const expected = Mat2.create(-2, 1.0, 1.5, -0.5);
-        testing.expect(Mat2.equals(out, expected));
+        try testing.expect(Mat2.equals(out, expected));
     }
 
     test "adjoint" {
         const matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
         const out = matA.adjoint();
         const expected = Mat2.create(4, -2, -3, 1);
-        testing.expect(Mat2.equals(out, expected));
+        try testing.expect(Mat2.equals(out, expected));
     }
 
     test "determinant" {
         const matA = Mat2.create(1.0, 2.0, 3.0, 4.0);
         const out = matA.determinant();
-        testing.expectEqual(out, -2);
+        try testing.expectEqual(out, -2);
     }
 
     test "multiply" {
@@ -228,7 +228,7 @@ pub const Mat2 = packed struct {
         const out = matA.mul(matB);
         const expected = Mat2.create(23.0, 34.0, 31.0, 46.0);
 
-        testing.expect(Mat2.equals(out, expected));
+        try testing.expect(Mat2.equals(out, expected));
     }
 
     test "rotate" {
@@ -236,7 +236,7 @@ pub const Mat2 = packed struct {
         const out = matA.rotate(math.pi * 0.5);
         const expected = Mat2.create(3, 4.0, -1.0, -2.0);
 
-        testing.expect(Mat2.equals(out, expected));
+        try testing.expect(Mat2.equals(out, expected));
     }
 
     test "scale" {
@@ -244,7 +244,7 @@ pub const Mat2 = packed struct {
         const out = matA.scale(Vec2.create(2, 3));
         const expected = Mat2.create(2.0, 4.0, 9.0, 12.0);
 
-        testing.expect(Mat2.equals(out, expected));
+        try testing.expect(Mat2.equals(out, expected));
     }
 
     test "add" {
@@ -254,7 +254,7 @@ pub const Mat2 = packed struct {
         const out = matA.add(matB);
         const expected = Mat2.create(6.0, 8.0, 10.0, 12.0);
 
-        testing.expect(Mat2.equals(out, expected));
+        try testing.expect(Mat2.equals(out, expected));
     }
 
     test "substract" {
@@ -264,16 +264,16 @@ pub const Mat2 = packed struct {
         const out = matA.sub(matB);
         const expected = Mat2.create(-4, -4, -4, -4);
 
-        testing.expect(Mat2.equals(out, expected));
+        try testing.expect(Mat2.equals(out, expected));
     }
 
     test "equals" {
         const out = mat2_identity;
         const expected = Mat2.create(1.0, 0.0, 0.0, 1.0);
-        testing.expect(Mat2.equals(out, expected));
+        try testing.expect(Mat2.equals(out, expected));
 
         const notExpected = Mat2.create(5.0, 6.0, 7.0, 8.0);
 
-        testing.expect(!Mat2.equals(out, notExpected));
+        try testing.expect(!Mat2.equals(out, notExpected));
     }
 };

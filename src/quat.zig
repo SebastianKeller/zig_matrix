@@ -28,10 +28,10 @@ pub const Quat = packed struct {
 
     test "identity" {
         const quatA = Quat.identity;
-        std.testing.expect(utils.f_eq(quatA.x, 0));
-        std.testing.expect(utils.f_eq(quatA.y, 0));
-        std.testing.expect(utils.f_eq(quatA.z, 0));
-        std.testing.expect(utils.f_eq(quatA.w, 1));
+        try std.testing.expect(utils.f_eq(quatA.x, 0));
+        try std.testing.expect(utils.f_eq(quatA.y, 0));
+        try std.testing.expect(utils.f_eq(quatA.z, 0));
+        try std.testing.expect(utils.f_eq(quatA.w, 1));
     }
 
     ///Gets the rotation axis and angle for a given quaternion.
@@ -56,7 +56,7 @@ pub const Quat = packed struct {
         const quat = fromAxisAngle(Vec3.create(0, 1, 0), 0.0);
         const deg90 = quat.getAxisAngle(null);
 
-        std.testing.expect(utils.f_eq(@mod(deg90, math.pi * 2.0), 0.0));
+        try std.testing.expect(utils.f_eq(@mod(deg90, math.pi * 2.0), 0.0));
     }
 
     test "getAxisAngle simple rotation X" {
@@ -64,8 +64,8 @@ pub const Quat = packed struct {
         var out = Vec3.zero;
         const deg90 = quat.getAxisAngle(&out);
 
-        std.testing.expect(utils.f_eq(deg90, 0.7778));
-        Vec3.expectEqual(Vec3.create(1, 0, 0), out);
+        try std.testing.expect(utils.f_eq(deg90, 0.7778));
+        try Vec3.expectEqual(Vec3.create(1, 0, 0), out);
     }
 
     test "getAxisAngle simple rotation Y" {
@@ -73,8 +73,8 @@ pub const Quat = packed struct {
         var out = Vec3.zero;
         const deg90 = quat.getAxisAngle(&out);
 
-        std.testing.expect(utils.f_eq(deg90, 0.123456));
-        Vec3.expectEqual(Vec3.create(0, 0, 1), out);
+        try std.testing.expect(utils.f_eq(deg90, 0.123456));
+        try Vec3.expectEqual(Vec3.create(0, 0, 1), out);
     }
 
     test "getAxisAngle slightly irregular axis and right angle" {
@@ -82,8 +82,8 @@ pub const Quat = packed struct {
         var out = Vec3.zero;
         const deg90 = quat.getAxisAngle(&out);
 
-        std.testing.expect(utils.f_eq(deg90, math.pi * 0.5));
-        Vec3.expectEqual(Vec3.create(0.707106, 0, 0.707106), out);
+        try std.testing.expect(utils.f_eq(deg90, math.pi * 0.5));
+        try Vec3.expectEqual(Vec3.create(0.707106, 0, 0.707106), out);
     }
 
     test "getAxisAngle very irregular axis and negative input angle" {
@@ -92,9 +92,9 @@ pub const Quat = packed struct {
         const deg90 = quatA.getAxisAngle(&vec);
         const quatB = fromAxisAngle(vec, deg90);
 
-        std.testing.expect(deg90 > 0.0);
-        std.testing.expect(deg90 < math.pi * 2.0);
-        expectEqual(quatA, quatB);
+        try std.testing.expect(deg90 > 0.0);
+        try std.testing.expect(deg90 < math.pi * 2.0);
+        try expectEqual(quatA, quatB);
     }
 
     test "getAxisAngle simple rotation Z" {
@@ -102,8 +102,8 @@ pub const Quat = packed struct {
         var out = Vec3.zero;
         const deg90 = quat.getAxisAngle(&out);
 
-        std.testing.expect(utils.f_eq(deg90, 0.879546));
-        Vec3.expectEqual(Vec3.create(0, 1, 0), out);
+        try std.testing.expect(utils.f_eq(deg90, 0.879546));
+        try Vec3.expectEqual(Vec3.create(0, 1, 0), out);
     }
 
     /// Sets a quat from the given angle and rotation axis,
@@ -123,7 +123,7 @@ pub const Quat = packed struct {
     test "fromAxisAngle" {
         const out = fromAxisAngle(Vec3.create(1, 0, 0), math.pi * 0.5);
         const expected = create(0.707106, 0, 0, 0.707106);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     /// Gets the angular distance between two unit quaternions
@@ -135,7 +135,7 @@ pub const Quat = packed struct {
     test "getAngle from itself" {
         const quatA = create(1, 2, 3, 4).normalize();
         const out = getAngle(quatA, quatA);
-        std.testing.expect(utils.f_eq(out, 0.0));
+        try std.testing.expect(utils.f_eq(out, 0.0));
     }
 
     test "getAngle from rotated" {
@@ -143,7 +143,7 @@ pub const Quat = packed struct {
         const quatB = quatA.rotateX(math.pi / 4.0);
 
         const out = getAngle(quatA, quatB);
-        std.testing.expect(utils.f_eq(out, math.pi / 4.0));
+        try std.testing.expect(utils.f_eq(out, math.pi / 4.0));
     }
 
     test "getAngle compare with axisAngle" {
@@ -153,7 +153,7 @@ pub const Quat = packed struct {
         const quatAB = multiply(quatAInv, quatB);
         const reference = getAxisAngle(quatAB, null);
 
-        std.testing.expect(utils.f_eq(getAngle(quatA, quatB), reference));
+        try std.testing.expect(utils.f_eq(getAngle(quatA, quatB), reference));
     }
 
     /// Adds two quats
@@ -171,7 +171,7 @@ pub const Quat = packed struct {
         const b = Quat.create(5, 6, 7, 8);
         const out = Quat.add(a, b);
         const expected = Quat.create(6, 8, 10, 12);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     /// Multiplies two quats
@@ -198,14 +198,14 @@ pub const Quat = packed struct {
         const a = Quat.create(1, 2, 3, 4);
         const out = Quat.scale(a, 2);
         const expected = Quat.create(2, 4, 6, 8);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     pub fn dot(a: Quat, b: Quat) f32 {
         return a.x * b.x //
-            + a.y * b.y //
-            + a.z * b.z //
-            + a.w * b.w;
+        + a.y * b.y //
+        + a.z * b.z //
+        + a.w * b.w;
     }
 
     test "dot" {
@@ -213,7 +213,7 @@ pub const Quat = packed struct {
         const b = Quat.create(5, 6, 7, 8);
         const out = Quat.dot(a, b);
         const expected = 70.0;
-        std.testing.expect(utils.f_eq(expected, out));
+        try std.testing.expect(utils.f_eq(expected, out));
     }
 
     pub fn lerp(a: Quat, b: Quat, t: f32) Quat {
@@ -230,7 +230,7 @@ pub const Quat = packed struct {
         const b = Quat.create(5, 6, 7, 8);
         const out = Quat.lerp(a, b, 0.5);
         const expected = Quat.create(3, 4, 5, 6);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     pub fn length(a: Quat) f32 {
@@ -241,7 +241,7 @@ pub const Quat = packed struct {
     test "length" {
         const a = Quat.create(1, 2, 3, 4);
         const out = Quat.length(a);
-        std.testing.expect(utils.f_eq(out, 5.477225));
+        try std.testing.expect(utils.f_eq(out, 5.477225));
     }
 
     pub fn squaredLength(a: Quat) f32 {
@@ -251,7 +251,7 @@ pub const Quat = packed struct {
     test "squaredLength" {
         const a = Quat.create(1, 2, 3, 4);
         const out = Quat.squaredLength(a);
-        std.testing.expect(utils.f_eq(out, 30));
+        try std.testing.expect(utils.f_eq(out, 30));
     }
 
     pub fn normalize(a: Quat) Quat {
@@ -271,7 +271,7 @@ pub const Quat = packed struct {
         const a = Quat.create(5, 0, 0, 0);
         const out = Quat.normalize(a);
         const expected = Quat.create(1, 0, 0, 0);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     /// Rotates a quaternion by the given angle about the X axis
@@ -293,7 +293,7 @@ pub const Quat = packed struct {
 
         const vec = Vec3.create(0, 0, -1).transformQuat(out);
         const expected = Vec3.create(0, 1, 0);
-        Vec3.expectEqual(expected, vec);
+        try Vec3.expectEqual(expected, vec);
     }
 
     /// Rotates a quaternion by the given angle about the Y axis
@@ -316,7 +316,7 @@ pub const Quat = packed struct {
 
         const vec = Vec3.create(0, 0, -1).transformQuat(out);
         const expected = Vec3.create(-1, 0, 0);
-        Vec3.expectEqual(expected, vec);
+        try Vec3.expectEqual(expected, vec);
     }
 
     /// Rotates a quaternion by the given angle about the Z axis
@@ -339,7 +339,7 @@ pub const Quat = packed struct {
 
         const vec = Vec3.create(0, 1, 0).transformQuat(out);
         const expected = Vec3.create(-1, 0, 0);
-        Vec3.expectEqual(expected, vec);
+        try Vec3.expectEqual(expected, vec);
     }
 
     /// Calculates the W component of a quat from the X, Y, and Z components.
@@ -393,7 +393,7 @@ pub const Quat = packed struct {
 
     test "pow identity quat" {
         const result = pow(identity, 2.1);
-        expectEqual(result, identity);
+        try expectEqual(result, identity);
     }
 
     test "pow of one" {
@@ -401,7 +401,7 @@ pub const Quat = packed struct {
         quatA = normalize(quatA);
 
         const result = pow(quatA, 1);
-        expectEqual(result, quatA);
+        try expectEqual(result, quatA);
     }
 
     test "pow squared" {
@@ -409,7 +409,7 @@ pub const Quat = packed struct {
         quatA = normalize(quatA);
         const result = pow(quatA, 2);
 
-        expectEqual(result, multiply(quatA, quatA));
+        try expectEqual(result, multiply(quatA, quatA));
     }
 
     /// Performs a spherical linear interpolation between two quats
@@ -459,26 +459,26 @@ pub const Quat = packed struct {
     test "slerp normal case" {
         const out = slerp(create(0, 0, 0, 1), create(0, 1, 0, 0), 0.5);
         const expected = create(0, 0.707106, 0, 0.707106);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     test "slerp a == b" {
         const out = slerp(create(0, 0, 0, 1), create(0, 0, 0, 1), 0.5);
         const expected = create(0, 0, 0, 1);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     test "slerp a == -b" {
         const out = slerp(create(1, 0, 0, 0), create(-1, 0, 0, 0), 0.5);
         const expected = create(1, 0, 0, 0);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     test "slerp theta == 180deg" {
         const quatA = create(1, 0, 0, 0).rotateX(math.pi);
         const out = slerp(create(-1, 0, 0, 0), quatA, 1);
         const expected = create(0, 0, 0, -1);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     /// Calculates the inverse of a quat
@@ -499,7 +499,7 @@ pub const Quat = packed struct {
     test "invert" {
         const out = create(1, 2, 3, 4).invert();
         const expected = create(-0.033333, -0.066666, -0.1, 0.133333);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     /// Calculates the conjugate of a quat
@@ -518,8 +518,8 @@ pub const Quat = packed struct {
         var quatA = create(1, 2, 3, 4).normalize();
         var result = pow(quatA, -1);
 
-        expectEqual(quatA.conjugate(), result);
-        std.testing.expect(utils.f_eq(result.length(), 1.0));
+        try expectEqual(quatA.conjugate(), result);
+        try std.testing.expect(utils.f_eq(result.length(), 1.0));
     }
 
     test "conjugate reversible" {
@@ -527,8 +527,8 @@ pub const Quat = packed struct {
 
         const b = 2.1;
         const result = pow(pow(quatA, b), 1 / b);
-        expectEqual(quatA, result);
-        std.testing.expect(utils.f_eq(result.length(), 1.0));
+        try expectEqual(quatA, result);
+        try std.testing.expect(utils.f_eq(result.length(), 1.0));
     }
 
     /// Creates a quaternion from the given 3x3 rotation matrix.
@@ -588,10 +588,10 @@ pub const Quat = packed struct {
 
         const out = Vec3.create(0, 1, 0).transformQuat(result);
         const expected = Vec3.create(0, 0, -1);
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
-    fn testFromMat3(eye: Vec3, center: Vec3, up: Vec3) void {
+    fn testFromMat3(eye: Vec3, center: Vec3, up: Vec3) !void {
         const lookat = Mat4.lookat(eye, center, up);
 
         var mat = Mat3.fromMat4(lookat).invert() orelse @panic("test failed");
@@ -600,19 +600,19 @@ pub const Quat = packed struct {
 
         const out = Vec3.create(3, 2, -1).transformQuat(result.normalize());
         const expected = Vec3.create(3, 2, -1).transformMat3(mat);
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     test "fromMat3 normal matrix looking 'backward'" {
-        testFromMat3(Vec3.create(0, 0, 0), Vec3.create(0, 0, 1), Vec3.create(0, 1, 0));
+        try testFromMat3(Vec3.create(0, 0, 0), Vec3.create(0, 0, 1), Vec3.create(0, 1, 0));
     }
 
     test "fromMat3 normal matrix looking 'left' and 'upside down'" {
-        testFromMat3(Vec3.create(0, 0, 0), Vec3.create(-1, 0, 0), Vec3.create(0, -1, 0));
+        try testFromMat3(Vec3.create(0, 0, 0), Vec3.create(-1, 0, 0), Vec3.create(0, -1, 0));
     }
 
     test "fromMat3 normal matrix looking 'upside down'" {
-        testFromMat3(Vec3.create(0, 0, 0), Vec3.create(0, 0, 0), Vec3.create(0, -1, 0));
+        try testFromMat3(Vec3.create(0, 0, 0), Vec3.create(0, 0, 0), Vec3.create(0, -1, 0));
     }
 
     /// Creates a quaternion from the given euler angle x, y, z.
@@ -639,12 +639,12 @@ pub const Quat = packed struct {
 
     test "fromEuler legacy" {
         const result = fromEuler(-90, 0, 0);
-        expectEqual(result, Quat.create(-0.707106, 0, 0, 0.707106));
+        try expectEqual(result, Quat.create(-0.707106, 0, 0, 0.707106));
     }
 
     test "fromEuler where trace > 0" {
         const result = fromEuler(-90, 0, 0);
-        expectEqual(result, Quat.create(-0.707106, 0, 0, 0.707106));
+        try expectEqual(result, Quat.create(-0.707106, 0, 0, 0.707106));
     }
 
     /// Sets a quaternion to represent the shortest rotation from one
@@ -678,27 +678,27 @@ pub const Quat = packed struct {
 
     test "rotationTo at right angle" {
         const result = rotationTo(Vec3.create(0, 1, 0), Vec3.create(1, 0, 0));
-        expectEqual(result, Quat.create(0, 0, -0.707106, 0.707106));
+        try expectEqual(result, Quat.create(0, 0, -0.707106, 0.707106));
     }
 
     test "rotationTo when vectors are parallel" {
         const result = rotationTo(Vec3.create(0, 1, 0), Vec3.create(0, 1, 0));
-        Vec3.expectEqual(Vec3.create(0, 1, 0), Vec3.create(0, 1, 0).transformQuat(result));
+        try Vec3.expectEqual(Vec3.create(0, 1, 0), Vec3.create(0, 1, 0).transformQuat(result));
     }
 
     test "rotationTo when vectors are opposed X" {
         const result = rotationTo(Vec3.create(1, 0, 0), Vec3.create(-1, 0, 0));
-        Vec3.expectEqual(Vec3.create(-1, 0, 0), Vec3.create(1, 0, 0).transformQuat(result));
+        try Vec3.expectEqual(Vec3.create(-1, 0, 0), Vec3.create(1, 0, 0).transformQuat(result));
     }
 
     test "rotationTo when vectors are opposed Y" {
         const result = rotationTo(Vec3.create(0, 1, 0), Vec3.create(0, -1, 0));
-        Vec3.expectEqual(Vec3.create(0, -1, 0), Vec3.create(0, 1, 0).transformQuat(result));
+        try Vec3.expectEqual(Vec3.create(0, -1, 0), Vec3.create(0, 1, 0).transformQuat(result));
     }
 
     test "rotationTo when vectors are opposed Z" {
         const result = rotationTo(Vec3.create(0, 0, 1), Vec3.create(0, 0, -1));
-        Vec3.expectEqual(Vec3.create(0, 0, -1), Vec3.create(0, 0, 1).transformQuat(result));
+        try Vec3.expectEqual(Vec3.create(0, 0, -1), Vec3.create(0, 0, 1).transformQuat(result));
     }
 
     /// Performs a spherical linear interpolation with two control points
@@ -710,16 +710,16 @@ pub const Quat = packed struct {
 
     pub fn equals(a: Quat, b: Quat) bool {
         return utils.f_eq(a.x, b.x) //
-            and utils.f_eq(a.y, b.y) //
-            and utils.f_eq(a.z, b.z) //
-            and utils.f_eq(a.w, b.w);
+        and utils.f_eq(a.y, b.y) //
+        and utils.f_eq(a.z, b.z) //
+        and utils.f_eq(a.w, b.w);
     }
 
     pub fn equalsExact(a: Quat, b: Quat) bool {
         return a.x == b.x //
-            and a.y == b.y //
-            and a.z == b.z //
-            and a.w == b.w;
+        and a.y == b.y //
+        and a.z == b.z //
+        and a.w == b.w;
     }
 
     pub fn format(
@@ -732,10 +732,10 @@ pub const Quat = packed struct {
         return std.fmt.format(writer, str, .{ value.x, value.y, value.z, value.w });
     }
 
-    fn expectEqual(expected: Quat, actual: Quat) void {
+    fn expectEqual(expected: Quat, actual: Quat) !void {
         if (!expected.equals(actual)) {
             std.debug.warn("Expected: {}, found {}", .{ expected, actual });
-            @panic("test failed");
+            return error.NotEqual;
         }
     }
 

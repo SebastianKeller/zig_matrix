@@ -61,7 +61,7 @@ pub const Mat3 =  struct {
             0, 1, 2, //
             0, 0, 1);
 
-        expectEqual(expected, out);
+try expectEqual(expected, out);
     }
 
     /// Inverts the matrix
@@ -111,7 +111,7 @@ pub const Mat3 =  struct {
             0, 1, 0, //
             -1, -2, 1);
 
-        expectEqual(expected, out);
+try expectEqual(expected, out);
     }
 
     /// Calculates the adjugate
@@ -149,7 +149,7 @@ pub const Mat3 =  struct {
             0, 1, 0, //
             -1, -2, 1);
 
-        expectEqual(expected, out);
+try expectEqual(expected, out);
     }
 
     ///Calculates the determinant
@@ -166,7 +166,7 @@ pub const Mat3 =  struct {
             1, 2, 1);
 
         const out = matA.determinant();
-        testing.expectEqual(out, 1);
+        try testing.expectEqual(out, 1);
     }
 
     pub fn add(a: Mat3, b: Mat3) Mat3 {
@@ -202,7 +202,7 @@ pub const Mat3 =  struct {
             17, 19, 21, //
             23, 25, 27);
 
-        expectEqual(expected, out);
+try expectEqual(expected, out);
     }
 
     pub fn subtract(a: Mat3, b: Mat3) Mat3 {
@@ -239,7 +239,7 @@ pub const Mat3 =  struct {
             -9, -9, -9, //
             -9, -9, -9);
 
-        expectEqual(expected, out);
+try expectEqual(expected, out);
     }
 
     ///Multiplies two Mat3
@@ -284,7 +284,7 @@ pub const Mat3 =  struct {
             0, 1, 0, //
             4, 6, 1);
 
-        expectEqual(expected, out);
+try expectEqual(expected, out);
     }
 
     pub fn multiplyScalar(a: Mat3, s: f32) Mat3 {
@@ -322,7 +322,7 @@ pub const Mat3 =  struct {
             8, 10, 12, //
             14, 16, 18);
 
-        expectEqual(expected, out);
+try expectEqual(expected, out);
     }
 
     pub fn multiplyScalarAndAdd(a: Mat3, b: Mat3, s: f32) Mat3 {
@@ -355,7 +355,7 @@ pub const Mat3 =  struct {
         const out = Mat3.multiplyScalarAndAdd(matA, matB, 0.5);
         const expected = Mat3.create(6, 7.5, 9, 10.5, 12, 13.5, 15, 16.5, 18);
 
-        expectEqual(expected, out);
+try expectEqual(expected, out);
     }
 
     pub fn translate(a: Mat3, b: Vec2) Mat3 {
@@ -447,7 +447,7 @@ pub const Mat3 =  struct {
             0, 2, 0, //
             1, 2, 1);
 
-        expectEqual(expected, out);
+try expectEqual(expected, out);
     }
 
     pub fn fromTranslation(v: Vec2) Mat3 {
@@ -572,7 +572,7 @@ pub const Mat3 =  struct {
         const out = Mat3.projection(100, 200);
         const expected = Mat3.create(0.02, 0, 0, 0, -0.01, 0, -1, 1, 1);
 
-        expectEqual(expected, out);
+try expectEqual(expected, out);
     }
 
     //pub fn frob(a: Mat3) f32 {
@@ -641,10 +641,10 @@ pub const Mat3 =  struct {
         );
     }
 
-    fn expectEqual(a: Mat3, b: Mat3) void {
+    fn expectEqual(a: Mat3, b: Mat3) !void {
         if (!a.equals(b)) {
             std.debug.warn("Expected: {}, found {}\n", .{ a, b });
-            @panic("test failed");
+            return error.NotEqual;
         }
     }
 };

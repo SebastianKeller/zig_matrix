@@ -37,7 +37,7 @@ pub const Vec3 = packed struct {
         const out = Vec3.add(vecA, vecB);
         const expected = Vec3.create(8.0, 10.0, 12.0);
 
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     pub fn substract(a: Vec3, b: Vec3) Vec3 {
@@ -54,7 +54,7 @@ pub const Vec3 = packed struct {
         const out = Vec3.sub(vecA, vecB);
         const expected = Vec3.create(-4.0, -6.0, -8.0);
 
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     pub fn multiply(a: Vec3, b: Vec3) Vec3 {
@@ -71,7 +71,7 @@ pub const Vec3 = packed struct {
         const out = Vec3.mul(vecA, vecB);
         const expected = Vec3.create(7.0, 16.0, 27.0);
 
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     pub fn divide(a: Vec3, b: Vec3) Vec3 {
@@ -88,7 +88,7 @@ pub const Vec3 = packed struct {
         const out = Vec3.div(vecA, vecB);
         const expected = Vec3.create(7.0, 4.0, 3.0);
 
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     pub fn ceil(a: Vec3) Vec3 {
@@ -104,7 +104,7 @@ pub const Vec3 = packed struct {
         const out = vecA.ceil();
         const expected = Vec3.create(3.0, 4.0, 2.0);
 
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     pub fn floor(a: Vec3) Vec3 {
@@ -120,7 +120,7 @@ pub const Vec3 = packed struct {
         const out = vecA.floor();
         const expected = Vec3.create(2.0, 3.0, 1.0);
 
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     pub fn min(a: Vec3, b: Vec3) Vec3 {
@@ -137,7 +137,7 @@ pub const Vec3 = packed struct {
         const out = Vec3.min(vecA, vecB);
         const expected = Vec3.create(1.0, 1.0, 1.0);
 
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     pub fn max(a: Vec3, b: Vec3) Vec3 {
@@ -154,7 +154,7 @@ pub const Vec3 = packed struct {
         const out = Vec3.max(vecA, vecB);
         const expected = Vec3.create(3.0, 3.0, 3.0);
 
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     pub fn round(a: Vec3) Vec3 {
@@ -170,7 +170,7 @@ pub const Vec3 = packed struct {
         const out = vecA.round();
         const expected = Vec3.create(3.0, 3.0, 1.0);
 
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     pub fn scale(a: Vec3, s: f32) Vec3 {
@@ -186,7 +186,7 @@ pub const Vec3 = packed struct {
         const out = vecA.scale(2.0);
         const expected = Vec3.create(2.0, 4.0, 6.0);
 
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     pub fn scaleAndAdd(a: Vec3, b: Vec3, s: f32) Vec3 {
@@ -203,7 +203,7 @@ pub const Vec3 = packed struct {
         const out = vecA.scaleAndAdd(vecB, 0.5);
         const expected = Vec3.create(3.0, 4.5, 6.0);
 
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     pub fn distance(a: Vec3, b: Vec3) f32 {
@@ -223,7 +223,7 @@ pub const Vec3 = packed struct {
         const out = vecA.distance(vecB);
         const expected = 5.196152;
 
-        testing.expectEqual(out, expected);
+        try testing.expectEqual(out, expected);
     }
 
     pub fn squaredDistance(a: Vec3, b: Vec3) f32 {
@@ -239,7 +239,7 @@ pub const Vec3 = packed struct {
         const out = vecA.squaredDistance(vecB);
         const expected = 27.0;
 
-        testing.expectEqual(out, expected);
+        try testing.expectEqual(out, expected);
     }
 
     pub fn length(a: Vec3) f32 {
@@ -257,7 +257,7 @@ pub const Vec3 = packed struct {
         const out = vecA.length();
         const expected = 3.74165749;
 
-        testing.expectEqual(out, expected);
+        try testing.expectEqual(out, expected);
     }
 
     pub fn squaredLength(a: Vec3) f32 {
@@ -272,7 +272,7 @@ pub const Vec3 = packed struct {
         const out = vecA.squaredLength();
         const expected = 14;
 
-        testing.expectEqual(out, expected);
+        try testing.expectEqual(out, expected);
     }
 
     pub fn negate(a: Vec3) Vec3 {
@@ -291,7 +291,7 @@ pub const Vec3 = packed struct {
         const out = vecA.negate();
         const expected = Vec3.create(-1.0, -2.0, -3.0);
 
-        testing.expectEqual(out, expected);
+        try testing.expectEqual(out, expected);
     }
 
     pub fn inverse(a: Vec3) Vec3 {
@@ -326,13 +326,13 @@ pub const Vec3 = packed struct {
         const out = vecA.normalize();
         const expected = Vec3.create(1.0, 0.0, 0.0);
 
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     pub fn dot(a: Vec3, b: Vec3) f32 {
         return a.x * b.x //
-            + a.y * b.y //
-            + a.z * b.z;
+        + a.y * b.y //
+        + a.z * b.z;
     }
 
     test "dot" {
@@ -341,7 +341,7 @@ pub const Vec3 = packed struct {
         const out = Vec3.dot(vecA, vecB);
         const expected = 32.0;
 
-        testing.expectEqual(out, expected);
+        try testing.expectEqual(out, expected);
     }
 
     pub fn cross(a: Vec3, b: Vec3) Vec3 {
@@ -366,7 +366,7 @@ pub const Vec3 = packed struct {
         const out = Vec3.cross(vecA, vecB);
         const expected = Vec3.create(-3.0, 6.0, -3.0);
 
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     pub fn lerp(a: Vec3, b: Vec3, t: f32) Vec3 {
@@ -383,7 +383,7 @@ pub const Vec3 = packed struct {
         const out = Vec3.lerp(vecA, vecB, 0.5);
         const expected = Vec3.create(2.5, 3.5, 4.5);
 
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     pub fn hermite(a: Vec3, b: Vec3, c: Vec3, d: Vec3, t: f32) Vec3 {
@@ -475,7 +475,7 @@ pub const Vec3 = packed struct {
         const out = vecA.transformMat3(m);
         const expected = Vec3.create(1.0, 2.0, 3.0);
 
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     test "transformMat3 with 90deg about X" {
@@ -484,7 +484,7 @@ pub const Vec3 = packed struct {
         const out = vecA.transformMat3(m);
         const expected = Vec3.create(0.0, 0.0, 1.0);
 
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     test "transformMat3 with 90deg about Y" {
@@ -493,7 +493,7 @@ pub const Vec3 = packed struct {
         const out = vecA.transformMat3(m);
         const expected = Vec3.create(0.0, 0.0, -1.0);
 
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     test "transformMat3 with 90deg about Z" {
@@ -502,7 +502,7 @@ pub const Vec3 = packed struct {
         const out = vecA.transformMat3(m);
         const expected = Vec3.create(0.0, 1.0, 0.0);
 
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     pub fn rotateX(a: Vec3, origin: Vec3, rad: f32) Vec3 {
@@ -533,7 +533,7 @@ pub const Vec3 = packed struct {
         const vecB = Vec3.create(0.0, 0.0, 0.0);
         const out = Vec3.rotateX(vecA, vecB, math.pi);
         const expected = Vec3.create(0.0, -1.0, 0.0);
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     test "rotateX around arbitrary origin" {
@@ -541,7 +541,7 @@ pub const Vec3 = packed struct {
         const vecB = Vec3.create(2.0, 5.0, 0.0);
         const out = vecA.rotateX(vecB, math.pi);
         const expected = Vec3.create(2.0, 3.0, 0.0);
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     pub fn rotateY(a: Vec3, origin: Vec3, rad: f32) Vec3 {
@@ -568,7 +568,7 @@ pub const Vec3 = packed struct {
         const vecB = Vec3.create(0.0, 0.0, 0.0);
         const out = vecA.rotateY(vecB, math.pi);
         const expected = Vec3.create(-1.0, 0.0, 0.0);
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     test "rotateY around arbitrary origin" {
@@ -576,7 +576,7 @@ pub const Vec3 = packed struct {
         const vecB = Vec3.create(-4.0, 3.0, 10.0);
         const out = vecA.rotateY(vecB, math.pi);
         const expected = Vec3.create(-6.0, 3.0, 10.0);
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     pub fn rotateZ(a: Vec3, origin: Vec3, rad: f32) Vec3 {
@@ -607,7 +607,7 @@ pub const Vec3 = packed struct {
         const vecB = Vec3.create(0.0, 0.0, 0.0);
         const out = vecA.rotateZ(vecB, math.pi);
         const expected = Vec3.create(0.0, -1.0, 0.0);
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     test "rotateZ around arbitrary origin" {
@@ -615,7 +615,7 @@ pub const Vec3 = packed struct {
         const vecB = Vec3.create(0.0, 0.0, -5.0);
         const out = vecA.rotateZ(vecB, math.pi);
         const expected = Vec3.create(0.0, -6.0, -5.0);
-        Vec3.expectEqual(expected, out);
+        try Vec3.expectEqual(expected, out);
     }
 
     pub fn angle(a: Vec3, b: Vec3) f32 {
@@ -638,7 +638,7 @@ pub const Vec3 = packed struct {
         const vecB = Vec3.create(4.0, 5.0, 6.0);
         const out = vecA.angle(vecB);
         const expected = 0.225726;
-        testing.expect(f_eq(expected, out));
+        try testing.expect(f_eq(expected, out));
     }
 
     pub fn equals(a: Vec3, b: Vec3) bool {
@@ -670,10 +670,10 @@ pub const Vec3 = packed struct {
     pub const len = length;
     pub const sqrLen = squaredLength;
 
-    pub fn expectEqual(expected: Vec3, actual: Vec3) void {
+    pub fn expectEqual(expected: Vec3, actual: Vec3) !void {
         if (!equals(expected, actual)) {
             std.debug.warn("Expected: {}, found {}", .{ expected, actual });
-            @panic("test failed");
+            return error.NotEqual;
         }
     }
 };

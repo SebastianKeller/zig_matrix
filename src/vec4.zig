@@ -33,7 +33,7 @@ pub const Vec4 = packed struct {
         const b = Vec4.create(5, 6, 7, 8);
         const out = Vec4.add(a, b);
         const expected = Vec4.create(6, 8, 10, 12);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     pub fn substract(a: Vec4, b: Vec4) Vec4 {
@@ -50,7 +50,7 @@ pub const Vec4 = packed struct {
         const b = Vec4.create(5, 6, 7, 8);
         const out = Vec4.sub(a, b);
         const expected = Vec4.create(-4, -4, -4, -4);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     pub fn multiply(a: Vec4, b: Vec4) Vec4 {
@@ -67,7 +67,7 @@ pub const Vec4 = packed struct {
         const b = Vec4.create(5, 6, 7, 8);
         const out = Vec4.mul(a, b);
         const expected = Vec4.create(5, 12, 21, 32);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     pub fn divide(a: Vec4, b: Vec4) Vec4 {
@@ -84,7 +84,7 @@ pub const Vec4 = packed struct {
         const b = Vec4.create(5, 6, 7, 8);
         const out = Vec4.div(a, b);
         const expected = Vec4.create(0.2, 0.33333, 0.428571, 0.5);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     pub fn ceil(a: Vec4) Vec4 {
@@ -100,7 +100,7 @@ pub const Vec4 = packed struct {
         const a = Vec4.create(math.e, math.pi, @sqrt(2.0), 1.0 / @sqrt(2.0));
         const out = Vec4.ceil(a);
         const expected = Vec4.create(3, 4, 2, 1);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     pub fn floor(a: Vec4) Vec4 {
@@ -116,7 +116,7 @@ pub const Vec4 = packed struct {
         const a = Vec4.create(math.e, math.pi, @sqrt(2.0), 1.0 / @sqrt(2.0));
         const out = Vec4.floor(a);
         const expected = Vec4.create(2, 3, 1, 0);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     pub fn min(a: Vec4, b: Vec4) Vec4 {
@@ -133,7 +133,7 @@ pub const Vec4 = packed struct {
         const b = Vec4.create(3, 1, 3, 1);
         const out = Vec4.min(a, b);
         const expected = Vec4.create(1, 1, 1, 1);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     pub fn max(a: Vec4, b: Vec4) Vec4 {
@@ -150,7 +150,7 @@ pub const Vec4 = packed struct {
         const b = Vec4.create(3, 1, 3, 1);
         const out = Vec4.max(a, b);
         const expected = Vec4.create(3, 3, 3, 3);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     pub fn round(a: Vec4) Vec4 {
@@ -166,7 +166,7 @@ pub const Vec4 = packed struct {
         const a = Vec4.create(math.e, math.pi, @sqrt(2.0), 1.0 / @sqrt(2.0));
         const out = Vec4.round(a);
         const expected = Vec4.create(3, 3, 1, 1);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     pub fn scale(a: Vec4, s: f32) Vec4 {
@@ -182,7 +182,7 @@ pub const Vec4 = packed struct {
         const a = Vec4.create(1, 2, 3, 4);
         const out = Vec4.scale(a, 2);
         const expected = Vec4.create(2, 4, 6, 8);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     pub fn scaleAndAdd(a: Vec4, b: Vec4, s: f32) Vec4 {
@@ -199,7 +199,7 @@ pub const Vec4 = packed struct {
         const b = Vec4.create(5, 6, 7, 8);
         const out = Vec4.scaleAndAdd(a, b, 0.5);
         const expected = Vec4.create(3.5, 5, 6.5, 8);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     pub fn distance(a: Vec4, b: Vec4) f32 {
@@ -211,7 +211,7 @@ pub const Vec4 = packed struct {
         const a = Vec4.create(1, 2, 3, 4);
         const b = Vec4.create(5, 6, 7, 8);
         const out = Vec4.distance(a, b);
-        std.testing.expectEqual(out, 8);
+        try std.testing.expectEqual(out, 8);
     }
 
     pub fn squaredDistance(a: Vec4, b: Vec4) f32 {
@@ -226,7 +226,7 @@ pub const Vec4 = packed struct {
         const a = Vec4.create(1, 2, 3, 4);
         const b = Vec4.create(5, 6, 7, 8);
         const out = Vec4.squaredDistance(a, b);
-        std.testing.expectEqual(out, 64);
+        try std.testing.expectEqual(out, 64);
     }
 
     pub fn length(a: Vec4) f32 {
@@ -237,7 +237,7 @@ pub const Vec4 = packed struct {
     test "length" {
         const a = Vec4.create(1, 2, 3, 4);
         const out = Vec4.length(a);
-        std.testing.expect(f_eq(out, 5.477225));
+        try std.testing.expect(f_eq(out, 5.477225));
     }
 
     pub fn squaredLength(a: Vec4) f32 {
@@ -251,7 +251,7 @@ pub const Vec4 = packed struct {
     test "squaredLength" {
         const a = Vec4.create(1, 2, 3, 4);
         const out = Vec4.squaredLength(a);
-        std.testing.expect(f_eq(out, 30));
+        try std.testing.expect(f_eq(out, 30));
     }
 
     pub fn negate(a: Vec4) Vec4 {
@@ -267,7 +267,7 @@ pub const Vec4 = packed struct {
         const a = Vec4.create(1, 2, 3, 4);
         const out = Vec4.negate(a);
         const expected = Vec4.create(-1, -2, -3, -4);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     pub fn inverse(a: Vec4) Vec4 {
@@ -301,14 +301,14 @@ pub const Vec4 = packed struct {
         const a = Vec4.create(5, 0, 0, 0);
         const out = Vec4.normalize(a);
         const expected = Vec4.create(1, 0, 0, 0);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     pub fn dot(a: Vec4, b: Vec4) f32 {
         return a.x * b.x //
-            + a.y * b.y //
-            + a.z * b.z //
-            + a.w * b.w;
+        + a.y * b.y //
+        + a.z * b.z //
+        + a.w * b.w;
     }
 
     test "dot" {
@@ -316,7 +316,7 @@ pub const Vec4 = packed struct {
         const b = Vec4.create(5, 6, 7, 8);
         const out = Vec4.dot(a, b);
         const expected = 70.0;
-        std.testing.expect(f_eq(expected, out));
+        try std.testing.expect(f_eq(expected, out));
     }
 
     /// Returns the cross-product of three vectors in a 4-dimensional space
@@ -346,7 +346,7 @@ pub const Vec4 = packed struct {
         const c = Vec4.create(0, 0, 1, 0);
         const out = Vec4.cross(a, b, c);
         const expected = Vec4.create(0, 0, 0, -1);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     pub fn lerp(a: Vec4, b: Vec4, t: f32) Vec4 {
@@ -363,7 +363,7 @@ pub const Vec4 = packed struct {
         const b = Vec4.create(5, 6, 7, 8);
         const out = Vec4.lerp(a, b, 0.5);
         const expected = Vec4.create(3, 4, 5, 6);
-        expectEqual(expected, out);
+        try expectEqual(expected, out);
     }
 
     pub fn equals(a: Vec4, b: Vec4) bool {
@@ -395,10 +395,10 @@ pub const Vec4 = packed struct {
     pub const len = length;
     pub const sqrLen = squaredLength;
 
-    fn expectEqual(expected: Vec4, actual: Vec4) void {
+    fn expectEqual(expected: Vec4, actual: Vec4) !void {
         if (!equals(expected, actual)) {
             std.debug.warn("Expected: {}, found {}", .{ expected, actual });
-            @panic("test failed");
+            return error.NotEqual;
         }
     }
 };
