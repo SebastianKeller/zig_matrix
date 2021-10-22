@@ -1,4 +1,5 @@
-const testing = @import("std").testing;
+const std = @import("std");
+const testing = std.testing;
 const math = @import("std").math;
 const Vec2 = @import("vec2.zig").Vec2;
 const f_eq = @import("utils.zig").f_eq;
@@ -176,6 +177,8 @@ pub const Mat2 = packed struct {
         options: std.fmt.FormatOptions,
         writer: anytype,
     ) !void {
+        _ = options;
+        _ = fmt;
         return std.fmt.format(
             writer,
             "Mat2({d:.3}, {d:.3}, {d:.3}, {d:.3})",

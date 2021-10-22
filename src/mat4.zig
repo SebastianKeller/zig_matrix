@@ -975,8 +975,6 @@ pub const Mat4 = struct {
     }
 
     test "lookat (down)" {
-        const eye = Vec3.create(0, 0, 1);
-        const center = Vec3.create(0, 0, -1);
         const view = Vec3.create(0, -1, 0);
         const up = Vec3.create(0, 0, -1);
         const right = Vec3.create(1, 0, 0);
@@ -1048,8 +1046,6 @@ pub const Mat4 = struct {
     }
 
     test "targetTo (looking down)" {
-        const eye = Vec3.create(0, 0, 1);
-        const center = Vec3.create(0, 0, -1);
         const view = Vec3.create(0, -1, 0);
         const up = Vec3.create(0, 0, -1);
         const right = Vec3.create(1, 0, 0);
@@ -1145,6 +1141,8 @@ pub const Mat4 = struct {
         options: std.fmt.FormatOptions,
         writer: anytype,
     ) !void {
+        _ = options;
+        _ = fmt;
         const str = "Mat4({d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, {d:.7}, )";
         return std.fmt.format(
             writer,

@@ -728,6 +728,8 @@ pub const Quat = packed struct {
         options: std.fmt.FormatOptions,
         writer: anytype,
     ) !void {
+        _ = options;
+        _ = fmt;
         const str = "Quat({d:.3}, {d:.3}, {d:.3}, {d:.3})";
         return std.fmt.format(writer, str, .{ value.x, value.y, value.z, value.w });
     }

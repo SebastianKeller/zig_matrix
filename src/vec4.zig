@@ -380,6 +380,8 @@ pub const Vec4 = packed struct {
         options: std.fmt.FormatOptions,
         writer: anytype,
     ) !void {
+        _ = options;
+        _ = fmt;
         return std.fmt.format(
             writer,
             "Vec4({d:.3}, {d:.3}, {d:.3}, {d:.3})",

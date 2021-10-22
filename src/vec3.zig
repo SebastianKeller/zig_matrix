@@ -655,6 +655,8 @@ pub const Vec3 = packed struct {
         options: std.fmt.FormatOptions,
         writer: anytype,
     ) !void {
+        _ = options;
+        _ = fmt;
         return std.fmt.format(
             writer,
             "Vec3({d:.3}, {d:.3}, {d:.3})",

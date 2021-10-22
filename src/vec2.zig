@@ -4,8 +4,8 @@ const Mat2 = @import("mat2.zig").Mat2;
 const f_eq = @import("utils.zig").f_eq;
 
 pub const Vec2 = packed struct {
-     x: f32,
-     y: f32,
+    x: f32,
+    y: f32,
 
     pub fn create(x: f32, y: f32) Vec2 {
         return Vec2{ .x = x, .y = y };
@@ -71,8 +71,8 @@ pub const Vec2 = packed struct {
     /// Divides two vec2
     pub fn divide(a: Vec2, b: Vec2) Vec2 {
         return Vec2{
-                .x = a.x / b.x,
-                .y = a.y / b.y,
+            .x = a.x / b.x,
+            .y = a.y / b.y,
         };
     }
 
@@ -88,8 +88,8 @@ pub const Vec2 = packed struct {
     /// ceil the components
     pub fn ceil(a: Vec2) Vec2 {
         return Vec2{
-        .x=        @ceil(a.x),
-          .y=      @ceil(a.y),
+            .x = @ceil(a.x),
+            .y = @ceil(a.y),
         };
     }
 
@@ -104,8 +104,8 @@ pub const Vec2 = packed struct {
     /// floor the components
     pub fn floor(a: Vec2) Vec2 {
         return Vec2{
-                .x= @floor(a.x),
-                .y= @floor(a.y),
+            .x = @floor(a.x),
+            .y = @floor(a.y),
         };
     }
 
@@ -120,8 +120,8 @@ pub const Vec2 = packed struct {
     /// Returns the minimum of two vec2
     pub fn min(a: Vec2, b: Vec2) Vec2 {
         return Vec2{
-        .x=        math.min(a.x, b.x),
-          .y=      math.min(a.y, b.y),
+            .x = math.min(a.x, b.x),
+            .y = math.min(a.y, b.y),
         };
     }
 
@@ -137,8 +137,8 @@ pub const Vec2 = packed struct {
     /// Returns the maximum of two vec2
     pub fn max(a: Vec2, b: Vec2) Vec2 {
         return Vec2{
-        .x=        math.max(a.x, b.x),
-          .y=      math.max(a.y, b.y),
+            .x = math.max(a.x, b.x),
+            .y = math.max(a.y, b.y),
         };
     }
 
@@ -154,8 +154,8 @@ pub const Vec2 = packed struct {
     /// round  the components of a vec
     pub fn round(a: Vec2) Vec2 {
         return Vec2{
-        .x=        @round(a.x),
-          .y=      @round(a.y),
+            .x = @round(a.x),
+            .y = @round(a.y),
         };
     }
 
@@ -170,8 +170,8 @@ pub const Vec2 = packed struct {
     /// Scales a Vec2 by a scalar number
     pub fn scale(a: Vec2, b: f32) Vec2 {
         return Vec2{
-        .x=        a.x * b,
-          .y=      a.y * b,
+            .x = a.x * b,
+            .y = a.y * b,
         };
     }
 
@@ -186,8 +186,8 @@ pub const Vec2 = packed struct {
     /// Adds two vec2's after scaling the second operand by a scalar value
     pub fn scaleAndAdd(a: Vec2, b: Vec2, s: f32) Vec2 {
         return Vec2{
-        .x=        a.x + (b.x * s),
-          .y=      a.y + (b.y * s),
+            .x = a.x + (b.x * s),
+            .y = a.y + (b.y * s),
         };
     }
 
@@ -251,8 +251,8 @@ pub const Vec2 = packed struct {
     /// Negates the components of a vec2
     pub fn negate(a: Vec2) Vec2 {
         return Vec2{
-                .x=-a.x,
-                .y=-a.y,
+            .x = -a.x,
+            .y = -a.y,
         };
     }
 
@@ -267,8 +267,8 @@ pub const Vec2 = packed struct {
     /// Inverse the components of a vec2
     pub fn inverse(a: Vec2) Vec2 {
         return Vec2{
-                .x=1/a.x,
-                .y=1/a.y,
+            .x = 1 / a.x,
+            .y = 1 / a.y,
         };
     }
 
@@ -280,8 +280,8 @@ pub const Vec2 = packed struct {
         }
 
         return Vec2{
-                .x=v.x * l,
-                .y=v.y * l,
+            .x = v.x * l,
+            .y = v.y * l,
         };
     }
 
@@ -323,8 +323,8 @@ pub const Vec2 = packed struct {
     /// Performs a liniear interpolation between two Vec2
     pub fn lerp(a: Vec2, b: Vec2, t: f32) Vec2 {
         return Vec2{
-               .x= a.x + t * (b.x - a.x),
-               .y= a.y + t * (b.y - a.y),
+            .x = a.x + t * (b.x - a.x),
+            .y = a.y + t * (b.y - a.y),
         };
     }
 
@@ -340,8 +340,8 @@ pub const Vec2 = packed struct {
     /// Transforms the vec2 with a mat2
     pub fn transformMat2(a: Vec2, m: Mat2) Vec2 {
         return Vec2{
-            .x=m.data[0][0] * a.x + m.data[1][0] * a.y,
-            .y=m.data[0][1] * a.x + m.data[1][1] * a.y,
+            .x = m.data[0][0] * a.x + m.data[1][0] * a.y,
+            .y = m.data[0][1] * a.x + m.data[1][1] * a.y,
         };
     }
 
@@ -363,8 +363,8 @@ pub const Vec2 = packed struct {
         const cos = @cos(rad);
 
         return Vec2{
-                .x=p0 * cos - p1 * sin + origin.x,
-                .y=p0 * sin + p1 * cos + origin.y,
+            .x = p0 * cos - p1 * sin + origin.x,
+            .y = p0 * sin + p1 * cos + origin.y,
         };
     }
 
@@ -443,6 +443,8 @@ pub const Vec2 = packed struct {
         options: std.fmt.FormatOptions,
         writer: anytype,
     ) !void {
+        _ = options;
+        _ = fmt;
         return std.fmt.format(writer, "Vec2({d:.3}, {d:.3})", .{ value.x, value.y });
     }
 
