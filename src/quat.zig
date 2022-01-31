@@ -736,7 +736,7 @@ pub const Quat = packed struct {
 
     fn expectEqual(expected: Quat, actual: Quat) !void {
         if (!expected.equals(actual)) {
-            std.debug.warn("Expected: {}, found {}", .{ expected, actual });
+            std.log.err("Expected: {}, found {}", .{ expected, actual });
             return error.NotEqual;
         }
     }

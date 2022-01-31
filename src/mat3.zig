@@ -640,7 +640,7 @@ pub const Mat3 = struct {
 
     fn expectEqual(a: Mat3, b: Mat3) !void {
         if (!a.equals(b)) {
-            std.debug.warn("Expected: {}, found {}\n", .{ a, b });
+            std.log.err("Expected: {}, found {}\n", .{ a, b });
             return error.NotEqual;
         }
     }

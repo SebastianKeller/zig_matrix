@@ -1170,7 +1170,7 @@ pub const Mat4 = struct {
 
     fn expectEqual(a: Mat4, b: Mat4) !void {
         if (!a.equals(b)) {
-            std.debug.warn("Expected:\n{}, found\n{}\n", .{ a, b });
+            std.log.err("Expected:\n{}, found\n{}\n", .{ a, b });
             return error.NotEqual;
         }
     }

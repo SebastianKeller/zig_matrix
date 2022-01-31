@@ -399,7 +399,7 @@ pub const Vec4 = packed struct {
 
     fn expectEqual(expected: Vec4, actual: Vec4) !void {
         if (!equals(expected, actual)) {
-            std.debug.warn("Expected: {}, found {}", .{ expected, actual });
+            std.log.err("Expected: {}, found {}", .{ expected, actual });
             return error.NotEqual;
         }
     }
