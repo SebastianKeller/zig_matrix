@@ -526,7 +526,7 @@ pub const Quat = packed struct {
         var quatA = create(1, 2, 3, 4).normalize();
 
         const b = 2.1;
-        const result = pow(pow(quatA, b), 1 / b);
+        const result = pow(pow(quatA, b), 1.0 / b);
         try expectEqual(quatA, result);
         try std.testing.expect(utils.f_eq(result.length(), 1.0));
     }

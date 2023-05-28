@@ -22,7 +22,7 @@ pub fn mat2_values(m00: f32, m01: f32, m10: f32, m11: f32) Mat2 {
     };
 }
 
-pub const Mat2 = packed struct {
+pub const Mat2 = struct {
     data: [2][2]f32,
 
     pub fn identity() Mat2 {
@@ -166,9 +166,9 @@ pub const Mat2 = packed struct {
 
     pub fn equals(a: Mat2, b: Mat2) bool {
         return f_eq(a.data[0][0], b.data[0][0]) //
-            and f_eq(a.data[0][1], b.data[0][1]) //
-            and f_eq(a.data[1][0], b.data[1][0]) //
-            and f_eq(a.data[1][1], b.data[1][1]);
+        and f_eq(a.data[0][1], b.data[0][1]) //
+        and f_eq(a.data[1][0], b.data[1][0]) //
+        and f_eq(a.data[1][1], b.data[1][1]);
     }
 
     pub fn format(
