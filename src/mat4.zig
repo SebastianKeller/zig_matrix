@@ -846,7 +846,7 @@ pub const Mat4 = struct {
     }
 
     test "perspective, 45deg fovy, realistic aspect ratio, no far plane" {
-        const out = Mat4.perspective(45 * math.pi / 180.0, 640.0 / 480.0, 0.1, math.inf_f32);
+        const out = Mat4.perspective(45 * math.pi / 180.0, 640.0 / 480.0, 0.1, math.inf(f32));
         const expected = Mat4.create(1.81066, 0, 0, 0, 0, 2.414213, 0, 0, 0, 0, -1, -1, 0, 0, -0.2, 0);
         try expectEqual(expected, out);
     }
@@ -1098,22 +1098,22 @@ pub const Mat4 = struct {
         const b14 = b.data[3][2];
         const b15 = b.data[3][3];
 
-        return (@fabs(a0 - b0) <= epsilon * math.max(1, math.max(@fabs(a0), @fabs(b0))) and
-            @fabs(a1 - b1) <= epsilon * math.max(1, math.max(@fabs(a1), @fabs(b1))) and
-            @fabs(a2 - b2) <= epsilon * math.max(1, math.max(@fabs(a2), @fabs(b2))) and
-            @fabs(a3 - b3) <= epsilon * math.max(1, math.max(@fabs(a3), @fabs(b3))) and
-            @fabs(a4 - b4) <= epsilon * math.max(1, math.max(@fabs(a4), @fabs(b4))) and
-            @fabs(a5 - b5) <= epsilon * math.max(1, math.max(@fabs(a5), @fabs(b5))) and
-            @fabs(a6 - b6) <= epsilon * math.max(1, math.max(@fabs(a6), @fabs(b6))) and
-            @fabs(a7 - b7) <= epsilon * math.max(1, math.max(@fabs(a7), @fabs(b7))) and
-            @fabs(a8 - b8) <= epsilon * math.max(1, math.max(@fabs(a8), @fabs(b8))) and
-            @fabs(a9 - b9) <= epsilon * math.max(1, math.max(@fabs(a9), @fabs(b9))) and
-            @fabs(a10 - b10) <= epsilon * math.max(1, math.max(@fabs(a10), @fabs(b10))) and
-            @fabs(a11 - b11) <= epsilon * math.max(1, math.max(@fabs(a11), @fabs(b11))) and
-            @fabs(a12 - b12) <= epsilon * math.max(1, math.max(@fabs(a12), @fabs(b12))) and
-            @fabs(a13 - b13) <= epsilon * math.max(1, math.max(@fabs(a13), @fabs(b13))) and
-            @fabs(a14 - b14) <= epsilon * math.max(1, math.max(@fabs(a14), @fabs(b14))) and
-            @fabs(a15 - b15) <= epsilon * math.max(1, math.max(@fabs(a15), @fabs(b15))));
+        return (@fabs(a0 - b0) <= epsilon * @max(1, @max(@fabs(a0), @fabs(b0))) and
+            @fabs(a1 - b1) <= epsilon * @max(1, @max(@fabs(a1), @fabs(b1))) and
+            @fabs(a2 - b2) <= epsilon * @max(1, @max(@fabs(a2), @fabs(b2))) and
+            @fabs(a3 - b3) <= epsilon * @max(1, @max(@fabs(a3), @fabs(b3))) and
+            @fabs(a4 - b4) <= epsilon * @max(1, @max(@fabs(a4), @fabs(b4))) and
+            @fabs(a5 - b5) <= epsilon * @max(1, @max(@fabs(a5), @fabs(b5))) and
+            @fabs(a6 - b6) <= epsilon * @max(1, @max(@fabs(a6), @fabs(b6))) and
+            @fabs(a7 - b7) <= epsilon * @max(1, @max(@fabs(a7), @fabs(b7))) and
+            @fabs(a8 - b8) <= epsilon * @max(1, @max(@fabs(a8), @fabs(b8))) and
+            @fabs(a9 - b9) <= epsilon * @max(1, @max(@fabs(a9), @fabs(b9))) and
+            @fabs(a10 - b10) <= epsilon * @max(1, @max(@fabs(a10), @fabs(b10))) and
+            @fabs(a11 - b11) <= epsilon * @max(1, @max(@fabs(a11), @fabs(b11))) and
+            @fabs(a12 - b12) <= epsilon * @max(1, @max(@fabs(a12), @fabs(b12))) and
+            @fabs(a13 - b13) <= epsilon * @max(1, @max(@fabs(a13), @fabs(b13))) and
+            @fabs(a14 - b14) <= epsilon * @max(1, @max(@fabs(a14), @fabs(b14))) and
+            @fabs(a15 - b15) <= epsilon * @max(1, @max(@fabs(a15), @fabs(b15))));
     }
 
     pub fn exactEquals(a: Mat4, b: Mat4) bool {

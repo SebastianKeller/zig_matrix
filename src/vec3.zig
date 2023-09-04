@@ -125,9 +125,9 @@ pub const Vec3 = packed struct {
 
     pub fn min(a: Vec3, b: Vec3) Vec3 {
         return Vec3.create(
-            math.min(a.x, b.x),
-            math.min(a.y, b.y),
-            math.min(a.z, b.z),
+            @min(a.x, b.x),
+            @min(a.y, b.y),
+            @min(a.z, b.z),
         );
     }
 
@@ -142,9 +142,9 @@ pub const Vec3 = packed struct {
 
     pub fn max(a: Vec3, b: Vec3) Vec3 {
         return Vec3.create(
-            math.max(a.x, b.x),
-            math.max(a.y, b.y),
-            math.max(a.z, b.z),
+            @max(a.x, b.x),
+            @max(a.y, b.y),
+            @max(a.z, b.z),
         );
     }
 

@@ -120,8 +120,8 @@ pub const Vec2 = packed struct {
     /// Returns the minimum of two vec2
     pub fn min(a: Vec2, b: Vec2) Vec2 {
         return Vec2{
-            .x = math.min(a.x, b.x),
-            .y = math.min(a.y, b.y),
+            .x = @min(a.x, b.x),
+            .y = @min(a.y, b.y),
         };
     }
 
@@ -137,8 +137,8 @@ pub const Vec2 = packed struct {
     /// Returns the maximum of two vec2
     pub fn max(a: Vec2, b: Vec2) Vec2 {
         return Vec2{
-            .x = math.max(a.x, b.x),
-            .y = math.max(a.y, b.y),
+            .x = @max(a.x, b.x),
+            .y = @max(a.y, b.y),
         };
     }
 

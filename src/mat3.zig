@@ -595,15 +595,15 @@ pub const Mat3 = struct {
         const b6 = b.data[2][0];
         const b7 = b.data[2][1];
         const b8 = b.data[2][2];
-        return (@fabs(a0 - b0) <= epsilon * math.max(1, math.max(@fabs(a0), @fabs(b0))) and
-            @fabs(a1 - b1) <= epsilon * math.max(1, math.max(@fabs(a1), @fabs(b1))) and
-            @fabs(a2 - b2) <= epsilon * math.max(1, math.max(@fabs(a2), @fabs(b2))) and
-            @fabs(a3 - b3) <= epsilon * math.max(1, math.max(@fabs(a3), @fabs(b3))) and
-            @fabs(a4 - b4) <= epsilon * math.max(1, math.max(@fabs(a4), @fabs(b4))) and
-            @fabs(a5 - b5) <= epsilon * math.max(1, math.max(@fabs(a5), @fabs(b5))) and
-            @fabs(a6 - b6) <= epsilon * math.max(1, math.max(@fabs(a6), @fabs(b6))) and
-            @fabs(a7 - b7) <= epsilon * math.max(1, math.max(@fabs(a7), @fabs(b7))) and
-            @fabs(a8 - b8) <= epsilon * math.max(1, math.max(@fabs(a8), @fabs(b8))));
+        return (@fabs(a0 - b0) <= epsilon * @max(1, @max(@fabs(a0), @fabs(b0))) and
+            @fabs(a1 - b1) <= epsilon * @max(1, @max(@fabs(a1), @fabs(b1))) and
+            @fabs(a2 - b2) <= epsilon * @max(1, @max(@fabs(a2), @fabs(b2))) and
+            @fabs(a3 - b3) <= epsilon * @max(1, @max(@fabs(a3), @fabs(b3))) and
+            @fabs(a4 - b4) <= epsilon * @max(1, @max(@fabs(a4), @fabs(b4))) and
+            @fabs(a5 - b5) <= epsilon * @max(1, @max(@fabs(a5), @fabs(b5))) and
+            @fabs(a6 - b6) <= epsilon * @max(1, @max(@fabs(a6), @fabs(b6))) and
+            @fabs(a7 - b7) <= epsilon * @max(1, @max(@fabs(a7), @fabs(b7))) and
+            @fabs(a8 - b8) <= epsilon * @max(1, @max(@fabs(a8), @fabs(b8))));
     }
 
     pub fn exactEquals(a: Mat3, b: Mat3) bool {

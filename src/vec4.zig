@@ -121,10 +121,10 @@ pub const Vec4 = packed struct {
 
     pub fn min(a: Vec4, b: Vec4) Vec4 {
         return Vec4{
-            .x = math.min(a.x, b.x),
-            .y = math.min(a.y, b.y),
-            .z = math.min(a.z, b.z),
-            .w = math.min(a.w, b.w),
+            .x = @min(a.x, b.x),
+            .y = @min(a.y, b.y),
+            .z = @min(a.z, b.z),
+            .w = @min(a.w, b.w),
         };
     }
 
@@ -138,10 +138,10 @@ pub const Vec4 = packed struct {
 
     pub fn max(a: Vec4, b: Vec4) Vec4 {
         return Vec4{
-            .x = math.max(a.x, b.x),
-            .y = math.max(a.y, b.y),
-            .z = math.max(a.z, b.z),
-            .w = math.max(a.w, b.w),
+            .x = @max(a.x, b.x),
+            .y = @max(a.y, b.y),
+            .z = @max(a.z, b.z),
+            .w = @max(a.w, b.w),
         };
     }
 
