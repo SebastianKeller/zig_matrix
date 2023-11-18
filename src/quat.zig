@@ -350,7 +350,7 @@ pub const Quat = packed struct {
             .x = a.x,
             .y = a.y,
             .z = a.z,
-            .w = @sqrt(@fabs(1.0 - a.x * a.x - a.y * a.y - a.z * a.z)),
+            .w = @sqrt(@abs(1.0 - a.x * a.x - a.y * a.y - a.z * a.z)),
         };
     }
 

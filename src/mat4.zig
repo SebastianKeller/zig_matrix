@@ -908,9 +908,9 @@ pub const Mat4 = struct {
         const centery = center.y;
         const centerz = center.z;
 
-        if (@fabs(eyex - centerx) < utils.epsilon and
-            @fabs(eyey - centery) < utils.epsilon and
-            @fabs(eyez - centerz) < utils.epsilon)
+        if (@abs(eyex - centerx) < utils.epsilon and
+            @abs(eyey - centery) < utils.epsilon and
+            @abs(eyez - centerz) < utils.epsilon)
             return mat4_identity;
 
         var z0 = eyex - centerx;
@@ -1098,22 +1098,22 @@ pub const Mat4 = struct {
         const b14 = b.data[3][2];
         const b15 = b.data[3][3];
 
-        return (@fabs(a0 - b0) <= epsilon * @max(1, @max(@fabs(a0), @fabs(b0))) and
-            @fabs(a1 - b1) <= epsilon * @max(1, @max(@fabs(a1), @fabs(b1))) and
-            @fabs(a2 - b2) <= epsilon * @max(1, @max(@fabs(a2), @fabs(b2))) and
-            @fabs(a3 - b3) <= epsilon * @max(1, @max(@fabs(a3), @fabs(b3))) and
-            @fabs(a4 - b4) <= epsilon * @max(1, @max(@fabs(a4), @fabs(b4))) and
-            @fabs(a5 - b5) <= epsilon * @max(1, @max(@fabs(a5), @fabs(b5))) and
-            @fabs(a6 - b6) <= epsilon * @max(1, @max(@fabs(a6), @fabs(b6))) and
-            @fabs(a7 - b7) <= epsilon * @max(1, @max(@fabs(a7), @fabs(b7))) and
-            @fabs(a8 - b8) <= epsilon * @max(1, @max(@fabs(a8), @fabs(b8))) and
-            @fabs(a9 - b9) <= epsilon * @max(1, @max(@fabs(a9), @fabs(b9))) and
-            @fabs(a10 - b10) <= epsilon * @max(1, @max(@fabs(a10), @fabs(b10))) and
-            @fabs(a11 - b11) <= epsilon * @max(1, @max(@fabs(a11), @fabs(b11))) and
-            @fabs(a12 - b12) <= epsilon * @max(1, @max(@fabs(a12), @fabs(b12))) and
-            @fabs(a13 - b13) <= epsilon * @max(1, @max(@fabs(a13), @fabs(b13))) and
-            @fabs(a14 - b14) <= epsilon * @max(1, @max(@fabs(a14), @fabs(b14))) and
-            @fabs(a15 - b15) <= epsilon * @max(1, @max(@fabs(a15), @fabs(b15))));
+        return (@abs(a0 - b0) <= epsilon * @max(1, @max(@abs(a0), @abs(b0))) and
+            @abs(a1 - b1) <= epsilon * @max(1, @max(@abs(a1), @abs(b1))) and
+            @abs(a2 - b2) <= epsilon * @max(1, @max(@abs(a2), @abs(b2))) and
+            @abs(a3 - b3) <= epsilon * @max(1, @max(@abs(a3), @abs(b3))) and
+            @abs(a4 - b4) <= epsilon * @max(1, @max(@abs(a4), @abs(b4))) and
+            @abs(a5 - b5) <= epsilon * @max(1, @max(@abs(a5), @abs(b5))) and
+            @abs(a6 - b6) <= epsilon * @max(1, @max(@abs(a6), @abs(b6))) and
+            @abs(a7 - b7) <= epsilon * @max(1, @max(@abs(a7), @abs(b7))) and
+            @abs(a8 - b8) <= epsilon * @max(1, @max(@abs(a8), @abs(b8))) and
+            @abs(a9 - b9) <= epsilon * @max(1, @max(@abs(a9), @abs(b9))) and
+            @abs(a10 - b10) <= epsilon * @max(1, @max(@abs(a10), @abs(b10))) and
+            @abs(a11 - b11) <= epsilon * @max(1, @max(@abs(a11), @abs(b11))) and
+            @abs(a12 - b12) <= epsilon * @max(1, @max(@abs(a12), @abs(b12))) and
+            @abs(a13 - b13) <= epsilon * @max(1, @max(@abs(a13), @abs(b13))) and
+            @abs(a14 - b14) <= epsilon * @max(1, @max(@abs(a14), @abs(b14))) and
+            @abs(a15 - b15) <= epsilon * @max(1, @max(@abs(a15), @abs(b15))));
     }
 
     pub fn exactEquals(a: Mat4, b: Mat4) bool {
