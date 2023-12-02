@@ -276,7 +276,7 @@ pub const Quat = packed struct {
 
     /// Rotates a quaternion by the given angle about the X axis
     pub fn rotateX(a: Quat, rad: f32) Quat {
-        var radHalf = rad * 0.5;
+        const radHalf = rad * 0.5;
         const bx = @sin(radHalf);
         const bw = @cos(radHalf);
 
@@ -298,7 +298,7 @@ pub const Quat = packed struct {
 
     /// Rotates a quaternion by the given angle about the Y axis
     pub fn rotateY(a: Quat, rad: f32) Quat {
-        var radHalf = rad * 0.5;
+        const radHalf = rad * 0.5;
 
         const by = @sin(radHalf);
         const bw = @cos(radHalf);
@@ -356,9 +356,9 @@ pub const Quat = packed struct {
 
     /// Calculate the exponential of a unit quaternion.
     pub fn exp(a: Quat) Quat {
-        var r = @sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
-        var et = @exp(a.w);
-        var s = if (r > 0) (et * @sin(r) / r) else 0.0;
+        const r = @sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+        const et = @exp(a.w);
+        const s = if (r > 0) (et * @sin(r) / r) else 0.0;
 
         return Quat{
             .x = a.x * s,
@@ -370,7 +370,7 @@ pub const Quat = packed struct {
 
     /// Calculate the naturl logarithm of a unit quaternion.
     pub fn ln(a: Quat) Quat {
-        var r = @sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+        const r = @sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
         var t: f32 = 0.0;
         if (r > 0)
             t = math.atan2(f32, r, a.w) / r;
@@ -523,7 +523,7 @@ pub const Quat = packed struct {
     }
 
     test "conjugate reversible" {
-        var quatA = create(1, 2, 3, 4).normalize();
+        const quatA = create(1, 2, 3, 4).normalize();
 
         const b = 2.1;
         const result = pow(pow(quatA, b), 1.0 / b);
@@ -561,8 +561,8 @@ pub const Quat = packed struct {
                 i = 1;
             if (m.data[2][2] > m.data[i][i])
                 i = 2;
-            var j = (i + 1) % 3;
-            var k = (i + 2) % 3;
+            const j = (i + 1) % 3;
+            const k = (i + 2) % 3;
 
             const fRoot = @sqrt(m.data[i][i] - m.data[j][j] - m.data[k][k] + 1.0);
             const fRoot2 = 0.5 / fRoot;
@@ -652,8 +652,8 @@ pub const Quat = packed struct {
     /// Both vectors are assumed to be unit length.
     pub fn rotationTo(a: Vec3, b: Vec3) Quat {
         var tmpvec3 = Vec3.zero;
-        var xUnitVec3 = Vec3.create(1, 0, 0);
-        var yUnitVec3 = Vec3.create(0, 1, 0);
+        const xUnitVec3 = Vec3.create(1, 0, 0);
+        const yUnitVec3 = Vec3.create(0, 1, 0);
         const dotProduct = Vec3.dot(a, b);
 
         if (dotProduct < (-1 + utils.epsilon)) {
@@ -703,8 +703,8 @@ pub const Quat = packed struct {
 
     /// Performs a spherical linear interpolation with two control points
     pub fn sqlerp(a: Quat, b: Quat, c: Quat, d: Quat, t: f32) Quat {
-        var temp1 = slerp(a, d, t);
-        var temp2 = slerp(b, c, t);
+        const temp1 = slerp(a, d, t);
+        const temp2 = slerp(b, c, t);
         return slerp(temp1, temp2, 2 * t * (1 - t));
     }
 

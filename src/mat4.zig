@@ -709,7 +709,7 @@ pub const Mat4 = struct {
     }
 
     test "getTranslation - identity" {
-        var out = Mat4.getTranslation(mat4_identity);
+        const out = Mat4.getTranslation(mat4_identity);
         const expected = Vec3.create(0, 0, 0);
         try Vec3.expectEqual(expected, out);
     }
@@ -717,7 +717,7 @@ pub const Mat4 = struct {
     test "getTranslation - translation-only" {
         const matB = Mat4.create(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 4, 5, 6, 1);
 
-        var out = Mat4.getTranslation(matB);
+        const out = Mat4.getTranslation(matB);
         const expected = Vec3.create(4, 5, 6);
         try Vec3.expectEqual(expected, out);
     }
